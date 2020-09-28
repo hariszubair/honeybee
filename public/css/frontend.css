@@ -1,0 +1,88 @@
+body{
+
+    background-color: #f7f7f7;
+}
+img{
+
+    max-width: 100%;
+}
+a {
+    color: #238DB7 ;
+}
+
+.header{
+
+    padding: 15px;
+}
+
+.header .nav li {
+
+    padding: 10px 15px;
+} 
+
+#home_top_banner{
+    display: flex;
+    width: 100%;
+}
+.bannner_box{
+    padding: 16px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.registration_box{
+    text-align: center;
+    font-size: 26px;
+}
+.blue_button{
+    background-color: #2a94bd;
+    padding: 6px 8px;
+    border-radius: 20px;
+    color: white;
+    border-color: #2a94bd;
+    display: block;
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight:bold;
+    width: 200px;
+    margin: 0 auto;
+}
+.blue_button:hover{
+
+    text-decoration: none;
+    color: white;;
+}
+.button_wrapper{
+    margin-top: 20px;
+}
+.white_bg{
+
+    background-color: white;
+}
+.gray_bg{
+    background-color: #ced4d3;
+    color: #444e4f;
+}
+#about_us_wrapper{
+
+    color: #444e4f;
+    font-size: 16px;
+    text-align: center;
+    padding: 60px 0;
+}
+.blue{
+    color: #2b94bd;
+}
+#address_text_wrapper{
+    padding-top: 100px;
+}
+#home_contact_text{
+    padding-top: 60px;
+}
+@media only screen and (min-width:480px)
+{
+    .bannner_box{
+        flex: 1;
+      
+    }
+}

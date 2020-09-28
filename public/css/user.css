@@ -1,0 +1,50 @@
+@media only screen and (max-width:990px)
+{
+.header-mobile__bar{
+    background-color: #f7f7f7;
+}
+.header-desktop{
+    display: none;
+}
+.header-mobile-inner .logo img {
+    height: 50px;
+}
+
+}
+
+.list-group-item {
+	border-radius: 0;
+	border-top-right-radius:0;
+	border:0px;
+	    background-color: #ffffff00 !important;
+
+}
+
+.list-group-item.active {
+	color: green;
+    z-index: 2;
+    border:none;
+    border-bottom: 3px solid #238DB7 !important;
+	border-radius:0 !important;
+	
+
+	}
+	.list-group-horizontal>.list-group-item:first-child {
+	border-radius:0 !important;
+	
+	
+
+	}
+	.list-group-horizontal>.list-group-item:last-child {
+	border-radius:0 !important;
+	
+	}
+	.list-group-item.active {
+    background-color: #ffffff00 !important	
+	}
+
+
+
+
+/*select candidate view */
+
