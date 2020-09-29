@@ -397,6 +397,12 @@ table.dataTable thead th, table.dataTable thead td {
   		<option value="Permanent Residence">Permanent Residence</option>
   		<option value="Citizen">Citizen</option>
   	</select>
+    <select style="width:20%;" class=" js-example-basic-single" name="suburb_range" id='suburb_range' >
+      <option  value="">Any</option>
+      <option value="5">5 Suburb Radius</option>
+      <option value="10">10 Suburb Radius</option>
+      <option value="20">20 Suburb Radius</option>
+    </select>
   	<!-- <button id='filter_candidates' class="btn btn-success" style="border-radius:22px">Search</button> -->
   	
   	</div>
@@ -616,6 +622,19 @@ candidate_search()
 }
 candidate_search()
 });
+    $('#suburb_range').select2({
+    templateSelection: function (state) {
+        return $(
+            '<span><span style="color:#272f66"><b>Suburb Range:</b> ' + state.text+ '</span>'
+        );
+    }
+});
+    $('#suburb_range').on('change', function (e) {
+        if($.fn.DataTable.isDataTable('#candidate_search')){
+    $('#candidate_search').DataTable().destroy();
+}
+candidate_search()
+});
     $('#previous_cousine_experience').select2({
     templateSelection: function (state) {
         return $(
@@ -654,7 +673,7 @@ candidate_search()
     var state = $('#state').val();
     var available_from = $('#available_from').val();
     var visa_type = $('#visa_type').val();
-
+    var suburb_range = $('#suburb_range').val();
      $('#candidate_search').DataTable({
       "dom": '<"top"l>rt"bottom"<<"row"<"col"><"col text-center"p><"col">>>',
         processing: true,
@@ -676,6 +695,7 @@ candidate_search()
               d.state = state;
               d.available_from = available_from;
               d.visa_type = visa_type;
+              d.suburb_range=suburb_range;
         },
 },
 

@@ -281,6 +281,13 @@ class UserDashboardController extends Controller
        if($request->visa_type){
         $candidate=$candidate->whereIn('visa_type',$request->visa_type);
       }
+      if($request->suburb_range){
+        $postcode=UserInfo::where('user_id',Auth::id())->first('postcode')->postcode;
+        $min=(int)$postcode - (int)$request->suburb_range;
+        $max=(int)$postcode + (int)$request->suburb_range;
+
+        $candidate=$candidate->whereBetween('postcode',[$min, $max]);
+      }
       if($request->available_from){
         $available_from=$request->available_from;
         $candidate=$candidate->whereHas('availabilities', function($q) use($available_from){
