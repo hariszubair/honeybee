@@ -17,7 +17,7 @@ class CanNotProceed
     public function handle($request, Closure $next)
     {
         $user=Auth::user();
-        if($user->userinfo->proceed != 0)
+        if($user->userinfo->proceed)
         {
             
            return redirect('/home');

@@ -17,8 +17,7 @@ class PremiumMembership
     public function handle($request, Closure $next)
     {
        $user=Auth::user();
-use Illuminate\Support\Facades\Auth;
-        if($user->userinfo->membership == 2)
+        if($user->userinfo->membership == '2')
         {
             return $next($request);
         }

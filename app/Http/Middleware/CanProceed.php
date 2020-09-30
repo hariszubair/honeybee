@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 namespace App\Http\Middleware;
 
@@ -17,7 +17,7 @@ class CanProceed
     public function handle($request, Closure $next)
     {
          $user=Auth::user();
-        if($user->userinfo->proceed != 1)
+        if(!$user->userinfo->proceed)
         {
             
            return redirect('/home');

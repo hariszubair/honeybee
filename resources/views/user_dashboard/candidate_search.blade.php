@@ -286,7 +286,8 @@ filter_div
  }
 
 table tbody tr:hover {
-  background-color: yellow;
+  background-color: #238db7;
+  color: white;
 }
 table.dataTable thead th, table.dataTable thead td {
      border-bottom: 0; 
@@ -480,9 +481,9 @@ table.dataTable thead th, table.dataTable thead td {
     <li class="nav-item">
       <a class="nav-link" data-toggle="tab" href="#menu2" style="color: #272f66"><h5>Availability</h5></a>
     </li>
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <a class="nav-link" data-toggle="tab" href="#menu3" style="color: #272f66"><h5>Other Info</h5></a>
-    </li>
+    </li> -->
   </ul>
 
   <!-- Tab panes -->
@@ -497,10 +498,10 @@ table.dataTable thead th, table.dataTable thead td {
     <div id="menu2" class="container tab-pane fade"><br>
       <div id='all_availabilities' style="color: #238db7;text-transform:capitalize;"> </div>
     </div>
-    <div id="menu3" class="container tab-pane fade"><br>
+   <!--  <div id="menu3" class="container tab-pane fade"><br>
       <div id='other_info' style="color: #238db7"> </div>
       
-    </div>
+    </div> -->
   </div>
 </div>
         </div>
@@ -857,15 +858,14 @@ function resume(clicked){
                   
                   $('#all_experiences').html(
                     $('#all_experiences').html()+
-                    'Company Name: '+experience.previous_company+
-                    '<br>Job title: '+experience.job_title+
-                    '<br>Joining Date: '+experience.job_from+
-                    '<br>Leaving Date: '+experience.job_to
+                    '<table><tr><td style="width:150px">Company Name</td><td>'+experience.previous_company+'</td></tr><tr><td>Job title</td><td>'+experience.job_title+'</td></tr><tr><td>Joining Date</td><td>'+experience.job_from+'</td></tr><tr><td>Leaving Date</td><td>'+experience.job_to+'</td></tr></table>'
+                    
                       );
                     
                   if(experience.ex_responsibilities != null){
                        $('#all_experiences').html(
-                    $('#all_experiences').html()+'<br>Responsibilities: '+experience.ex_responsibilities.replace(/\n/g, "<br />")+
+                    $('#all_experiences').html()+
+                    '<table><tr><td style="width:150px;vertical-align: text-top;">Responsibilities</td><td>'+experience.ex_responsibilities.replace(/\n/g, "<br />")+'</td></tr></table>'+
                     '<hr>')
                   }
                   else{
@@ -880,9 +880,7 @@ function resume(clicked){
                   
                   $('#all_qualifications').html(
                     $('#all_qualifications').html()+
-                    'Qualification: '+qualification.qualification_name+
-                    '<br>Date: '+qualification.qualification_date+
-                    '<hr>'
+                    '<table><tr><td style="width:150px">Qualification</td><td>'+qualification.qualification_name+'</td></tr><tr><td>Date</td><td>'+qualification.qualification_date+'</td></tr></table>'
                       )
                   });
                 }
@@ -892,8 +890,7 @@ function resume(clicked){
                   
                   $('#all_availabilities').html(
                     $('#all_availabilities').html()+
-                      availability.day+': '+availability.available_from+
-                    '<br>'
+                    '<table><tr><td style="width:150px">'+ availability.day+'</td><td>'+availability.available_from+'</td></tr></table>'
                       )
                   });
                 }
@@ -909,14 +906,15 @@ function resume(clicked){
                 if(data.userinfo.relocate == 1){
                    relocate='Yes';
                 }
-                  $('#other_info').html(
-                     'City: '+data.userinfo.city+
-                     '<br>State: '+data.userinfo.state+
-                     '<br>Have a car: '+have_car+
-                     '<br>Willing to travel: '+travel+
-                     '<br>Willing to relocate: '+relocate
+                  // $('#other_info').html(
 
-                      )
+                  //    'City: '+data.userinfo.city+
+                  //    '<br>State: '+data.userinfo.state+
+                  //    '<br>Have a car: '+have_car+
+                  //    '<br>Willing to travel: '+travel+
+                  //    '<br>Willing to relocate: '+relocate
+
+                  //     )
                    $('#myModalLabel2').html(data.name)
 
                   $('.nav-tabs li a:first').tab('show');

@@ -11,3 +11,4 @@ yarn-error.log
 /app/Rules/Captcha.php
 /resources/views/auth/register.blade.php
 .gitignore	
+env

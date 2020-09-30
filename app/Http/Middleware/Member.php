@@ -17,7 +17,7 @@ class Member
     public function handle($request, Closure $next)
     {
          $user=Auth::user();
-        if($user->userinfo->membership==0)
+        if($user->userinfo->membership=='0')
         {
            return redirect('/home');
            
