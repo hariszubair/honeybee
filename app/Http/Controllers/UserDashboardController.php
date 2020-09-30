@@ -18,6 +18,7 @@ use DB;
 use \Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Yajra\Datatables\Datatables;
+use Mail;
 class UserDashboardController extends Controller
 {
     /**
@@ -506,6 +507,14 @@ class UserDashboardController extends Controller
 
     }
     public function request_interview(){
+      $user=Auth::user();
+     $candidates=SelectedCandidates::where('selected_candidates.client_id','=',$user->id)->join('user_infos','user_infos.user_id','=','selected_candidates.candidate_id')->get(['user_infos.name','user_infos.email','user_infos.phone_number']);
+      Mail::send('emails.request_interview', ['user' => $user,'candidates'=>$candidates], function ($m) use ($user) {
+            $m->from('mail@honeybeetech.com.au', 'Interview Request');
+
+            $m->to('mail@honeybeetech.com.au', 'Interview')->subject('Interview Request Received');
+        });
       return 1;
+
     }
 }
