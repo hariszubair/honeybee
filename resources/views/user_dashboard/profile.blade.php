@@ -1,7 +1,11 @@
 @extends('layouts.master')
 
 @section('content')
-
+<style type="text/css">
+    .select2-selection__rendered{
+        padding-bottom: 5px !important; 
+    }
+</style>
 <form id="main_form" method="post" action="./user-profile-update" >
     {!! csrf_field() !!}
 <div class="container">
@@ -175,15 +179,15 @@
                             </div>
                             
 
-                            <!-- <div class="row form-group">
+                            <div class="row form-group">
                                <div class="col col-md-3">
-                                    <label for="text-input" class=" form-control-label">Street Address:</label>
+                                    <label for="text-input" class=" form-control-label">Full Street Address:</label>
                                 </div>
                                 <div class="col-12 col-md-9">
                                     <input type="text" id="text-input" name="street_address" placeholder="Street Address" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->street_address:'';?>">
                                    
                                 </div>
-                            </div> -->
+                            </div>
                                
 
                             <div class="row form-group">
@@ -197,7 +201,7 @@
                             </div>
                             <div class="row form-group">
                                <div class="col col-md-3">
-                                    <label for="text-input" class=" form-control-label">State:</label>
+                                    <label for="text-input" class=" form-control-label">State/Territory:</label>
                                 </div>
                                 <div class="col-12 col-md-9">
                                     <select class="custom-select form-control" id="text-input" name="state" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->state:'';?>">
@@ -246,6 +250,35 @@
                             </div>
                             <div class="row form-group">
                                <div class="col col-md-3">
+                                    <label for="text-input" class=" form-control-label"> Personal Summary:</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                             <textarea type="text" rows=4 required id="personal_summary" name="personal_summary" placeholder="Briefly describe yourself outside work, e.g. your hobbies" class="form-control" ><?php  echo isset($user_info[0]) ?  $user_info[0]->personal_summary:'';?></textarea>
+                         </div>
+                     </div>
+                     <div class="row form-group">
+                               <div class="col col-md-3">
+                                    <label for="text-input" class=" form-control-label"> Work Experience Summary:</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                             <textarea type="text" rows=4 required id="work_experience" name="work_experience" placeholder="Briefly describe your career in one to two lines" class="form-control" ><?php  echo isset($user_info[0]) ?  $user_info[0]->work_experience:'';?></textarea>
+                         </div>
+                     </div>
+                     <div class="row form-group">
+                               <div class="col col-md-3">
+                                    <label for="text-input" class=" form-control-label"> Availability:</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                <select required id="availability" name='availability' class="form-control">
+                                    <option value=""> Please Select Availability</option>
+                                    <option value="Full Time">Full Time</option>
+                                    <option value="Part Time">Part Time</option>
+                                </select> 
+                                    
+                            </div>
+                        </div>
+                            <div class="row form-group">
+                               <div class="col col-md-3">
                                     <label for="text-input" class=" form-control-label">Do you have a car?</label>
                                 </div>
                                 <div class="col-12 col-md-9">
@@ -265,19 +298,26 @@
                                     <label for="Yes">Yes</label>
                                     <input type="radio" id="relocate_no" name="relocate" value="0" <?php  echo isset($user_info[0]) &&  $user_info[0]->relocate ? '': 'checked';?>>
                                     <label for="No">No</label>
-                                   
+                                   <select class="js-example-basic-multiple" id="relocate_state" name="relocate_state[]" multiple="multiple" >
+                                        @foreach($states as $state)
+                                          <option value="{{$state->name}}" >{{$state->name}}</option>
+                                        @endforeach
+
+
+                                    </select>
+                                    <textarea name="relocate_state_array" style="display: none"  id='relocate_state_array' ><?php  echo isset($user_info[0]) ?  $user_info[0]->relocate_state: '';?></textarea>
                                 </div>
                             </div>
                             <div class="row form-group">
                                <div class="col col-md-3">
                                     <label for="text-input" class=" form-control-label">Are you willing to travel?</label>
                                 </div>
-                                <div class="col-12 col-md-9">
+                                <div class="col-12 col-md-9"  >
                                     <input type="radio" id="travel_yes" name="travel" value="1" checked> 
                                     <label for="Yes">Yes</label>
                                     <input type="radio" id="travel_no" name="travel" value="0" <?php  echo isset($user_info[0]) &&  $user_info[0]->travel ? '': 'checked';?>>
                                     <label for="No">No</label>
-                                   
+                                    <input class="form-control" type="number" name="travel_distance" id='travel_distance' placeholder="Kindly mention the distance in Km." value="<?php  echo isset($user_info[0]) ?  $user_info[0]->travel_distance: '';?>">
                                 </div>
                             </div>
 
@@ -305,7 +345,7 @@
                                     <label for="text-input" class=" form-control-label">Years of Experience:</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="number" id="text-input" name="yr_experience"  class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->yr_experience: '';?>">
+                                    <input type="number" id="yr_experience" name="yr_experience"  class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->yr_experience: '';?>">
                                    
                                 </div>
                             </div>  
@@ -740,7 +780,7 @@
                 <div class="col col-md-4"></div>
                <div class="col col-md-3">
                     <!-- <button onclick="submits()" class="btn btn-primary ">Update</button> -->
-                    <button type="submit" class="btn btn-primary ">Update</button>
+                    <button type="button" id='main_form_button' class="btn btn-primary ">Update</button>
                 </div>
             </div>
 
@@ -749,10 +789,12 @@
         
     </div>
     </form>
+    <script src="{{asset('public/js/select2.multi-checkboxes.js')}}"></script>
+
 <script type="text/javascript">
     var all_user_info = <?php echo $user_info ?>;
-    console.log("all_user_info");
-    console.log(all_user_info);
+    // console.log("all_user_info");
+    // console.log(all_user_info);
     $("#otherVisaType").css("display","none");
     $("#otherCousine").css("display","none");
     jQuery(document).ready(function($){
@@ -807,19 +849,40 @@
                     }
                 }
             } catch (e) {
-                console.log
+                // console.log
             }
             
         }
+       
     })
 </script>
 
 <script type="text/javascript">
     jQuery(document).ready(function($){
+    $('.js-example-basic-multiple').select2();
+ $('#relocate_state').select2({
+          placeholder: "Select a state",
+    allowClear: true
+  })
+
+
+
+ if(<?php echo $user_info[0]->relocate; ?>){
+    var values= JSON.parse($("textarea#relocate_state_array").val());
+    $("#relocate_state").val(values).change();
+ }
+ if($('input[name="relocate"]:checked').val()==1){
+            $('#relocate_state').next(".select2-container").show();
+        }
+        else{
+            $('#relocate_state').next(".select2-container").hide();
+            $('#relocate_state').val(null).change();
+        }
+
         $( "#password" ).keyup(function() {
             if ($(this).val() != "") {
                 $("#confirmpassword").prop('required',true);
-                console.log('$("#password"): ', $("#password").val());
+                // console.log('$("#password"): ', $("#password").val());
             } else {
                 $('#confirmpassword').removeAttr('required');
             }
@@ -860,7 +923,7 @@
                 document.getElementsByName('sunday_available_from')[0].value = user_availabilities[i].available_from;
             }
         }
-        console.log("user_availabilities: ", user_availabilities);
+        // console.log("user_availabilities: ", user_availabilities);
     })
 </script>
 
@@ -886,9 +949,8 @@
 
     jQuery(document).ready(function($){
 
-        $("#main_form").submit(function(even) {
+        $("#main_form_button").click(function(even) {
             // Availability
-
 
 
 
@@ -896,49 +958,49 @@
             if($('#monday').prop("checked") == true){
                 availabilityFlag = true;
                 document.getElementsByName('monday')[0].value = 'monday';
-                console.log(document.getElementsByName('monday_available_from')[0].value);
+                // console.log(document.getElementsByName('monday_available_from')[0].value);
             } else {
                 document.getElementsByName('monday')[0].value = '';
             }
             if($('#tuesday').prop("checked") == true){
                 availabilityFlag = true;
                 document.getElementsByName('tuesday')[0].value = 'tuesday'
-                console.log(document.getElementsByName('tuesday_available_from')[0].value);
+                // console.log(document.getElementsByName('tuesday_available_from')[0].value);
             } else {
                 document.getElementsByName('tuesday')[0].value = '';
             }
             if($('#wednesday').prop("checked") == true){
                 availabilityFlag = true;
                 document.getElementsByName('wednesday')[0].value = 'wednesday';
-                console.log(document.getElementsByName('wednesday_available_from')[0].value);
+                // console.log(document.getElementsByName('wednesday_available_from')[0].value);
             } else {
                 document.getElementsByName('wednesday')[0].value = '';
             }
             if($('#thursday').prop("checked") == true){
                 availabilityFlag = true;
                 document.getElementsByName('thursday')[0].value = 'thursday';
-                console.log(document.getElementsByName('thursday_available_from')[0].value);
+                // console.log(document.getElementsByName('thursday_available_from')[0].value);
             } else {
                 document.getElementsByName('thursday')[0].value = '';
             }
             if($('#friday').prop("checked") == true){
                 availabilityFlag = true;
                 document.getElementsByName('friday')[0].value = 'friday';
-                console.log(document.getElementsByName('friday_available_from')[0].value);
+                // console.log(document.getElementsByName('friday_available_from')[0].value);
             } else {
                 document.getElementsByName('friday')[0].value = '';
             }
             if($('#saturday').prop("checked") == true){
                 availabilityFlag = true;
                 document.getElementsByName('saturday')[0].value = 'saturday';
-                console.log(document.getElementsByName('saturday_available_from')[0].value);
+                // console.log(document.getElementsByName('saturday_available_from')[0].value);
             } else {
                 document.getElementsByName('saturday')[0].value = '';
             }
             if($('#sunday').prop("checked") == true){
                 availabilityFlag = true;
                 document.getElementsByName('sunday')[0].value = 'sunday';
-                console.log(document.getElementsByName('sunday_available_from')[0].value);
+                // console.log(document.getElementsByName('sunday_available_from')[0].value);
             } else {
                 document.getElementsByName('sunday')[0].value = '';
             }
@@ -978,21 +1040,48 @@
                         cousineExperienceChecked.push($('#otherCousine').val());
                         document.getElementsByName('previous_cousine_experience')[0].value = cousineExperienceChecked;
                     }
+                    var expected_exp=0; 
                     var temp_counter=0;
-                    for (var i = 0 ; i <= counterr; i++) {
+                    for (var i = 1 ; i <= counterr; i++) {
                         if($("input[name='experience["+i+"][job_to]']").val() <= $("input[name='experience["+i+"][job_from]']").val())
                         {
                             alert('Job starting date '+ $("input[name='experience["+i+"][job_to]']").val()+ ' cant be less than '+ $("input[name='experience["+i+"][job_from]']").val());
                             temp_counter++;
                         }
+                       expected_exp += Math.ceil((new Date($("input[name='experience["+i+"][job_to]']").val()) - new Date($("input[name='experience["+i+"][job_from]']").val()))/ (1000 * 60 * 60 * 24));
+
+
                     }
-                    if(temp_counter >0){
+                    if($('#yr_experience').val() != parseInt(expected_exp/365)){
+                        swal({
+                          title: "Experience Mismatch!!!",
+                          text: $('#yr_experience').val()+" year(s) of total experience dont match with the experience you enter in indiviual experience. Do you still want to continue?",
+                          icon: "warning",
+                          buttons: [
+                            'No, verify it!',
+                            'Yes, continue!'
+                          ],
+                          dangerMode: true,
+                        }).then(function(isConfirm) {
+                          if (!isConfirm) {
+                        return false
+                          }
+                          else{
+                            $('#main_form').submit();
+
+                          }
+                        })
+
+                    }
+                    else{
+                        if(temp_counter >0){
                         return false
                     }
-
-                    alert("Your profile has been updated!");
+                    $('#main_form').submit();
                     $('.notAllow').prop("disabled", false);
                     return true;
+                    }
+                    
                 }
             return false;
         });
@@ -1106,7 +1195,6 @@
         // alert(counterr);
         for(var i=0; i<document.getElementById("experience_form_wrapper").children.length; i++) {
             if(document.getElementById("experience_form_wrapper").children[i] == document.getElementById(cc)) {
-                console.log("removed");
                 document.getElementById("experience_form_wrapper").children[i].remove();
             }
         }
@@ -1114,7 +1202,6 @@
     function delete_qualification(cc) {
         for(var i=0; i<document.getElementById("Certificates_form_wrapper").children.length; i++) {
             if(document.getElementById("Certificates_form_wrapper").children[i] == document.getElementById('qualification'+cc)) {
-                console.log("removed");
                 document.getElementById("Certificates_form_wrapper").children[i].remove();
             }
         }
@@ -1273,6 +1360,24 @@
             $('#Certificates_form_wrapper').append(html);
         });
     })
+    $('input[name="travel"]').on('change', function(){
+        if($('input[name="travel"]:checked').val()==1){
+            $('#travel_distance').show();
+        }
+        else{
+            $('#travel_distance').hide();
+            $('#travel_distance').val(null);
+        }
+    });
+    $('input[name="relocate"]').on('change', function(){
+        if($('input[name="relocate"]:checked').val()==1){
+            $('#relocate_state').next(".select2-container").show();
+        }
+        else{
+            $('#relocate_state').next(".select2-container").hide();
+            $('#relocate_state').val(null).change();
+        }
+    });
 </script>
 @endsection
 

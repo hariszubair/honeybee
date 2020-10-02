@@ -37,7 +37,7 @@ class UserInfo extends Model
      'member_ship'
      ,'travel',
      'relocate',
-     'suburb','yr_experience','proceed','restaurant_other'
+     'suburb','yr_experience','proceed','restaurant_other','travel_distance','relocate_state','personal_summary','work_experience','availability'
     ];
 
     public function user()

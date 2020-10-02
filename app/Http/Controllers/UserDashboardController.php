@@ -78,10 +78,14 @@ class UserDashboardController extends Controller
         }
        }
 
-
       if($user->hasRole('Client'))
       {
+        if($user->userinfo->proceed == 0){
         return redirect('/candidate_search_view');
+        }
+        else{
+        return redirect('/selected_candidates');
+        }
       }
       if($user->hasRole('Candidate')){
         return redirect('/profile');
@@ -248,6 +252,11 @@ class UserDashboardController extends Controller
           if(Auth::user()->hasRole('Client')){
              $request->merge(['role_id' => 3]);
           }
+          if(!$request->relocate_state){
+             $request->merge(['relocate_state' => null]);
+            
+          }
+
           $user = UserInfo::updateOrCreate( [ 'user_id'   =>   Auth::user()->id ], $request->all());
           
           if(Auth::user()->hasRole('Client')){
@@ -333,15 +342,15 @@ class UserDashboardController extends Controller
               $years = floor($diff / (365*60*60*24));
               $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
               // $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
-              if($months >=7){
-                $years++;
-              }
-              ($years <= 1 ? $years.= ' year ' : $years.= ' years ');
-              // ($months <= 1 ? $months.= ' month' : $months.= ' months');
+              // if($months >=7){
+              //   $years++;
+              // }
+              // // ($years <= 1 ? $years.= ' year ' : $years.= ' years ');
+              ($months <= 1 ? $months.= ' month' : $months.= ' months');
               // ($days <= 1 ? $days.= ' day' : $days.= ' days');
               $data='';
               $data.='<a type="button" class="resume" id="'.$row->user_id.'"" style="color:#272f66" onclick="resume($(this))"><b>'.$row->recent_experience->previous_company.'</b></a>';
-              $data.='<br>'.$row->recent_experience->job_title.' ('.$years.')';
+              $data.='<br>'.$row->recent_experience->job_title.' ('.$months.')';
 
               return $data;
             })->addColumn('cuisine',function($row) {

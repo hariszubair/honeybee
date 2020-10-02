@@ -15,7 +15,7 @@
 
 
         <div class="card">
-                <div class="card-header">Acknowledgement</div>
+                <div class="card-header">Profile</div>
 
                 <div class="card-body">
                  
@@ -64,7 +64,7 @@
                             </div>
                             <div class="row form-group">
                                <div class="col col-md-4">
-                                    <label for="text-input" class=" form-control-label">St. Address</label>
+                                    <label for="text-input" class=" form-control-label">Full Street Address</label>
                                 </div>
                                 <div class="col-12 col-md-8">
                                     <input class="form-control" value="{{$user->userinfo->street_address}}" name="street_address" required>
@@ -80,7 +80,7 @@
                             </div>
                             <div class="row form-group">
                                <div class="col col-md-4">
-                                    <label for="text-input" class=" form-control-label">State</label>
+                                    <label for="text-input" class=" form-control-label">State/Territory</label>
                                 </div>
                                 <div class="col-12 col-md-8">
                                    <select id='state' name='state' class="js-example-basic-single" required>

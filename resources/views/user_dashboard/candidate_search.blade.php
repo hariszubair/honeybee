@@ -278,11 +278,12 @@ filter_div
   width: 500px;
 }
  table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_desc_disabled:before {
-      right: 1.2em;
+      display: none
  }
  table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:after 
  {
-  right: 0em;
+      display: none
+  
  }
 
 table tbody tr:hover {
@@ -295,6 +296,12 @@ table.dataTable thead th, table.dataTable thead td {
 /*table.dataTable.stripe tbody tr.odd, table.dataTable.display tbody tr.odd {
      background-color: #ffffff00; 
 }*/
+.dataTables_length{
+  font-size: 12px
+}
+.active{
+color:black !important;
+}
 </style>
 <div id='page'>
 
@@ -302,10 +309,10 @@ table.dataTable thead th, table.dataTable thead td {
     <div class="col-lg-12" style="padding-right: 0;padding-left: 0">
 <div class="card" >
 <div class="card-header">
-<h4 style="color: #238db7">Payment Plans</h4>
+<h4 style="color: #238db7">Your Selected Subscription</h4>
 </div>
 <div class="card-body" style="padding: 10px">
-<p style="text-align:justify;" ><span id="basic_membership" {{Auth::user()->selected_candidates->count() <= 10 ? 'style=font-weight:bold' : ''}}>Basic Subscription </span><br><span id="premium_membership" {{Auth::user()->selected_candidates->count() >= 11 ? 'style=font-weight:bold' : ''}}>Premium Subscription </span></p>
+<p style="text-align:justify;" ><span id="basic_membership" {{Auth::user()->selected_candidates->count() <= 10 ? 'style=font-weight:bold' : ''}}>Basic (You have chosen between 0-10 candidates) </span><br><span id="premium_membership" {{Auth::user()->selected_candidates->count() >= 11 ? 'style=font-weight:bold' : ''}}>Premium (You have chosen between 11-20 candidates)</span></p>
  <div class="row" style="display: flex;justify-content:center;color: white;">
     <!-- <button id='filter_candidates' class="btn btn-success " style="margin: 5px">Search</button> -->
 @if(Auth::user()->userinfo->membership == 0)
@@ -392,7 +399,6 @@ table.dataTable thead th, table.dataTable thead td {
   		<option value="All day">All day</option>
   	</select>
   	<select style="width:20%;" class="select2-multiple2" name="visa_type[]" multiple="multiple" id='visa_type' >
-  		<option  value=""></option>
   		<option value="Working Visa">Working Visa</option>
   		<option value="Student Visa">Student Visa</option>
   		<option value="Permanent Residence">Permanent Residence</option>
@@ -409,14 +415,16 @@ table.dataTable thead th, table.dataTable thead td {
   	</div>
     <div style="display: flex;width: 100%">
     <button style="border:1px solid #aaaaaa;border-radius: 22px;color: #272f66;padding-right: 5px;padding-left: 5px;margin-bottom: 15px;float: left;white-space: nowrap;text-align: center" id='reset_selection'><b>Reset Selected Candidates</b></button>
+    <button style="border:1px solid #aaaaaa;border-radius: 22px;color: #272f66;padding-right: 5px;padding-left: 5px;margin-bottom: 15px;float: left;white-space: nowrap;text-align: center;margin-left: 5px;" id='reset_filter'><b>Reset Filters</b></button>
     @if($user->userinfo->membership != 0)
     <form action="./proceed" method="Post" id='selected_candidates_form'> 
                         @csrf
 <input type="text" id="count" name="count" style="display: none" value='{{$user->selected_candidates->count()}}'>
 
-<button type="button" style="border:1px solid #aaaaaa;border-radius: 22px;color: green;padding-right: 5px;padding-left: 5px;margin-bottom: 15px;float: left;margin-left: 5px;white-space: nowrap;text-align: center" id='proceed_button'><b>Proceed selected candidates</b></button>
+<button type="button" style="border:1px solid #aaaaaa;border-radius: 22px;color: green;padding-right: 5px;padding-left: 5px;margin-bottom: 15px;float: left;margin-left: 5px;white-space: nowrap;text-align: center" id='proceed_button'><b>Proceed Selected Candidates</b></button>
 </form>
 @endif
+
 </div>
   	<!-- <div style="margin: 10px;width:150px">
   	<button onclick="myFunction()" class="dropbtn btn dropdown-toggle" id='btn_type_worker' style="padding-top: 0px !important;padding-bottom: 0px !important">Type of Worker</button>
@@ -443,7 +451,7 @@ table.dataTable thead th, table.dataTable thead td {
                           <th >Select</th>
                           <th >Most recent work experience </th>
                           <th >Name</th>
-                          <th >Experience</th>
+                          <th >Total Experience</th>
                           <th >All cuisine experience</th>
                           <th >Suburb</th>
                           <th >Last Updated</th>
@@ -473,13 +481,13 @@ table.dataTable thead th, table.dataTable thead td {
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" style="min-width: 550px;">
     <li class="nav-item">
-      <a class="nav-link active" data-toggle="tab" href="#home" style="color: #272f66"><h5>All Experience</h5></a>
+      <a class="nav-link active" data-toggle="tab" href="#home" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>All Experience</p></a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#menu1" style="color: #272f66"><h5>Qualifications</h5></a>
+      <a class="nav-link" data-toggle="tab" href="#menu1" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>Qualifications</p></a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#menu2" style="color: #272f66"><h5>Availability</h5></a>
+      <a class="nav-link" data-toggle="tab" href="#menu2" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>Availability</p></a>
     </li>
     <!-- <li class="nav-item">
       <a class="nav-link" data-toggle="tab" href="#menu3" style="color: #272f66"><h5>Other Info</h5></a>
@@ -1014,6 +1022,14 @@ $( "#proceed_button" ).click(function( event ) {
     })
 
 });
+$('#reset_filter').click(function(evt) {
+  $('#role_apply').val(null).trigger('change');
+  $('#previous_cousine_experience').val(null).trigger('change');
+  $('#state').val(null).trigger('change');
+  $('#available_from').val(null).trigger('change');
+  $('#visa_type').val(null).trigger('change');
+  $('#suburb_range').val(null).trigger('change');
+  });
 </script>
 
 @endsection()
