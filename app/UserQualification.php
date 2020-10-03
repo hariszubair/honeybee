@@ -19,4 +19,9 @@ class UserQualification extends Model
 	{
 		return $this->belongsTo('App\User');
 	}
+    public function getQualificationDateAttribute($value)
+    {
+        $date=date_create($value);
+        return date_format($date,"d-M-Y");
+    }
 }

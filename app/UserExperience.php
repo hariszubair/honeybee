@@ -19,4 +19,14 @@ class UserExperience extends Model
 	{
 		return $this->belongsTo('App\User');
 	}
+    public function getJobToAttribute($value)
+    {
+        $date=date_create($value);
+        return date_format($date,"d-M-Y");
+    }
+    public function getJobFromAttribute($value)
+    {
+        $date=date_create($value);
+        return date_format($date,"d-M-Y");
+    }
 }

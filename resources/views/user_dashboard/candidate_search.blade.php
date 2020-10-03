@@ -303,6 +303,9 @@ table.dataTable thead th, table.dataTable thead td {
 color:black !important;
 }
 </style>
+@if(Session::has('success'))
+<input type="" name="success" id='success' value="{{ Session::get('message') }}">
+@endif
 <div id='page'>
 
   <div class="row" style="z-index: 99999;width: 100%;margin:0;padd" id='plan'>
@@ -486,12 +489,12 @@ color:black !important;
     <li class="nav-item">
       <a class="nav-link" data-toggle="tab" href="#menu1" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>Qualifications</p></a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#menu2" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>Availability</p></a>
-    </li>
     <!-- <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#menu3" style="color: #272f66"><h5>Other Info</h5></a>
+      <a class="nav-link" data-toggle="tab" href="#menu2" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>Availability</p></a>
     </li> -->
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#menu3" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>Personal Detail</p></a>
+    </li>
   </ul>
 
   <!-- Tab panes -->
@@ -503,13 +506,13 @@ color:black !important;
       <div id='all_qualifications' style="color: #238db7"> </div>
      
     </div>
-    <div id="menu2" class="container tab-pane fade"><br>
+   <!--  <div id="menu2" class="container tab-pane fade"><br>
       <div id='all_availabilities' style="color: #238db7;text-transform:capitalize;"> </div>
-    </div>
-   <!--  <div id="menu3" class="container tab-pane fade"><br>
-      <div id='other_info' style="color: #238db7"> </div>
-      
     </div> -->
+    <div id="menu3" class="container tab-pane fade"><br>
+      <div id='personal_detail' style="color: #238db7"> </div>
+      
+    </div>
   </div>
 </div>
         </div>
@@ -532,6 +535,10 @@ color:black !important;
 <script type="text/javascript">
 	
 	$(document).ready(function() {
+    console.log('<?php echo Session::has('success'); ?>')
+    if('<?php echo Session::has('success'); ?>'){
+      swal("Payment Successful", "Thanks for the payment. Click on the selected Candidates to view Short listed candidates", "success");
+    }
     // table= $('#candidate_search').DataTable();
   
     $('.js-example-basic-single').select2({});
@@ -859,21 +866,17 @@ function resume(clicked){
                   $('#all_experiences').html(null);
                   $('#all_qualifications').html(null);
                    $('#all_availabilities').html(null);
-                   $('#other_info').html(null);
+                   $('#personal_detail').html(null);
 
                   $.each(data.experiences, function( index, experience ) {
-                    
-                  
                   $('#all_experiences').html(
                     $('#all_experiences').html()+
-                    '<table><tr><td style="width:150px">Company Name</td><td>'+experience.previous_company+'</td></tr><tr><td>Job title</td><td>'+experience.job_title+'</td></tr><tr><td>Joining Date</td><td>'+experience.job_from+'</td></tr><tr><td>Leaving Date</td><td>'+experience.job_to+'</td></tr></table>'
-                    
+                    experience.previous_company+'<br>'+experience.job_from+' to '+experience.job_to+'<br>'+experience.job_title+'<br>'+experience.no_of_employees+' Employees'
                       );
-                    
                   if(experience.ex_responsibilities != null){
                        $('#all_experiences').html(
-                    $('#all_experiences').html()+
-                    '<table><tr><td style="width:150px;vertical-align: text-top;">Responsibilities</td><td>'+experience.ex_responsibilities.replace(/\n/g, "<br />")+'</td></tr></table>'+
+                    $('#all_experiences').html()+'<br>'+
+                    experience.ex_responsibilities.replace(/\n/g, "<br />")+
                     '<hr>')
                   }
                   else{
@@ -888,41 +891,46 @@ function resume(clicked){
                   
                   $('#all_qualifications').html(
                     $('#all_qualifications').html()+
-                    '<table><tr><td style="width:150px">Qualification</td><td>'+qualification.qualification_name+'</td></tr><tr><td>Date</td><td>'+qualification.qualification_date+'</td></tr></table>'
+                    qualification.qualification_name+'<br>'+qualification.qualification_date+'<hr>'
                       )
                   });
                 }
-                 if(data.availabilities){
-                  $.each(data.availabilities, function( index, availability ) {
+                //  if(data.availabilities){
+                //   $.each(data.availabilities, function( index, availability ) {
                     
                   
-                  $('#all_availabilities').html(
-                    $('#all_availabilities').html()+
-                    '<table><tr><td style="width:150px">'+ availability.day+'</td><td>'+availability.available_from+'</td></tr></table>'
-                      )
-                  });
-                }
+                //   $('#all_availabilities').html(
+                //     $('#all_availabilities').html()+
+                //     '<table><tr><td style="width:150px">'+ availability.day+'</td><td>'+availability.available_from+'</td></tr></table>'
+                //       )
+                //   });
+                // }
                  have_car='No';
                 if(data.userinfo.have_car == 1){
                    have_car='Yes';
                 }
                 travel='No';
+                var to='';
                 if(data.userinfo.travel == 1){
                    travel='Yes';
+                   to= '(upto '+data.userinfo.travel_distance+ ' Km)';
                 }
                 relocate='No';
+                var relocate_to='';
                 if(data.userinfo.relocate == 1){
                    relocate='Yes';
+                   relocate_to='(to '+JSON.parse(data.userinfo.relocate_state)+')'
                 }
-                  // $('#other_info').html(
-
-                  //    'City: '+data.userinfo.city+
-                  //    '<br>State: '+data.userinfo.state+
-                  //    '<br>Have a car: '+have_car+
-                  //    '<br>Willing to travel: '+travel+
-                  //    '<br>Willing to relocate: '+relocate
-
-                  //     )
+                  $('#personal_detail').html(
+                      '<b>Personal Summary: </b>'+data.userinfo.personal_summary+'<br>'+
+                      '<b>Work Experience Summary: </b>'+data.userinfo.work_experience+'<br>'+
+                      data.userinfo.availability+ ' available.<br>'+
+                     '<b>City: </b>'+data.userinfo.city+
+                     '<br><b>State: </b>'+data.userinfo.state+
+                     '<br><b>Have a car: </b>'+have_car+
+                     '<br><b>Willing to travel: </b>'+travel+to+
+                     '<br><b>Willing to relocate: </b>'+relocate+relocate_to
+                      )
                    $('#myModalLabel2').html(data.name)
 
                   $('.nav-tabs li a:first').tab('show');

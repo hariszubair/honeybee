@@ -349,8 +349,15 @@ class UserDashboardController extends Controller
               ($months <= 1 ? $months.= ' month' : $months.= ' months');
               // ($days <= 1 ? $days.= ' day' : $days.= ' days');
               $data='';
+              $responsibility='';
+              if (strlen($row->recent_experience->ex_responsibilities) > 50){
+                $responsibility='<br>'.substr($row->recent_experience->ex_responsibilities, 0, 50).' .... '; 
+              }
+              else{
+                $responsibility='<br>'.$row->recent_experience->ex_responsibilities;
+              }
               $data.='<a type="button" class="resume" id="'.$row->user_id.'"" style="color:#272f66" onclick="resume($(this))"><b>'.$row->recent_experience->previous_company.'</b></a>';
-              $data.='<br>'.$row->recent_experience->job_title.' ('.$months.')';
+              $data.='<br>'.$row->recent_experience->job_title.' ('.$months.')'.$responsibility;
 
               return $data;
             })->addColumn('cuisine',function($row) {
@@ -500,7 +507,7 @@ class UserDashboardController extends Controller
      public function candidate_data(Request $request)
     {
       return User::with('availabilities','experiences','qualifications')->with(array('userinfo'=>function($query){
-        $query->select('user_id','city','state','have_car','travel','relocate');
+        $query->select('user_id','city','state','have_car','travel','relocate','travel_distance','relocate_state','personal_summary','work_experience','availability');
     }))->find($request->id);
 
     }

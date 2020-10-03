@@ -253,7 +253,7 @@
                                     <label for="text-input" class=" form-control-label"> Personal Summary:</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                             <textarea type="text" rows=4 required id="personal_summary" name="personal_summary" placeholder="Briefly describe yourself outside work, e.g. your hobbies" class="form-control" ><?php  echo isset($user_info[0]) ?  $user_info[0]->personal_summary:'';?></textarea>
+                             <textarea type="text" rows=4 required id="personal_summary" name="personal_summary" placeholder="Briefly describe yourself outside work, e.g. your hobbies" class="form-control" required><?php  echo isset($user_info[0]) ?  $user_info[0]->personal_summary:'';?></textarea>
                          </div>
                      </div>
                      <div class="row form-group">
@@ -261,7 +261,7 @@
                                     <label for="text-input" class=" form-control-label"> Work Experience Summary:</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                             <textarea type="text" rows=4 required id="work_experience" name="work_experience" placeholder="Briefly describe your career in one to two lines" class="form-control" ><?php  echo isset($user_info[0]) ?  $user_info[0]->work_experience:'';?></textarea>
+                             <textarea type="text" rows=4 required id="work_experience" name="work_experience" placeholder="Briefly describe your career in one to two lines" class="form-control" required><?php  echo isset($user_info[0]) ?  $user_info[0]->work_experience:'';?></textarea>
                          </div>
                      </div>
                      <div class="row form-group">
@@ -298,13 +298,15 @@
                                     <label for="Yes">Yes</label>
                                     <input type="radio" id="relocate_no" name="relocate" value="0" <?php  echo isset($user_info[0]) &&  $user_info[0]->relocate ? '': 'checked';?>>
                                     <label for="No">No</label>
-                                   <select class="js-example-basic-multiple" id="relocate_state" name="relocate_state[]" multiple="multiple" >
+                                    <div style="width: 90%;display: inline-block;vertical-align: middle;">
+                                   <select class="js-example-basic-multiple js-example-responsive" id="relocate_state" name="relocate_state[]" multiple="multiple"  style="width: 90%">
                                         @foreach($states as $state)
                                           <option value="{{$state->name}}" >{{$state->name}}</option>
                                         @endforeach
 
 
-                                    </select>
+                                    </select></div> states
+
                                     <textarea name="relocate_state_array" style="display: none"  id='relocate_state_array' ><?php  echo isset($user_info[0]) ?  $user_info[0]->relocate_state: '';?></textarea>
                                 </div>
                             </div>
@@ -317,7 +319,7 @@
                                     <label for="Yes">Yes</label>
                                     <input type="radio" id="travel_no" name="travel" value="0" <?php  echo isset($user_info[0]) &&  $user_info[0]->travel ? '': 'checked';?>>
                                     <label for="No">No</label>
-                                    <input class="form-control" type="number" name="travel_distance" id='travel_distance' placeholder="Kindly mention the distance in Km." value="<?php  echo isset($user_info[0]) ?  $user_info[0]->travel_distance: '';?>">
+                                    <input class="form-control" type="number" name="travel_distance" id='travel_distance' placeholder="Kindly mention the distance in Km." style="width: 90%;display: inline-block;" value="<?php  echo isset($user_info[0]) ?  $user_info[0]->travel_distance: '';?>"> Km
                                 </div>
                             </div>
 
@@ -399,10 +401,10 @@
                                         <label for="text-input" class=" form-control-label"> Period of Employment : </label>
                                     </div>
                                     <div class="col col-md-4">
-                                        <input type="date" required id="text-input" name="experience[<?php echo $experience_counter ?>][job_from]" placeholder="From" class="form-control"  value="<?php echo $user_experience->job_from; ?>">
+                                        <input type="date" required id="text-input" name="experience[<?php echo $experience_counter ?>][job_from]" placeholder="From" class="form-control"  value="<?php echo  date("Y-m-d", strtotime($user_experience->job_from)); ?>">
                                     </div>
                                     <div class="col col-md-4">
-                                        <input type="date" id="text-input" name="experience[<?php echo $experience_counter ?>][job_to]" placeholder="To" class="form-control"  value="<?php echo $user_experience->job_to; ?>">
+                                        <input type="date" id="text-input" name="experience[<?php echo $experience_counter ?>][job_to]" placeholder="To" class="form-control"  value="<?php echo date("Y-m-d", strtotime($user_experience->job_to)); ?>">
                                     </div>
                                 
                                 </div>
@@ -590,7 +592,7 @@
                                         <label for="text-input" class=" form-control-label"> Date of certificate : </label>
                                     </div>
                                     <div class="col col-md-9">
-                                        <input type="date" id="text-input" name="qualifications[<?php echo $certificate_counter ?>][qualification_date]" placeholder="Date of Qualification" class="form-control"  value="<?php echo $user_qualification->qualification_date ?>">
+                                        <input type="date" id="text-input" name="qualifications[<?php echo $certificate_counter ?>][qualification_date]" placeholder="Date of Qualification" class="form-control"  value="<?php echo  date("Y-m-d", strtotime($user_qualification->qualification_date)); ?>">
                                     </div>
                                     
                                     
@@ -662,7 +664,7 @@
             </div>
 
             
-
+<!-- 
             <div class="card">
                 <div class="card-header">Availability</div>
                 <div class="card-body">
@@ -773,7 +775,7 @@
 
                     </div>
                 </div>
-            </div>
+            </div> -->
 
 
             <div class="row form-group" style="padding-bottom: 15px">
@@ -781,6 +783,7 @@
                <div class="col col-md-3">
                     <!-- <button onclick="submits()" class="btn btn-primary ">Update</button> -->
                     <button type="button" id='main_form_button' class="btn btn-primary ">Update</button>
+                    <button type="submit" style="display: none" id='main_form_submit' class="btn btn-primary ">Submit</button>
                 </div>
             </div>
 
@@ -892,37 +895,37 @@
 
 <script type="text/javascript">
     jQuery(document).ready(function($){
-        var user_availabilities = <?php echo $user_availabilities ?>;
-        for(var i=0; i<user_availabilities.length; i++) {
-            if(user_availabilities[i].day == 'monday') {
-                $("#monday").prop("checked", true);
-                document.getElementsByName('monday_available_from')[0].value = user_availabilities[i].available_from;
-            }
-            if(user_availabilities[i].day == 'tuesday') {
-                $("#tuesday").prop("checked", true);
-                document.getElementsByName('tuesday_available_from')[0].value = user_availabilities[i].available_from;
-            }
-            if(user_availabilities[i].day == 'wednesday') {
-                $("#wednesday").prop("checked", true);
-                document.getElementsByName('wednesday_available_from')[0].value = user_availabilities[i].available_from;
-            }
-            if(user_availabilities[i].day == 'thursday') {
-                $("#thursday").prop("checked", true);
-                document.getElementsByName('thursday_available_from')[0].value = user_availabilities[i].available_from;
-            }
-            if(user_availabilities[i].day == 'friday') {
-                $("#friday").prop("checked", true);
-                document.getElementsByName('friday_available_from')[0].value = user_availabilities[i].available_from;
-            }
-            if(user_availabilities[i].day == 'saturday') {
-                $("#saturday").prop("checked", true);
-                document.getElementsByName('saturday_available_from')[0].value = user_availabilities[i].available_from;
-            }
-            if(user_availabilities[i].day == 'sunday') {
-                $("#sunday").prop("checked", true);
-                document.getElementsByName('sunday_available_from')[0].value = user_availabilities[i].available_from;
-            }
-        }
+        // var user_availabilities = <?php echo $user_availabilities ?>;
+        // for(var i=0; i<user_availabilities.length; i++) {
+        //     if(user_availabilities[i].day == 'monday') {
+        //         $("#monday").prop("checked", true);
+        //         document.getElementsByName('monday_available_from')[0].value = user_availabilities[i].available_from;
+        //     }
+        //     if(user_availabilities[i].day == 'tuesday') {
+        //         $("#tuesday").prop("checked", true);
+        //         document.getElementsByName('tuesday_available_from')[0].value = user_availabilities[i].available_from;
+        //     }
+        //     if(user_availabilities[i].day == 'wednesday') {
+        //         $("#wednesday").prop("checked", true);
+        //         document.getElementsByName('wednesday_available_from')[0].value = user_availabilities[i].available_from;
+        //     }
+        //     if(user_availabilities[i].day == 'thursday') {
+        //         $("#thursday").prop("checked", true);
+        //         document.getElementsByName('thursday_available_from')[0].value = user_availabilities[i].available_from;
+        //     }
+        //     if(user_availabilities[i].day == 'friday') {
+        //         $("#friday").prop("checked", true);
+        //         document.getElementsByName('friday_available_from')[0].value = user_availabilities[i].available_from;
+        //     }
+        //     if(user_availabilities[i].day == 'saturday') {
+        //         $("#saturday").prop("checked", true);
+        //         document.getElementsByName('saturday_available_from')[0].value = user_availabilities[i].available_from;
+        //     }
+        //     if(user_availabilities[i].day == 'sunday') {
+        //         $("#sunday").prop("checked", true);
+        //         document.getElementsByName('sunday_available_from')[0].value = user_availabilities[i].available_from;
+        //     }
+        // }
         // console.log("user_availabilities: ", user_availabilities);
     })
 </script>
@@ -949,61 +952,61 @@
 
     jQuery(document).ready(function($){
 
-        $("#main_form_button").click(function(even) {
+        $("#main_form_button").click(function(event) {
             // Availability
 
 
 
-            var availabilityFlag = false;
-            if($('#monday').prop("checked") == true){
-                availabilityFlag = true;
-                document.getElementsByName('monday')[0].value = 'monday';
-                // console.log(document.getElementsByName('monday_available_from')[0].value);
-            } else {
-                document.getElementsByName('monday')[0].value = '';
-            }
-            if($('#tuesday').prop("checked") == true){
-                availabilityFlag = true;
-                document.getElementsByName('tuesday')[0].value = 'tuesday'
-                // console.log(document.getElementsByName('tuesday_available_from')[0].value);
-            } else {
-                document.getElementsByName('tuesday')[0].value = '';
-            }
-            if($('#wednesday').prop("checked") == true){
-                availabilityFlag = true;
-                document.getElementsByName('wednesday')[0].value = 'wednesday';
-                // console.log(document.getElementsByName('wednesday_available_from')[0].value);
-            } else {
-                document.getElementsByName('wednesday')[0].value = '';
-            }
-            if($('#thursday').prop("checked") == true){
-                availabilityFlag = true;
-                document.getElementsByName('thursday')[0].value = 'thursday';
-                // console.log(document.getElementsByName('thursday_available_from')[0].value);
-            } else {
-                document.getElementsByName('thursday')[0].value = '';
-            }
-            if($('#friday').prop("checked") == true){
-                availabilityFlag = true;
-                document.getElementsByName('friday')[0].value = 'friday';
-                // console.log(document.getElementsByName('friday_available_from')[0].value);
-            } else {
-                document.getElementsByName('friday')[0].value = '';
-            }
-            if($('#saturday').prop("checked") == true){
-                availabilityFlag = true;
-                document.getElementsByName('saturday')[0].value = 'saturday';
-                // console.log(document.getElementsByName('saturday_available_from')[0].value);
-            } else {
-                document.getElementsByName('saturday')[0].value = '';
-            }
-            if($('#sunday').prop("checked") == true){
-                availabilityFlag = true;
-                document.getElementsByName('sunday')[0].value = 'sunday';
-                // console.log(document.getElementsByName('sunday_available_from')[0].value);
-            } else {
-                document.getElementsByName('sunday')[0].value = '';
-            }
+            // var availabilityFlag = false;
+            // if($('#monday').prop("checked") == true){
+            //     availabilityFlag = true;
+            //     document.getElementsByName('monday')[0].value = 'monday';
+            //     // console.log(document.getElementsByName('monday_available_from')[0].value);
+            // } else {
+            //     document.getElementsByName('monday')[0].value = '';
+            // }
+            // if($('#tuesday').prop("checked") == true){
+            //     availabilityFlag = true;
+            //     document.getElementsByName('tuesday')[0].value = 'tuesday'
+            //     // console.log(document.getElementsByName('tuesday_available_from')[0].value);
+            // } else {
+            //     document.getElementsByName('tuesday')[0].value = '';
+            // }
+            // if($('#wednesday').prop("checked") == true){
+            //     availabilityFlag = true;
+            //     document.getElementsByName('wednesday')[0].value = 'wednesday';
+            //     // console.log(document.getElementsByName('wednesday_available_from')[0].value);
+            // } else {
+            //     document.getElementsByName('wednesday')[0].value = '';
+            // }
+            // if($('#thursday').prop("checked") == true){
+            //     availabilityFlag = true;
+            //     document.getElementsByName('thursday')[0].value = 'thursday';
+            //     // console.log(document.getElementsByName('thursday_available_from')[0].value);
+            // } else {
+            //     document.getElementsByName('thursday')[0].value = '';
+            // }
+            // if($('#friday').prop("checked") == true){
+            //     availabilityFlag = true;
+            //     document.getElementsByName('friday')[0].value = 'friday';
+            //     // console.log(document.getElementsByName('friday_available_from')[0].value);
+            // } else {
+            //     document.getElementsByName('friday')[0].value = '';
+            // }
+            // if($('#saturday').prop("checked") == true){
+            //     availabilityFlag = true;
+            //     document.getElementsByName('saturday')[0].value = 'saturday';
+            //     // console.log(document.getElementsByName('saturday_available_from')[0].value);
+            // } else {
+            //     document.getElementsByName('saturday')[0].value = '';
+            // }
+            // if($('#sunday').prop("checked") == true){
+            //     availabilityFlag = true;
+            //     document.getElementsByName('sunday')[0].value = 'sunday';
+            //     // console.log(document.getElementsByName('sunday_available_from')[0].value);
+            // } else {
+            //     document.getElementsByName('sunday')[0].value = '';
+            // }
             
 
             if($("#visaType").val() == 'Other' || $("#visaType").val() == 'Please Select') {
@@ -1014,10 +1017,7 @@
                 $('#visaType').attr("name", "visa_type");
                 document.getElementsByName('visa_type')[0].value = $("#visaType").val();
             }
-                if(availabilityFlag == false) {
-                    alert("Please enter your availability!"); 
-                    return false;
-                } else {
+                
                     // Cousine Experience
                     var cousineExperienceChecked = [];
                     var falseChecker = false;
@@ -1067,7 +1067,7 @@
                         return false
                           }
                           else{
-                            $('#main_form').submit();
+                            $('#main_form_submit').click();
 
                           }
                         })
@@ -1077,13 +1077,11 @@
                         if(temp_counter >0){
                         return false
                     }
-                    $('#main_form').submit();
+                    $('#main_form_submit').click();
                     $('.notAllow').prop("disabled", false);
                     return true;
                     }
                     
-                }
-            return false;
         });
         
     
