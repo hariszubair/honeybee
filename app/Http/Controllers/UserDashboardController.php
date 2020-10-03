@@ -235,8 +235,12 @@ class UserDashboardController extends Controller
          
          $request->replace($request->except('experience'));
          $request->replace($request->except('qualifications'));
-         return $request->relocate_state;
+         if($request->relocate_state){
           $request->merge(['relocate_state' => implode(",",$request->relocate_state)]);
+         }
+         else{
+          $request->merge(['relocate_state' => null]);
+         }
 
          }
 
