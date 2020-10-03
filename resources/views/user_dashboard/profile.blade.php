@@ -271,8 +271,8 @@
                                 <div class="col-12 col-md-9">
                                 <select required id="availability" name='availability' class="form-control">
                                     <option value=""> Please Select Availability</option>
-                                    <option value="Full Time">Full Time</option>
-                                    <option value="Part Time">Part Time</option>
+                                    <option value="Full Time" <?php  echo isset($user_info[0]) &&  $user_info[0]->availability == 'Full Time' ? 'selected': '';?>>Full Time</option>
+                                    <option value="Part Time" <?php  echo isset($user_info[0]) &&  $user_info[0]->availability == 'Part Time' ? 'selected': '';?>>Part Time</option>
                                 </select> 
                                     
                             </div>
@@ -298,14 +298,14 @@
                                     <label for="Yes">Yes</label>
                                     <input type="radio" id="relocate_no" name="relocate" value="0" <?php  echo isset($user_info[0]) &&  $user_info[0]->relocate ? '': 'checked';?>>
                                     <label for="No">No</label>
-                                    <div style="width: 90%;display: inline-block;vertical-align: middle;">
+                                   
                                    <select class="js-example-basic-multiple js-example-responsive" id="relocate_state" name="relocate_state[]" multiple="multiple"  style="width: 90%">
                                         @foreach($states as $state)
                                           <option value="{{$state->name}}" >{{$state->name}}</option>
                                         @endforeach
 
 
-                                    </select></div> states
+                                    </select>
 
                                     <textarea name="relocate_state_array" style="display: none"  id='relocate_state_array' ><?php  echo isset($user_info[0]) ?  $user_info[0]->relocate_state: '';?></textarea>
                                 </div>
@@ -319,7 +319,7 @@
                                     <label for="Yes">Yes</label>
                                     <input type="radio" id="travel_no" name="travel" value="0" <?php  echo isset($user_info[0]) &&  $user_info[0]->travel ? '': 'checked';?>>
                                     <label for="No">No</label>
-                                    <input class="form-control" type="number" name="travel_distance" id='travel_distance' placeholder="Kindly mention the distance in Km." style="width: 90%;display: inline-block;" value="<?php  echo isset($user_info[0]) ?  $user_info[0]->travel_distance: '';?>"> Km
+                                    <input class="form-control" type="number" name="travel_distance" id='travel_distance' placeholder="Kindly mention the distance in Km."  value="<?php  echo isset($user_info[0]) ?  $user_info[0]->travel_distance: '';?>"> 
                                 </div>
                             </div>
 
@@ -870,8 +870,8 @@
 
 
 
- if(<?php echo $user_info[0]->relocate; ?>){
-    var values= JSON.parse($("textarea#relocate_state_array").val());
+ if($('input[name="relocate"]:checked').val()==1){
+  var values=$("textarea#relocate_state_array").val().split(",");;
     $("#relocate_state").val(values).change();
  }
  if($('input[name="relocate"]:checked').val()==1){

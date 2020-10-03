@@ -235,9 +235,10 @@ class UserDashboardController extends Controller
          
          $request->replace($request->except('experience'));
          $request->replace($request->except('qualifications'));
-
+          $request->merge(['relocate_state' => implode(",",$request->relocate_state)]);
+         
          }
-        
+
           if($request->get('continuous_contact') == 'on')
           {
                 $request->merge(['continuous_contact' => 1]);  
@@ -246,7 +247,6 @@ class UserDashboardController extends Controller
 
             $request->merge(['continuous_contact' => 0]);
           }
-        
           $request->merge(['user_id' => Auth::user()->id]);
 
           if(Auth::user()->hasRole('Client')){
