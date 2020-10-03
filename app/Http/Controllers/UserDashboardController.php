@@ -222,7 +222,6 @@ class UserDashboardController extends Controller
      */
     public function profile_update(Request $request)
     {
-      return $request;
          $user_id = Auth::user()->id;
          $experiences = $request->get('experience');
          if(Auth::user()->hasRole('Candidate')){
