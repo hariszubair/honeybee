@@ -163,7 +163,7 @@
                                     <label for="text-input" class=" form-control-label">Email Address :</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input disabled type="text" id="text-input" name="email" placeholder="Email" class="form-control notAllow" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->email: Auth::user()->email;?>">
+                                    <input readonly type="text" id="text-input" name="email" placeholder="Email" class="form-control notAllow" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->email: Auth::user()->email;?>">
                                    
                                 </div>
                             </div>
