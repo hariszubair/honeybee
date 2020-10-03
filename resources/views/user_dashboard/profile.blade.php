@@ -319,7 +319,7 @@
                                     <label for="Yes">Yes</label>
                                     <input type="radio" id="travel_no" name="travel" value="0" <?php  echo isset($user_info[0]) &&  $user_info[0]->travel ? '': 'checked';?>>
                                     <label for="No">No</label>
-                                    <input class="form-control" type="number" name="travel_distance" id='travel_distance' placeholder="Kindly mention the distance in Km."  value="<?php  echo isset($user_info[0]) ?  $user_info[0]->travel_distance: '';?>"> 
+                                    <input style="display: none;" class="form-control" type="number" name="travel_distance" id='travel_distance' placeholder="Kindly mention the distance in Km."  value="<?php  echo isset($user_info[0]) ?  $user_info[0]->travel_distance: '';?>"> 
                                 </div>
                             </div>
 
