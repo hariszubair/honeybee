@@ -864,7 +864,7 @@
     jQuery(document).ready(function($){
     $('.js-example-basic-multiple').select2();
  $('#relocate_state').select2({
-          placeholder: "Select a state",
+          placeholder: "Select state",
     allowClear: true
   })
 
