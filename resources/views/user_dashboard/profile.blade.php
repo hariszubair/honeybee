@@ -144,7 +144,7 @@
                                     <label for="text-input" class=" form-control-label">Name :</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input disabled type="text" id="text-input" name="name" placeholder="Name" class="form-control notAllow" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->name: Auth::user()->name;?>">
+                                    <input readonly type="text" id="text-input" name="name" placeholder="Name" class="form-control notAllow" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->name: Auth::user()->name;?>">
                                 </div>
                             </div>
 
