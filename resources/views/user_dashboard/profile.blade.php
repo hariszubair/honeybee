@@ -1052,7 +1052,6 @@
 
 
                     }
-                    console.log($('#yr_experience').val() +'---'+ parseInt(expected_exp/365))
                     if($('#yr_experience').val() != parseInt(expected_exp/365)){
                         swal({
                           title: "Experience Mismatch!!!",
