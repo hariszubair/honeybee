@@ -95,7 +95,7 @@
                                         <select required class="form-control" name="role_apply">
                                             <option value=""> Please Select</option>
                                             <option value="Chef" <?php  echo isset($user_info[0]) &&  $user_info[0]->role_apply == 'Chef' ? 'selected': '';?>>Chef</option>
-                                            <option value="Front of House" <?php  echo isset($user_info[0]) &&  $user_info[0]->role_apply == 'Front_of_House' ? 'selected': '';?>>Front of House</option>
+                                            <option value="Front of House" <?php  echo isset($user_info[0]) &&  $user_info[0]->role_apply == 'Front of House' ? 'selected': '';?>>Front of House</option>
                                             <option value="bartender" <?php  echo isset($user_info[0]) &&  $user_info[0]->role_apply == 'bartender' ? 'selected': '';?>>Bartender</option>
                                             <option value="waiter" <?php  echo isset($user_info[0]) &&  $user_info[0]->role_apply == 'waiter' ? 'selected': '';?>>Waiter</option>
                                         </select>   
