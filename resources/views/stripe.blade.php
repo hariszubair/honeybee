@@ -108,12 +108,10 @@
                             <div class='col-xs-12 form-group  required'>
                                 <label class='control-label'>Membership</label> 
                                 <select name='membership' required class="form-control">
-                                    <option value="">Select Membership</option>
-                                    @if($user->membership == 0)
-                                    <option value="1">Basic (10 Candidates for $200)</option>
-                                    <option value="2">Premium (20 Candidates for $300)</option>
-                                    @elseif($user->membership == 1)
-                                    <option value="3">Upgrade (20 Candidates for addition $100) </option>
+                                    @if(Auth::user()->unconfirmed_selected_candidates->count() <= 5)
+                                    <option value="1">Basic Membership ($200)</option>
+                                    @else (Auth::user()->unconfirmed_selected_candidates->count() <= 10)
+                                    <option value="2">Premium Membership ($300)</option>
                                     @endif
                                 </select>
                             </div>
@@ -127,7 +125,7 @@
                             
                         <div class="row">
                             <div class="col-xs-9">
-                             <h4 style="padding-top: 0">You have selected {{Auth::user()->selected_candidates->count()}} candidates</h4>
+                             <h4 style="padding-top: 0">You have selected {{Auth::user()->unconfirmed_selected_candidates->count()}} candidates</h4>
                          </div>
                             <div class="col-xs-3">
                                 <button class="btn btn-primary btn-lg btn-block" type="submit" style="background-color:#238db7">Pay Now</button>

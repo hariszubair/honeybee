@@ -26,9 +26,9 @@ Route::get('/dashboard', 'UserDashboardController@index')->name('User Dahboard')
 Route::get('/user-dashboard', 'UserDashboardController@index')->name('User Dahboard');
 Route::get('/profile', 'UserDashboardController@view_profile')->name('Profile');
 Route::get('/packages', 'UserDashboardController@packages')->name('packages');//package
-Route::post('/select','UserDashboardController@select')->middleware('CanNotProceed');
-Route::get('/selected_candidates','UserDashboardController@selected_candidates')->name('selected_candidates')->middleware('CanProceed');
-Route::post('/get_selected_candiates','UserDashboardController@get_selected_candiates')->middleware('CanProceed');
+Route::post('/select','UserDashboardController@select');
+Route::get('/selected_candidates','UserDashboardController@selected_candidates')->name('selected_candidates');
+Route::post('/get_selected_candiates','UserDashboardController@get_selected_candiates');
 Route::post('/proceed','UserDashboardController@proceed');
 Route::post('/request_interview','UserDashboardController@request_interview')->name('request_interview');
 
@@ -36,13 +36,13 @@ Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::get('/create_profile', 'UserDashboardController@create_profile')->name('create_profile');//for client only
 Route::get('/change_password', 'UserDashboardController@change_password')->name('change_password');
 Route::post('/update_password', 'UserDashboardController@update_password')->name('update_password');
-Route::post('/candidate_data', 'UserDashboardController@candidate_data')->name('candidate_data')->middleware('CanNotProceed');
-Route::post('/candidate_complete_data', 'UserDashboardController@candidate_complete_data')->name('candidate_complete_data')->middleware('CanProceed');
+Route::post('/candidate_data', 'UserDashboardController@candidate_data')->name('candidate_data');
+Route::post('/candidate_complete_data', 'UserDashboardController@candidate_complete_data')->name('candidate_complete_data');
 Route::post('/reset_selection', 'UserDashboardController@reset_selection')->name('reset_selection');
 Route::get('/user-profile', 'UserDashboardController@profile')->name('User Profile');//edit and creat of candidate previously created.
 Route::get('/user-message', 'UserDashboardController@message')->name('User Message');
-Route::get('/candidate_search_view', 'UserDashboardController@candidate_search_view')->name('candidate_search_view')->middleware('CanNotProceed');
-Route::post('/candidate_search','UserDashboardController@candidate_search')->name('candidate_search')->middleware('CanNotProceed');
+Route::get('/candidate_search_view', 'UserDashboardController@candidate_search_view')->name('candidate_search_view');
+Route::post('/candidate_search','UserDashboardController@candidate_search')->name('candidate_search');
 
 Route::post('/user-profile-update','UserDashboardController@profile_update');
 
@@ -64,11 +64,12 @@ Route::post('/admin-register', 'AdminAuth\RegisterController@register');
 
 
 
-Route::get('/admin-dashboard', 'AdminDashboardController@index');
-Route::get('/admin-candidates', 'AdminDashboardController@candidates');
-Route::get('/admin-candiate-edit/{id}', 'AdminDashboardController@candiate_edit');
-Route::post('/admin-candiate-update','AdminDashboardController@candiate_update');
-
+// Route::get('/admin-dashboard', 'AdminDashboardController@index');
+Route::get('/all_candidates', 'AdminDashboardController@candidates')->middleware(['role:Admin|Super Admin']);
+Route::get('/admin-candiate-edit/{id}', 'AdminDashboardController@candiate_edit')->middleware(['role:Super Admin']);
+Route::get('/admin-candiate-view/{id}', 'AdminDashboardController@candiate_view')->middleware(['role:Super Admin|Admin']);
+Route::post('/admin-candiate-update','AdminDashboardController@candiate_update')->middleware(['role:Super Admin']);
+Route::post('/view_candidates', 'AdminDashboardController@view_candidates');
 
 
 Route::get('/clear-cache', function() {

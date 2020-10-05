@@ -42,13 +42,10 @@
                            </a>
     @endif
                     @if($current_user->hasRole(['Client']) && $current_user->userinfo)
-                    @if(!$current_user->userinfo->proceed)
                     <a class="list-group-item list-group-item-action" id="list-candidate_search_view-list" data-toggle="list" role="tab" aria-controls="candidate_search_view"  href="candidate_search_view" style="color: #238DB7 !important;width: auto !important;padding-right: 0;padding-left: 0;margin-right: 20px">
                                 Candidate Search</a>
-                    @else
                             <a class="list-group-item list-group-item-action" id="list-selected_candidates-list" data-toggle="list" role="tab" aria-controls="selected_candidates"  href="selected_candidates" style="color: #238DB7 !important;width: auto !important;padding-right: 0;padding-left: 0;margin-right: 20px">
                                Short Listed</a>
-                               @endif
                     @endif
       
     </div>

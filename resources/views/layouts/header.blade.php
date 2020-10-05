@@ -80,17 +80,17 @@
                         </li>
                         @endif
                     @if(Auth::user()->hasRole(['Client']) && Auth::user()->userinfo)
-                    @if(Auth::user()->proceed == 0)
+                   
                          <li >
                             <a style="color: #238DB7 !important" href="{{ URL('/candidate_search_view') }}">
                                 <i style="color: #238DB7 !important" class="fas fa-users"></i>Candidate Search</a>
                         </li>
-                        @else
+                      
                         <li >
                             <a style="color: #238DB7 !important" href="{{ URL('/selected_candidates') }}">
                                 <i style="color: #238DB7 !important" class="fas fa-user"></i>Short Listed</a>
                         </li>
-                        @endif
+                      
                         @endif
                         <li >
                             <a style="color: #238DB7 !important" href="{{ URL('/change_password') }}">

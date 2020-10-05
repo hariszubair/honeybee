@@ -61,6 +61,10 @@ class UserDashboardController extends Controller
       $restaurants=Restaurant::all();
         $states=State::all();
        $user=User::with('userinfo')->find(Auth::id());
+        if( $user->hasAnyRole('Admin','Super Admin')){
+        return view('admin_dashboard/index');
+
+        }
       if(!$user->userinfo){
         if( $user->hasRole('Candidate')){
           return view('user_dashboard/profile',  [
@@ -274,15 +278,16 @@ class UserDashboardController extends Controller
     }
      public function candidate_search_view()
     {
-       $user=User::with('userinfo','selected_candidates')->find(Auth::id());
+       $user=User::with('userinfo','unconfirmed_selected_candidates')->find(Auth::id());
        $candidates=UserInfo::with('user', 'availabilities')->get(['id','user_id','name','visa_type','role_apply','previous_cousine_experience','state']);
-      return view('user_dashboard/candidate_search',compact('candidates','user'));
+       $states=State::all('name');
+      return view('user_dashboard/candidate_search',compact('candidates','user','states'));
     }
     public function candidate_search(Request $request)
     {
       
 
-      $candidate=UserInfo::with('user', 'availabilities', 'selected_candidates', 'recent_experience')->where('role_id','4');
+      $candidate=UserInfo::with('user', 'availabilities', 'unconfirmed_selected_candidates', 'recent_experience')->doesntHave('confirmed_selected_candidates')->where('role_id','4');
       if($request->role_apply){
         $candidate=$candidate->where('role_apply',$request->role_apply);
       }
@@ -290,7 +295,7 @@ class UserDashboardController extends Controller
         $candidate=$candidate->where('previous_cousine_experience','like','%'.$request->previous_cousine_experience.'%');
       }
       if($request->state){
-        $candidate=$candidate->where('state',$request->state);
+        $candidate=$candidate->where('state',$request->state)->orWhere('relocate_state','like','%'.$request->state.'%');
       }
        if($request->visa_type){
         $candidate=$candidate->whereIn('visa_type',$request->visa_type);
@@ -311,7 +316,7 @@ class UserDashboardController extends Controller
       return Datatables::of($candidate)->addColumn('action',function($row) {
               $user=Auth::user();
               $counter=0;
-              foreach ($row->selected_candidates as $key => $selected) {
+              foreach ($row->unconfirmed_selected_candidates as $key => $selected) {
                 if($selected->client_id == $user->id){
                   $counter ++; 
                 }
@@ -330,6 +335,14 @@ class UserDashboardController extends Controller
               return $availability;  
            
             })
+            ->addColumn('state_locate',function($row){
+              $text='';
+              $text.=$row->state.'<br>';
+              if($row->relocate == '1'){
+              $text.='Willing to relocate to '. $row->relocate_state;
+              }
+              return $text;
+            })
            
             ->addColumn('updated',function($row) {
               return Carbon::parse($row->updated_at)->format('d-M-Y');
@@ -343,8 +356,8 @@ class UserDashboardController extends Controller
             ->addColumn('recent_experience_column',function($row) {
               $diff = abs(strtotime($row->recent_experience->job_from) - strtotime($row->recent_experience->job_to));
 
-              $years = floor($diff / (365*60*60*24));
-              $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+              // $years = floor($diff / (365*60*60*24));
+              $months = floor(($diff) / (30*60*60*24));
               // $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
               // if($months >=7){
               //   $years++;
@@ -422,9 +435,9 @@ class UserDashboardController extends Controller
     {
         // $input=$request->all();
         $user=Auth::user();
-          $candidate=User::select(['name','email'])->with('selected_candidates')->find($request->id);
+          $candidate=User::select(['name','email'])->with('unconfirmed_selected_candidates')->find($request->id);
         if($request->type == 'checked'){
-          if($user->selected_candidates->count() == 20){
+          if($user->unconfirmed_selected_candidates->count() == 10){
             return json_encode('Out of range');
           }
           $input=[];
@@ -433,12 +446,12 @@ class UserDashboardController extends Controller
           $input['interview']=0;
           SelectedCandidates::create($input);
           Log::create(['user_id'=>$user->id,'message'=>'Selected the candidate: '.$candidate->name.' ('.$candidate->email.')']);
-          return SelectedCandidates::where('client_id',$user->id)->count();
+          return SelectedCandidates::where('client_id',$user->id)->where('confirmed','=',null)->count();
         }
         else if($request->type == 'unchecked'){
           SelectedCandidates::where('client_id',$user->id)->where('candidate_id',$request->id)->delete();
           Log::create(['user_id'=>$user->id,'message'=>'Un-Selected the candidate:'.$candidate->name.' ('.$candidate->email.')']);
-          return SelectedCandidates::where('client_id',$user->id)->count();
+          return SelectedCandidates::where('client_id',$user->id)->where('confirmed','=',null)->count();
         }
 
 
@@ -452,12 +465,16 @@ class UserDashboardController extends Controller
           elseif ($membership == 2 && Auth::user()->selected_candidates->count() >20){
             return redirect()->back();
           }
-         UserInfo::where('user_id',Auth::id())->first()->update(['proceed'=>1]);
+          SelectedCandidates::where('client_id',Auth::id())->where('confirmed','=', null)->update(['confirmed'=>date('Y-m-d')]);
+         UserInfo::where('user_id',Auth::id())->update(['membership'=>'0']);
          return redirect()->route('selected_candidates'); 
     } 
     public function selected_candidates()
     {
         // $input=$request->all();
+        SelectedCandidates::where('client_id','=',Auth::id())->where('confirmed','!=',null)->whereDate('confirmed','<',Carbon::now()->subDays(7))->delete();
+
+
         return view('user_dashboard.short_listed');
     }
     public function get_selected_candiates(Request $request)
@@ -467,9 +484,12 @@ class UserDashboardController extends Controller
         //     $join->on('selected_candidates.candidate_id', '=', 'user_infos.user_id')
         //          ->where('selected_candidates.client_id', '=', $user->id);
         // });
-         $candidate=UserInfo:: whereHas('selected_candidates', function ($query) use($user) {
-          $query->where('client_id', 'like', $user->id);
-              });
+         $candidate=UserInfo:: whereHas('confirmed_selected_candidates', function ($query) use($user) {
+          $query->where('client_id', '=', $user->id);
+              })->join('selected_candidates', function ($join) use($user) {
+            $join->on('selected_candidates.candidate_id', '=', 'user_infos.user_id')
+                 ->where('client_id', '=', $user->id);
+        })->select('user_infos.*', 'selected_candidates.confirmed');
          return Datatables::of($candidate)->addColumn('availability',function($row){
               $availability='';
                 foreach ($row->availabilities as $key => $value) {
@@ -478,31 +498,38 @@ class UserDashboardController extends Controller
               return $availability;  
            
             })
-           
+          
             ->addColumn('updated',function($row) {
               return Carbon::parse($row->updated_at)->format('d-M-Y');
             })->addColumn('experience_yr',function($row) {
-              if($row->experience <=1)
-                return $row->experience.' year';
+              if($row->yr_experience <=1)
+                return $row->yr_experience.' year';
               else{
-                return $row->experience.' years';
+                return $row->yr_experience.' years';
               }
             })
             ->addColumn('recent_experience_column',function($row) {
               $diff = abs(strtotime($row->recent_experience->job_from) - strtotime($row->recent_experience->job_to));
 
-              $years = floor($diff / (365*60*60*24));
-              $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+              // $years = floor($diff / (365*60*60*24));
+              $months = floor(($diff) / (30*60*60*24));
               // $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
-              if($months >=7){
-                $years++;
-              }
-              ($years <= 1 ? $years.= ' year ' : $years.= ' years ');
-              // ($months <= 1 ? $months.= ' month' : $months.= ' months');
+              // if($months >=7){
+              //   $years++;
+              // }
+              // ($years <= 1 ? $years.= ' year ' : $years.= ' years ');
+              ($months <= 1 ? $months.= ' month' : $months.= ' months');
               // ($days <= 1 ? $days.= ' day' : $days.= ' days');
               $data='';
+              $responsibility='';
+              if (strlen($row->recent_experience->ex_responsibilities) > 50){
+                $responsibility='<br>'.substr($row->recent_experience->ex_responsibilities, 0, 50).' .... '; 
+              }
+              else{
+                $responsibility='<br>'.$row->recent_experience->ex_responsibilities;
+              }
               $data.='<a type="button" class="resume" id="'.$row->user_id.'"" style="color:#272f66" onclick="resume($(this))"><b>'.$row->recent_experience->previous_company.'</b></a>';
-              $data.='<br>'.$row->recent_experience->job_title.' ('.$years.')';
+            $data.='<br>'.$row->recent_experience->job_title.' ('.$months.')'.$responsibility;
 
               return $data;
             })->escapeColumns([])->make(true);
@@ -511,7 +538,7 @@ class UserDashboardController extends Controller
      public function candidate_data(Request $request)
     {
       return User::with('availabilities','experiences','qualifications')->with(array('userinfo'=>function($query){
-        $query->select('user_id','city','state','have_car','travel','relocate','travel_distance','relocate_state','personal_summary','work_experience','availability');
+        $query->select('user_id','city','state','have_car','travel','relocate','travel_distance','relocate_state','personal_summary','work_experience','availability','date_birth');
     }))->find($request->id);
 
     }

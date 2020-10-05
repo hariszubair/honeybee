@@ -272,7 +272,7 @@ border:0;
 }
 
 }
-filter_div
+
 .responsive_filter{
   flex-wrap: wrap;
   width: 500px;
@@ -302,6 +302,10 @@ table.dataTable thead th, table.dataTable thead td {
 .active{
 color:black !important;
 }
+.custom_button{
+  border-radius: 22px;padding-left: 10px;padding-right: 10px;color:#fff;background: #238db7;
+}
+.custom_button:hover {background-color: #4b4f50}
 </style>
 @if(Session::has('success'))
 <input type="" name="success" id='success' value="{{ Session::get('message') }}">
@@ -315,21 +319,21 @@ color:black !important;
 <h4 style="color: #238db7">Your Selected Subscription</h4>
 </div>
 <div class="card-body" style="padding: 10px">
-<p style="text-align:justify;" ><span id="basic_membership" {{Auth::user()->selected_candidates->count() <= 10 ? 'style=font-weight:bold' : ''}}>Basic (You have chosen between 0-10 candidates) </span><br><span id="premium_membership" {{Auth::user()->selected_candidates->count() >= 11 ? 'style=font-weight:bold' : ''}}>Premium (You have chosen between 11-20 candidates)</span></p>
+<p style="text-align:justify;" ><span id="basic_membership" {{Auth::user()->unconfirmed_selected_candidates->count() <= 5 ? 'style=font-weight:bold' : ''}}>Basic (You have chosen between 0-5 candidates) </span><br><span id="premium_membership" {{Auth::user()->unconfirmed_selected_candidates->count() >= 5 ? 'style=font-weight:bold' : ''}}>Premium (You have chosen between 6-10 candidates)</span></p>
  <div class="row" style="display: flex;justify-content:center;color: white;">
     <!-- <button id='filter_candidates' class="btn btn-success " style="margin: 5px">Search</button> -->
 @if(Auth::user()->userinfo->membership == 0)
-  <form action="pay" method="Post"> 
+  <form action="pay" method="Post" id='pay_form'> 
                         @csrf
-<button type="submit" class="btn btn-success" style="margin: 5px; position: fixed; bottom: 5px; right: 0px;z-index: 3000;">Pay Now !</button>
+<button type="button" class="btn btn-success" style="margin: 5px; position: fixed; bottom: 5px; right: 0px;z-index: 3000;" id='pay_now'>Pay Now !</button>
 </form>
 @endif
-@if(Auth::user()->userinfo->membership == 1)
+<!-- @if(Auth::user()->userinfo->membership == 1)
 <form action="pay" method="Post"> 
                         @csrf
 <button type="submit" class="btn btn-success" style="margin: 5px; position: fixed; bottom: 5px; right: 0px;z-index: 3000;">Upgrade Membership!</button>
 </form>
-@endif
+@endif -->
 
 <!-- <a href='{{url("selected_candidates")}}' class="btn btn-success" style="margin: 5px; position: fixed; bottom: 0px; right: 0px;z-index: 3000;">Proceed selected candidates</a> -->
 </div>
@@ -338,10 +342,10 @@ color:black !important;
 
     <div class="col" style="padding-left: 0;float: left;width: 45%;font-size: 12px">
       <p style="color: #272f66" id='selected_candidates'>
-        @if(Auth::user()->selected_candidates->count() <= 1)
-        <b>{{Auth::user()->selected_candidates->count()}}</b> candidate selected.
+        @if(Auth::user()->unconfirmed_selected_candidates->count() <= 1)
+        <b>{{Auth::user()->unconfirmed_selected_candidates->count()}}</b> candidate selected.
         @else
-        <b>{{Auth::user()->selected_candidates->count()}}</b> candidates selected.
+        <b>{{Auth::user()->unconfirmed_selected_candidates->count()}}</b> candidates selected.
         @endif
        </p>
 
@@ -367,7 +371,7 @@ color:black !important;
   <div style=" display: flex; margin-bottom: 15px;padding-top: 5px; flex-wrap: wrap;
   width: 1200px; " id='filter_div'>
   	<select style="display: block;width: 20%" id='role_apply' name='role_apply' class="col-3 js-example-basic-single" >
-  		<option value="">Any</option>
+      <option value="1">Please Select a Role</option>
   		<option value="Chef">Chef</option>
   		<option value="Front of House">Front of House</option>
   		<option value="Bartender">Bartender</option>
@@ -388,12 +392,11 @@ color:black !important;
   	</select>
   	<select style="display: block" id='state' name='state' class="js-example-basic-single" >
   		<option  value="">Any</option>
-  		<option {{$user->userinfo->state=='NSW' ? 'selected' : '' }} value="NSW">NSW</option>
-  		<option {{$user->userinfo->state=='QLD' ? 'selected' : '' }} value="QLD">QLD</option>
-  		<option {{$user->userinfo->state=='SA' ? 'selected' : '' }} value="SA">SA</option>
-  		<option {{$user->userinfo->state=='VIC' ? 'selected' : '' }} value="VIC">VIC</option>
-  		<option {{$user->userinfo->state=='TAS' ? 'selected' : '' }} value="TAS">TAS</option>
-  		<option {{$user->userinfo->state=='WA' ? 'selected' : '' }} value="WA">WA</option>
+      @foreach($states as $state)
+      <option {{$user->userinfo->state==$state->name ? 'selected' : '' }} value="{{$state->name}}">{{$state->name}}</option>
+      @endforeach
+
+
   	</select>
     <div></div>
   	<select style="display: block;border-radius: 22px !important" class="select2-multiple2" name="available_from[]" multiple="multiple" id='available_from' >
@@ -417,14 +420,15 @@ color:black !important;
   	
   	</div>
     <div style="display: flex;width: 100%">
-    <button style="border:1px solid #aaaaaa;border-radius: 22px;color: #272f66;padding-right: 5px;padding-left: 5px;margin-bottom: 15px;float: left;white-space: nowrap;text-align: center" id='reset_selection'><b>Reset Selected Candidates</b></button>
-    <button style="border:1px solid #aaaaaa;border-radius: 22px;color: #272f66;padding-right: 5px;padding-left: 5px;margin-bottom: 15px;float: left;white-space: nowrap;text-align: center;margin-left: 5px;" id='reset_filter'><b>Reset Filters</b></button>
-    @if($user->userinfo->membership != 0)
+    <button class="custom_button" style="margin-bottom: 10px;margin-right: 5px;white-space: nowrap;" id='reset_selection'>Reset Selected Candidates</button>
+    <button class="custom_button" style="margin-bottom: 10px;margin-right: 5px;white-space: nowrap;" id='reset_filter'>Reset Filters</button>
+    <input type="text" id="count" name="count" style="display: none" value='{{$user->unconfirmed_selected_candidates->count()}}'>  
+    @if($user->userinfo->membership != 0 )
     <form action="./proceed" method="Post" id='selected_candidates_form'> 
                         @csrf
-<input type="text" id="count" name="count" style="display: none" value='{{$user->selected_candidates->count()}}'>
 
-<button type="button" style="border:1px solid #aaaaaa;border-radius: 22px;color: green;padding-right: 5px;padding-left: 5px;margin-bottom: 15px;float: left;margin-left: 5px;white-space: nowrap;text-align: center" id='proceed_button'><b>Proceed Selected Candidates</b></button>
+
+<button type="button" sclass="custom_button" style="margin-bottom: 10px;margin-right: 5px;white-space: nowrap;" id='proceed_button'>Proceed Selected Candidates</button>
 </form>
 @endif
 
@@ -454,6 +458,7 @@ color:black !important;
                           <th >Select</th>
                           <th >Most recent work experience </th>
                           <th >Name</th>
+                          <th >State</th>
                           <th >Total Experience</th>
                           <th >All cuisine experience</th>
                           <th >Suburb</th>
@@ -476,7 +481,7 @@ color:black !important;
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="margin-right:30px">&times;</span></button>
           <h1 class="modal-title" id="myModalLabel2" style="color: #238db7;text-transform: capitalize;"></h1><i>
           You can view detailed personal information (email and phone number) once you make a payment. </i><br>
-          <button style="border:1px solid black;border-radius: 22px;padding-left: 10px;padding-right: 10px;color:#238db7;margin-top: 5px" id="select_button"><b>Select Candidate</b></button>
+          <button class="custom_button" style="margin-top: 5px;" id="select_button">Select Candidate</button>
         </div>
 
         <div class="modal-body" style="color: #272f66">
@@ -484,34 +489,33 @@ color:black !important;
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" style="min-width: 550px;">
     <li class="nav-item">
-      <a class="nav-link active" data-toggle="tab" href="#home" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>All Experience</p></a>
+      <a class="nav-link active" data-toggle="tab" href="#home" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>Personal Detail</p></a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#menu1" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>Qualifications</p></a>
+      <a class="nav-link" data-toggle="tab" href="#menu1" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>All Experience</p></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#menu2" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>Qualifications</p></a>
     </li>
     <!-- <li class="nav-item">
       <a class="nav-link" data-toggle="tab" href="#menu2" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>Availability</p></a>
     </li> -->
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#menu3" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>Personal Detail</p></a>
-    </li>
+    
   </ul>
 
   <!-- Tab panes -->
   <div class="tab-content" style="min-width: 550px;">
     <div id="home" class="container tab-pane active"><br>
-      <div id='all_experiences' style="color: #238db7"> </div>
+      <div id='personal_detail' style="color: #238db7;text-align: justify;"> </div>
     </div>
     <div id="menu1" class="container tab-pane fade"><br>
-      <div id='all_qualifications' style="color: #238db7"> </div>
-     
+      <div id='all_experiences' style="color: #238db7"> </div>     
     </div>
    <!--  <div id="menu2" class="container tab-pane fade"><br>
       <div id='all_availabilities' style="color: #238db7;text-transform:capitalize;"> </div>
     </div> -->
-    <div id="menu3" class="container tab-pane fade"><br>
-      <div id='personal_detail' style="color: #238db7"> </div>
-      
+    <div id="menu2" class="container tab-pane fade"><br>
+      <div id='all_qualifications' style="color: #238db7"> </div>
     </div>
   </div>
 </div>
@@ -537,7 +541,7 @@ color:black !important;
 	$(document).ready(function() {
     console.log('<?php echo Session::has('success'); ?>')
     if('<?php echo Session::has('success'); ?>'){
-      swal("Payment Successful", "Thanks for the payment. Click on the selected Candidates to view Short listed candidates", "success");
+      swal("Payment Successful", "Thanks for the payment.   Click on Short Listed Menu tab to view Short listed candidates. Your selected candidates are available for only 7 days. After 7 days you cant view their personal details", "success");
     }
     // table= $('#candidate_search').DataTable();
   
@@ -683,7 +687,7 @@ candidate_search()
         candidate_search();
 } );
   
-	function candidate_search () {
+	function candidate_search() {
     var role_apply = $('#role_apply').val();
     var previous_cousine_experience = $('#previous_cousine_experience').val();
     var state = $('#state').val();
@@ -726,15 +730,17 @@ candidate_search()
           
       { "data": 'recent_experience_column','name':'recent_experience.previous_company', "searchable": false,"orderable":false},
        { "data": 'name','name':'name'},
+       { "data": 'state_locate','name':'state'},
        { "data": 'experience','name':'yr_experience', "searchable": true},
        { "data": 'cuisine','name':'previous_cousine_experience', "searchable": true},
       	{ "data": 'suburb','name':'suburb'},
       	{ "data": 'updated','name':'updated_at', "searchable": true},
         ],
         "columnDefs": [
-    { "width": "35%", "targets": 1 },
+    { "width": "5%", "targets": 0 },
+    { "width": "30%", "targets": 1 },
     { "width": "15%", "targets": 2 },
-    { "width": "1%", "targets": 3 },
+    { "width": "15%", "targets": 3 },
     { "width": "15%", "targets": 4 },
     { "width": "10%", "targets": 5 },
     { "width": "10%", "targets": 6 },
@@ -818,7 +824,7 @@ function candidate_selected( item ){
               }
 
                 $('#selected_candidates').html('<b>'+data+'</b>' + text)
-                if (data <= 10){
+                if (data <= 5){
                   $('#basic_membership').css("font-weight", "bold");
                   $('#premium_membership').css("font-weight", "normal");
                   $('#count').val(data);
@@ -871,13 +877,18 @@ function resume(clicked){
                   $.each(data.experiences, function( index, experience ) {
                   $('#all_experiences').html(
                     $('#all_experiences').html()+
-                    experience.previous_company+'<br>'+experience.job_from+' to '+experience.job_to+'<br>'+experience.job_title+'<br>'+experience.no_of_employees+' Employees'
+                    experience.previous_company+' ('+experience.no_of_employees+' Employees'+')<br>'+experience.job_from+' to '+experience.job_to+'<br>'+experience.job_title
                       );
                   if(experience.ex_responsibilities != null){
+                    var responsibilities=experience.ex_responsibilities.split(/\n/g);
+                    var text_responsibilities=''
+                    $.each( responsibilities, function( key, value ) {
+                     text_responsibilities+='<li>'+value+'</li>';
+                  });
+
+
                        $('#all_experiences').html(
-                    $('#all_experiences').html()+'<br>'+
-                    experience.ex_responsibilities.replace(/\n/g, "<br />")+
-                    '<hr>')
+                    $('#all_experiences').html()+'<br>'+'<ul style="padding-left:20px">'+text_responsibilities+'</ul>'+'<hr>')
                   }
                   else{
                     $('#all_experiences').html(
@@ -913,18 +924,26 @@ function resume(clicked){
                 var to='';
                 if(data.userinfo.travel == 1){
                    travel='Yes';
-                   to= '(upto '+data.userinfo.travel_distance+ ' Km)';
+                   to= ' (upto '+data.userinfo.travel_distance+ ' Km)';
                 }
                 relocate='No';
                 var relocate_to='';
                 if(data.userinfo.relocate == 1){
                    relocate='Yes';
-                   relocate_to='(to '+JSON.parse(data.userinfo.relocate_state)+')'
+                   relocate_to=' (to '+data.userinfo.relocate_state+')'
                 }
+                var dob=new Date(data.userinfo.date_birth);
+                 var ageDifMs = Date.now() - dob.getTime();
+              var ageDate = new Date(ageDifMs); // miliseconds from epoch
+               var age= Math.abs(ageDate.getUTCFullYear() - 1970);
                   $('#personal_detail').html(
+                      '<b>Email: </b>'+'<i class="fas fa-lock"></i><br>'+
+                      '<b>Phone #: </b>'+'<i class="fas fa-lock"></i><br>'+
+                      age+ ' Years old <br>'+
                       '<b>Personal Summary: </b>'+data.userinfo.personal_summary+'<br>'+
                       '<b>Work Experience Summary: </b>'+data.userinfo.work_experience+'<br>'+
                       data.userinfo.availability+ ' available.<br>'+
+                      '<b>Full Street address: </b>'+'<i class="fas fa-lock"></i><br>'+
                      '<b>City: </b>'+data.userinfo.city+
                      '<br><b>State: </b>'+data.userinfo.state+
                      '<br><b>Have a car: </b>'+have_car+
@@ -946,7 +965,7 @@ $(window).scroll(function(e) {
   if ( $(window).scrollTop() > 147) {
     $('#plan').addClass("fixed_top");
     if($( window ).width() <600){
-    $('#filter_div').css('padding-top','215px')
+    $('#filter_div').css('padding-top','235px')
     }
     else{
     $('#filter_div').css('padding-top','170px')
@@ -1030,8 +1049,73 @@ $( "#proceed_button" ).click(function( event ) {
     })
 
 });
+$( "#pay_now" ).click(function( event ) {
+  event.preventDefault();
+ var  membership=<?php echo Auth::user()->userinfo->membership; ?>;
+ var message=''
+  if(!$('#count').val())
+  {
+     swal("No Candidate Selected!!!", "Kindly select candidates to proceed.", "info"); 
+                return false;
+  }
+    else if(parseInt($('#count').val()) < 5){
+      $diff=5-$('#count').val();
+      message="Do you want to select "+ $diff+ " more candidates.";
+    }
+   else if(parseInt($('#count').val()) > 5 &&  parseInt($('#count').val()) < 10 ){
+     $diff=10-$('#count').val();
+      message="Do you want to select "+ $diff+ " more candidates.";
+    }
+    else if(parseInt($('#count').val()) == 5 || parseInt($('#count').val()) == 10 ){
+          swal({
+      title: "Are You Sure?",
+      text: 'You have selected '+ $('#count').val()+ ' candidates. Do you want to proceed with them?',
+      icon: "info",
+      showConfirmButton: true,
+      confirmButtonColor: '#8CD4F5',
+      buttons: [
+        'No!',
+        'Yes Proceed!'
+      ],
+      dangerMode: false,
+    }).then(function(isConfirm) {
+      if (isConfirm) {
+        $('#pay_form').submit()
+
+
+      }
+      else{
+        event.preventDefault();
+      } 
+    })
+    return false;
+      }
+
+
+ swal({
+      title: "Limit Available!!!",
+      text: message,
+      icon: "info",
+      showConfirmButton: true,
+      confirmButtonColor: '#8CD4F5',
+      buttons: [
+        'No, Proceed!',
+        'Yes!'
+      ],
+      dangerMode: false,
+    }).then(function(isConfirm) {
+      if (isConfirm) {
+      event.preventDefault();
+
+      }
+      else{
+        $('#pay_form').submit()
+      } 
+    })
+
+});
 $('#reset_filter').click(function(evt) {
-  $('#role_apply').val(null).trigger('change');
+  $('#role_apply').val(1).trigger('change');
   $('#previous_cousine_experience').val(null).trigger('change');
   $('#state').val(null).trigger('change');
   $('#available_from').val(null).trigger('change');

@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Session;
 use Stripe;
 use Illuminate\Support\Facades\Auth;
+use App\User;
 use App\UserInfo;
+use App\SelectedCandidates;
 class StripePaymentController extends Controller
 {
 	/**
@@ -15,7 +17,11 @@ class StripePaymentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function pay()
-    {
+    {   
+        if(Auth::user()->unconfirmed_selected_candidates->count() > 10){
+            return redirect()->back();
+          }
+        
        $user=UserInfo::where('user_id',Auth::id())->first();
         return view('stripe',compact('user'));
     }
@@ -27,19 +33,16 @@ class StripePaymentController extends Controller
      */
     public function stripePost(Request $request)
     {
-    		$user=Auth::user();
-    	if ($request->membership == 1){
+    		$user=User::where('id',Auth::id())->with('unconfirmed_selected_candidates')->first();
+    	if ($user->unconfirmed_selected_candidates->count() <= 5){
     		$membership=1;
     		$amount=200;
     	}
-    	elseif ($request->membership == 2){
+    	elseif ($user->unconfirmed_selected_candidates->count() <= 10){
     		$membership=2;
     		$amount=300;
     	}
-    	elseif ($request->membership == 3){
-    		$membership=2;
-    		$amount=100;	
-    	}
+    	
     	$description=$user->name.'('.$user->email.') paid $'.$amount.'.';
         Stripe\Stripe::setApiKey('sk_test_51HUvHvCC6RL731HnadDHgSEWYy0nUFNDLJ93Abv4TyG7CcEl10vGBBGnbIqyoJ83brQqEpExLkg7oeBVUNr5qZlu00nxhmTGub');
         Stripe\Charge::create ([
@@ -48,7 +51,10 @@ class StripePaymentController extends Controller
                 "source" => $request->stripeToken,
                 "description" => $description 
         ]);
-  		UserInfo::where('user_id','=',$user->id)->update(['membership'=>$membership]);
+        SelectedCandidates::where('client_id',Auth::id())->where('confirmed','=', null)->update(['confirmed'=>date('Y-m-d h:i:s')]);
+         UserInfo::where('user_id',Auth::id())->update(['membership'=>'0']);
+  		
+
         Session::flash('success', 'Payment successful!');
           
         return redirect('/candidate_search_view');

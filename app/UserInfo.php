@@ -60,4 +60,12 @@ class UserInfo extends Model
     {
         return $this->hasOne('App\UserExperience','user_id','user_id')->orderBy('id','asc');
     }
+    public function  confirmed_selected_candidates()
+    {
+        return $this->hasMany('App\SelectedCandidates','candidate_id','user_id')->where('confirmed','!=',null);
+    }
+    public function  unconfirmed_selected_candidates()
+    {
+        return $this->hasMany('App\SelectedCandidates','candidate_id','user_id')->where('confirmed','=',null);
+    }
 }

@@ -63,6 +63,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany('App\SelectedCandidates','client_id','id');
     }
+    public function  confirmed_selected_candidates()
+    {
+        return $this->hasMany('App\SelectedCandidates','client_id','id')->where('confirmed','!=',null);
+    }
+    public function  unconfirmed_selected_candidates()
+    {
+        return $this->hasMany('App\SelectedCandidates','client_id','id')->where('confirmed','=',null);
+    }
     public function  selected_candidates_with_user()
     {
         return $this->hasMany('App\SelectedCandidates','client_id','id')->with('candidate');

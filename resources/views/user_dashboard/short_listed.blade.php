@@ -97,25 +97,66 @@ border-color: #272f66;
 .swal-button--confirm{
   background-color: green;
 }
+table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_desc_disabled:before {
+      display: none
+ }
+ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:after 
+ {
+      display: none
+  
+ }
+
+table tbody tr:hover {
+  background-color: #238db7;
+  color: white;
+}
+table.dataTable thead th, table.dataTable thead td {
+     border-bottom: 0; 
+}
+/*table.dataTable.stripe tbody tr.odd, table.dataTable.display tbody tr.odd {
+     background-color: #ffffff00; 
+}*/
+.dataTables_length{
+  font-size: 12px
+}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+border:0;
+border-bottom:3px solid #238DB7;
+  }
+  .nav-tabs {
+border:0;
+
+  }
+  .nav-tabs .nav-link {
+     border: 0; 
+}
+.active{
+color:black !important;
+}
+.custom_button{
+  border-radius: 22px;padding-left: 10px;padding-right: 10px;color:#fff;background: #238db7;
+}
+.custom_button:hover {background-color: #4b4f50}
 </style>
 <div id='page'>
 <form action="./request_interview" method="Post" id='request_interview_form'> 
                         @csrf
-
-<button type="button" style="border:1px solid #aaaaaa;border-radius: 22px;padding-right: 10px;padding-left: 10px;margin-bottom: 15px;float: left;margin-left: 5px;white-space: nowrap;text-align: center" id='interview_button'><b>Request Interview</b></button>
+Please click on recent work experience to view candidate’s personal details (email and phone #)
+<!-- <button type="button" style="border:1px solid #aaaaaa;border-radius: 22px;padding-right: 10px;padding-left: 10px;margin-bottom: 15px;float: left;margin-left: 5px;white-space: nowrap;text-align: center" id='interview_button'><b>Request Interview</b></button> -->
 </form>
-     <table  id="candidate_search" class="display table  "  style="font-size: 11px;padding-left: 0%;color: #272f66;border:0;width=100%" cellspacing="0" >
+     <table  id="candidate_search" class="display table  " style="font-size: 11px;padding-left: 0%;color: #272f66;border:0" style="font-size: 11px;padding-left: 0%;color: #272f66;border:0;width=100%" cellspacing="0" >
                       <thead style="background-color: #f8f9fa !important;word-break:keep-all">
                         <tr style="white-space: nowrap;">
                           <th >Most recent work experience </th>
                           <th >Name</th>
-                          <th >Experience</th>
-                          <th >Cuisine</th>
+                          <th >Total Experience</th>
+                          <th >All Cuisine Experience</th>
                           <th >Suburb</th>
                           <th >Last Updated</th>
+                          <th >Selected On</th>
                         </tr>
                       </thead>
-                      <tbody style="background-color: #fff !important;border:0;word-break: break-all;">
+                      <tbody style="border:0">
                      
                       </tbody>
                     </table>
@@ -127,9 +168,10 @@ border-color: #272f66;
     <div class="modal-dialog" role="document">
       <div class="modal-content" >
 
-        <div class="modal-header" style='min-width: 600px;'>
+        <div class="modal-header" style='min-width: 600px;padding-left: 30px'>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="margin-right:30px">&times;</span></button>
-          <h1 class="modal-title" id="myModalLabel2" style="color: #238db7">Name of Client</h1>
+          <h1 class="modal-title" id="myModalLabel2" style="color: #238db7;text-transform: capitalize;"></h1>
+          
         </div>
 
         <div class="modal-body" style="color: #272f66">
@@ -137,45 +179,33 @@ border-color: #272f66;
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" style="min-width: 550px;">
     <li class="nav-item">
-      <a class="nav-link active" data-toggle="tab" href="#home" style="color: #272f66">Personal Info</a>
+      <a class="nav-link active" data-toggle="tab" href="#home" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>Personal Detail</p></a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#menu4" style="color: #272f66">All Experiene</a>
+      <a class="nav-link" data-toggle="tab" href="#menu1" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>All Experience</p></a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#menu1" style="color: #272f66">Qualifications</a>
+      <a class="nav-link" data-toggle="tab" href="#menu2" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>Qualifications</p></a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#menu2" style="color: #272f66">Availability</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#menu3" style="color: #272f66">Other Info</a>
-    </li>
+    <!-- <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#menu2" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>Availability</p></a>
+    </li> -->
+    
   </ul>
 
   <!-- Tab panes -->
   <div class="tab-content" style="min-width: 550px;">
     <div id="home" class="container tab-pane active"><br>
-      <h3>Personal Info</h3>
-      <div id='personal_info' style="color: #238db7"> </div>
-    </div>
-    <div id="menu4" class="container tab-pane"><br>
-      <h3>All Experiene</h3>
-      <div id='all_experiences' style="color: #238db7"> </div>
+      <div id='personal_detail' style="color: #238db7;text-align: justify;"> </div>
     </div>
     <div id="menu1" class="container tab-pane fade"><br>
-      <h3>Qualifications</h3>
-      <div id='all_qualifications' style="color: #238db7"> </div>
-     
+      <div id='all_experiences' style="color: #238db7"> </div>     
     </div>
+   <!--  <div id="menu2" class="container tab-pane fade"><br>
+      <div id='all_availabilities' style="color: #238db7;text-transform:capitalize;"> </div>
+    </div> -->
     <div id="menu2" class="container tab-pane fade"><br>
-      <h3>Availability</h3>
-      <div id='all_availabilities' style="color: #238db7"> </div>
-    </div>
-    <div id="menu3" class="container tab-pane fade"><br>
-      <h3>Other Info</h3>
-      <div id='other_info' style="color: #238db7"> </div>
-      
+      <div id='all_qualifications' style="color: #238db7"> </div>
     </div>
   </div>
 </div>
@@ -184,10 +214,6 @@ border-color: #272f66;
       </div><!-- modal-content -->
     </div><!-- modal-dialog -->
   </div><!-- modal -->
-  
-            
-                    
-
 @endsection
 
 @section('footer')
@@ -206,7 +232,7 @@ border-color: #272f66;
      $('#candidate_search').DataTable({
       "dom": '<"top"l>rt"bottom"<<"row"<"col"><"col text-center"p><"col">>>',
         processing: true,
-        serverSide: true,
+        // serverSide: true,
          searching: false,
          pageLength: 25,
          // paging:true,
@@ -237,23 +263,24 @@ border-color: #272f66;
        { "data": 'name','name':'name'},
        { "data": 'experience_yr','name':'experience', "searchable": true},
        { "data": 'previous_cousine_experience','name':'previous_cousine_experience', "searchable": true},
-        { "data": 'suburb','name':'suburb',"orderable":false,"searchable": false},
+        { "data": 'suburb','name':'suburb'},
         { "data": 'updated','name':'updated_at', "searchable": true},
+        { "data": 'confirmed','name':'confirmed', "searchable": true},
         ],
         "columnDefs": [
-    { "width": "15%", "targets": 1 },
+    { "width": "10%", "targets": 1 },
     { "width": "10%", "targets": 2 },
     { "width": "20%", "targets": 3 },
     { "width": "20%", "targets": 4 },
     { "width": "10%", "targets": 5 },
-    { "width": "20%", "targets": 0 },
+    { "width": "30%", "targets": 0 },
 
 
   ],
   "rowCallback": function( row, data, index ) {
         $('tr th', row).css('border-bottom', '0')
       
-        $('td', row).css('background-color', 'white')
+        $('td', row).css('background-color', '#ffffff00')
 },
 
              
@@ -300,23 +327,23 @@ function resume(clicked){
                   $('#all_experiences').html(null);
                   $('#all_qualifications').html(null);
                    $('#all_availabilities').html(null);
-                   $('#other_info').html(null);
-                   $('#personal_info').html(null);
+                   $('#personal_detail').html(null);
+
                   $.each(data.experiences, function( index, experience ) {
-                    
-                  
                   $('#all_experiences').html(
                     $('#all_experiences').html()+
-                    'Company Name:'+experience.previous_company+
-                    '<br>Job title:'+experience.job_title+
-                    '<br>Joining Date:'+experience.job_from+
-                    '<br>Leaving Date:'+experience.job_to
+                    experience.previous_company+' ('+experience.no_of_employees+' Employees'+')<br>'+experience.job_from+' to '+experience.job_to+'<br>'+experience.job_title
                       );
-                    
                   if(experience.ex_responsibilities != null){
+                    var responsibilities=experience.ex_responsibilities.split(/\n/g);
+                    var text_responsibilities=''
+                    $.each( responsibilities, function( key, value ) {
+                     text_responsibilities+='<li>'+value+'</li>';
+                  });
+
+
                        $('#all_experiences').html(
-                    $('#all_experiences').html()+'<br>Responsibilities:'+experience.ex_responsibilities.replace(/\n/g, "<br />")+
-                    '<hr>')
+                    $('#all_experiences').html()+'<br>'+'<ul style="padding-left:20px">'+text_responsibilities+'</ul>'+'<hr>')
                   }
                   else{
                     $('#all_experiences').html(
@@ -330,52 +357,44 @@ function resume(clicked){
                   
                   $('#all_qualifications').html(
                     $('#all_qualifications').html()+
-                    'Qualification:'+qualification.qualification_name+
-                    '<br>Date:'+qualification.qualification_date+
-                    '<hr>'
+                    qualification.qualification_name+'<br>'+qualification.qualification_date+'<hr>'
                       )
                   });
                 }
-                 if(data.availabilities){
-                  $.each(data.availabilities, function( index, availability ) {
-                    
-                  
-                  $('#all_availabilities').html(
-                    $('#all_availabilities').html()+
-                      availability.day+':'+availability.available_from+
-                    '<br>'
-                      )
-                  });
-                }
-                 have_car='No';
+               
+                   have_car='No';
                 if(data.userinfo.have_car == 1){
                    have_car='Yes';
                 }
                 travel='No';
+                var to='';
                 if(data.userinfo.travel == 1){
                    travel='Yes';
+                   to= ' (upto '+data.userinfo.travel_distance+ ' Km)';
                 }
                 relocate='No';
+                var relocate_to='';
                 if(data.userinfo.relocate == 1){
                    relocate='Yes';
+                   relocate_to=' (to '+data.userinfo.relocate_state+')'
                 }
-                  $('#other_info').html(
-                     'City:'+data.userinfo.city+
-                     '<br>State:'+data.userinfo.state+
-                     '<br>Have a car:'+have_car+
-                     '<br>Willing to travel:'+travel+
-                     '<br>Willing to relocate:'+relocate
-
-                      )
-
-                  $('#personal_info').html(
-                    $('#personal_info').html()+
-                    'Phone #: '+data.userinfo.phone_number+
-                    '<br>Email: '+data.userinfo.email+
-                    '<br>Date of Birth: '+data.userinfo.date_birth+
-                    '<br>Address: '+data.userinfo.street_address+', '+data.userinfo.city+', '+data.userinfo.state+data.userinfo.postcode+
-                    '<br>Date of Birth: '+data.userinfo.date_birth+
-                    '<hr>'
+                var dob=new Date(data.userinfo.date_birth);
+                 var ageDifMs = Date.now() - dob.getTime();
+              var ageDate = new Date(ageDifMs); // miliseconds from epoch
+               var age= Math.abs(ageDate.getUTCFullYear() - 1970);
+                  $('#personal_detail').html(
+                      '<b>Email: </b>'+data.userinfo.email+'<br>'+
+                      '<b>Phone #: </b>'+data.userinfo.phone_number+'<br>'+
+                      age+ ' Years old <br>'+
+                      '<b>Personal Summary: </b>'+data.userinfo.personal_summary+'<br>'+
+                      '<b>Work Experience Summary: </b>'+data.userinfo.work_experience+'<br>'+
+                      data.userinfo.Availability+ ' available.<br>'+
+                      '<b>Full Street address: </b>'+data.userinfo.street_address+'<br>'+
+                     '<b>City: </b>'+data.userinfo.city+
+                     '<br><b>State: </b>'+data.userinfo.state+
+                     '<br><b>Have a car: </b>'+have_car+
+                     '<br><b>Willing to travel: </b>'+travel+to+
+                     '<br><b>Willing to relocate: </b>'+relocate+relocate_to
                       )
                    $('#myModalLabel2').html(data.name)
 

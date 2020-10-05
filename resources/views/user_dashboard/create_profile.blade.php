@@ -78,7 +78,7 @@
                                     <label for="text-input" class=" form-control-label">State/Territory</label>
                                 </div>
                                 <div class="col-12 col-md-8">
-                                   <select id='state' name='state' class="js-example-basic-single" required>
+                                   <select id='state' name='state' class="form-control" required>
                                     <option  value="">Select State</option>
                                     @foreach($states as $state)
                                     <option  value="{{$state->name}}">{{$state->name}}</option>
