@@ -476,7 +476,7 @@
                                     <label for="text-input" class=" form-control-label">Job Title :</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text" required id="text-input" name="experience[0][job_title]" placeholder="Job Title " class="form-control" >
+                                    <input type="text" required id="text-input" name="experience[1][job_title]" placeholder="Job Title " class="form-control" >
                                 </div>
                             </div>
                             
@@ -485,10 +485,10 @@
                                     <label for="text-input" class="form-control-label"> Period of Employment : </label>
                                 </div>
                                 <div class="col col-md-4">
-                                    <input type="date" required id="text-input" name="experience[0][job_from]" placeholder="From" class="form-control"  value="">
+                                    <input type="date" required id="text-input" name="experience[1][job_from]" placeholder="From" class="form-control"  value="">
                                 </div>
                                 <div class="col col-md-4">
-                                    <input type="date" id="text-input" name="experience[0][job_to]" placeholder="To" class="form-control"  value="">
+                                    <input type="date" id="text-input" name="experience[1][job_to]" placeholder="To" class="form-control"  value="">
                                 </div>
                                
                             </div>
@@ -498,7 +498,7 @@
                                     <label for="text-input" class=" form-control-label">Name of Company :</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text" required id="text-input" name="experience[0][previous_company]" placeholder="Name of Company" class="form-control"  value="">
+                                    <input type="text" required id="text-input" name="experience[1][previous_company]" placeholder="Name of Company" class="form-control"  value="">
                                 </div>
                             </div>  
                              
