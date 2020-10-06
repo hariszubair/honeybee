@@ -360,7 +360,7 @@
                             </div>  
                         </div>
                 <?php 
-                $experience_counter = 0 ;
+                $experience_counter = 1 ;
                  
                 if(!empty($user_experiences) && count($user_experiences) !=0) :
 
