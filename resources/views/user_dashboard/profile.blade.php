@@ -507,7 +507,7 @@
                                     <label for="text-input" class=" form-control-label">No. of Employees in Company :</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <select  class="form-control" required name="experience[<?php echo $experience_counter ?>][no_of_employees]">
+                                    <select  class="form-control" required name="experience[1][no_of_employees]">
                                         <option value=""> Please Select</option>
                                         <option value="Less than 10" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == 'Less than 10' ? 'selected': '';?>>Less than 10</option>
                                         <option value="11-20" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == '11-20' ? 'selected': '';?>>11-20</option>
@@ -521,7 +521,7 @@
                                     <label for="text-input" class=" form-control-label"> Responsibilities :</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                     <textarea type="text" rows=4 required id="text-input" name="experience[<?php echo $experience_counter ?>][ex_responsibilities]" placeholder="Enter upto 4 Major Responsibilities. Each Responsibility should be entered in a new line." class="form-control" ></textarea>
+                                     <textarea type="text" rows=4 required id="text-input" name="experience[1][ex_responsibilities]" placeholder="Enter upto 4 Major Responsibilities. Each Responsibility should be entered in a new line." class="form-control" ></textarea>
                                 </div>
                             </div>
                                
