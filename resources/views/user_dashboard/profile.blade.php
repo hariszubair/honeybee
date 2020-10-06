@@ -379,7 +379,7 @@
                                             <h4  style="float: left;"> Most Recent Experience</h4>
                                         @endif
                                         @if($experience_counter > 1)
-                                            <h4  style="float: left;"> Most Recent Experience (more)</h4>
+                                            <h4  style="float: left;"> Experience (more)</h4>
                                             <button type="button" onclick="delete_experience(<?php echo $experience_counter ?>)" style="float: right;" class="btn btn-danger"><i class="fas fa-minus"></i></button>
                                         @endif
                                     </div>
