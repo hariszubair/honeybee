@@ -125,7 +125,7 @@
                             
                         <div class="row">
                             <div class="col-xs-9">
-                             <h4 style="padding-top: 0">You have selected {{Auth::user()->unconfirmed_selected_candidates->count()}} candidates</h4>
+                             <h4 style="padding-top: 0">You have selected {{Auth::user()->unconfirmed_selected_candidates->count()}} candidate(s)</h4>
                          </div>
                             <div class="col-xs-3">
                                 <button class="btn btn-primary btn-lg btn-block" type="submit" style="background-color:#238db7">Pay Now</button>
