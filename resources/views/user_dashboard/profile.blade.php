@@ -366,7 +366,7 @@
 
                     foreach ($user_experiences as $user_experience)
                     { 
-                            $experience_counter++;
+                            
                     ?>
                     
                         <div class="card-body" id="<?php echo $experience_counter ?>">
@@ -456,6 +456,7 @@
                             </div>
                     
                     <?php
+                    $experience_counter++;
                     }
                 else: 
                 ?>
