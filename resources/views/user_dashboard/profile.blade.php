@@ -360,12 +360,13 @@
                             </div>  
                         </div>
                 <?php 
-                $experience_counter = 1 ;
+                $experience_counter = 0 ;
                  
                 if(!empty($user_experiences) && count($user_experiences) !=0) :
 
                     foreach ($user_experiences as $user_experience)
                     { 
+                    
                             
                     ?>
                     
@@ -375,10 +376,10 @@
 
                             <div class="row form-group">
                                 <div class="col col-md-12">
-                                        @if($experience_counter <= 1)
+                                        @if($experience_counter == 0)
                                             <h4  style="float: left;"> Most Recent Experience</h4>
                                         @endif
-                                        @if($experience_counter > 1)
+                                        @if($experience_counter >= 1)
                                             <h4  style="float: left;"> Experience (more)</h4>
                                             <button type="button" onclick="delete_experience(<?php echo $experience_counter ?>)" style="float: right;" class="btn btn-danger"><i class="fas fa-minus"></i></button>
                                         @endif
@@ -458,7 +459,7 @@
                     <?php
                     $experience_counter++;
                     }
-                    $experience_counter=count($user_experiences);
+                    $experience_counter--;
                 else: 
                 ?>
                 <div class="card-body">
@@ -478,7 +479,7 @@
                                     <label for="text-input" class=" form-control-label">Job Title :</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text" required id="text-input" name="experience[1][job_title]" placeholder="Job Title " class="form-control" >
+                                    <input type="text" required id="text-input" name="experience[0][job_title]" placeholder="Job Title " class="form-control" >
                                 </div>
                             </div>
                             
@@ -487,10 +488,10 @@
                                     <label for="text-input" class="form-control-label"> Period of Employment : </label>
                                 </div>
                                 <div class="col col-md-4">
-                                    <input type="date" required id="text-input" name="experience[1][job_from]" placeholder="From" class="form-control"  value="">
+                                    <input type="date" required id="text-input" name="experience[0][job_from]" placeholder="From" class="form-control"  value="">
                                 </div>
                                 <div class="col col-md-4">
-                                    <input type="date" id="text-input" name="experience[1][job_to]" placeholder="To" class="form-control"  value="">
+                                    <input type="date" id="text-input" name="experience[0][job_to]" placeholder="To" class="form-control"  value="">
                                 </div>
                                
                             </div>
@@ -500,7 +501,7 @@
                                     <label for="text-input" class=" form-control-label">Name of Company :</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text" required id="text-input" name="experience[1][previous_company]" placeholder="Name of Company" class="form-control"  value="">
+                                    <input type="text" required id="text-input" name="experience[0][previous_company]" placeholder="Name of Company" class="form-control"  value="">
                                 </div>
                             </div>  
                              
@@ -509,7 +510,7 @@
                                     <label for="text-input" class=" form-control-label">No. of Employees in Company :</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <select  class="form-control" required name="experience[1][no_of_employees]">
+                                    <select  class="form-control" required name="experience[0][no_of_employees]">
                                         <option value=""> Please Select</option>
                                         <option value="Less than 10" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == 'Less than 10' ? 'selected': '';?>>Less than 10</option>
                                         <option value="11-20" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == '11-20' ? 'selected': '';?>>11-20</option>
@@ -523,7 +524,7 @@
                                     <label for="text-input" class=" form-control-label"> Responsibilities :</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                     <textarea type="text" rows=4 required id="text-input" name="experience[1][ex_responsibilities]" placeholder="Enter upto 4 Major Responsibilities. Each Responsibility should be entered in a new line." class="form-control" ></textarea>
+                                     <textarea type="text" rows=4 required id="text-input" name="experience[0][ex_responsibilities]" placeholder="Enter upto 4 Major Responsibilities. Each Responsibility should be entered in a new line." class="form-control" ></textarea>
                                 </div>
                             </div>
                                
@@ -1051,13 +1052,15 @@
                     }
                     var expected_exp=0; 
                     var temp_counter=0;
-                    for (var i = 1 ; i <= counterr; i++) {
+                    for (var i = 0 ; i <= counterr; i++) {
                         if($("input[name='experience["+i+"][job_to]']").val() <= $("input[name='experience["+i+"][job_from]']").val())
                         {
                             alert('Job starting date '+ $("input[name='experience["+i+"][job_to]']").val()+ ' cant be less than '+ $("input[name='experience["+i+"][job_from]']").val());
                             temp_counter++;
                         }
+                        if($("input[name='experience["+i+"][job_to]']").val()){
                        expected_exp += Math.ceil((new Date($("input[name='experience["+i+"][job_to]']").val()) - new Date($("input[name='experience["+i+"][job_from]']").val()))/ (1000 * 60 * 60 * 24));
+                   }
 
 
                     }
