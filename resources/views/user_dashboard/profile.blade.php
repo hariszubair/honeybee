@@ -600,7 +600,7 @@
                                         <label for="text-input" class=" form-control-label"> Date of certificate : </label>
                                     </div>
                                     <div class="col col-md-9">
-                                        <input type="date" id="text-input" name="qualifications[<?php echo $certificate_counter ?>][qualification_date]" placeholder="Date of Qualification" class="form-control"  value="<?php echo  date("Y-m-d", strtotime($user_qualification->qualification_date)); ?>">
+                                        <input type="date" id="text-input" name="qualifications[<?php echo $certificate_counter ?>][qualification_date]" placeholder="Date of Qualification" class="form-control"  value="<?php echo  date("Y-m-d", strtotime($user_qualification->qualification_date)); ?>" required>
                                     </div>
                                     
                                     
@@ -641,7 +641,7 @@
                                     <label for="text-input" class=" form-control-label"> Date of certificate : </label>
                                 </div>
                                 <div class="col col-md-9">
-                                    <input type="date" id="text-input" name="qualifications[0][qualification_date]" placeholder="Date of Qualification" class="form-control"  value="">
+                                    <input type="date" id="text-input" name="qualifications[0][qualification_date]" placeholder="Date of Qualification" class="form-control"  value="" required>
                                 </div>
                                
                                
