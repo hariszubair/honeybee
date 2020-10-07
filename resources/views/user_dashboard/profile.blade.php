@@ -1353,10 +1353,10 @@
                           
                           <div class="row form-group">
                              <div class="col col-md-3">
-                                  <label for="text-input" class=" form-control-label"> Date of Qualification : </label>
+                                  <label for="text-input" class=" form-control-label"> Date of certificate : </label>
                               </div>
                               <div class="col col-md-9">
-                                  <input type="date" id="text-input" name="qualifications[${certificate_counter}][qualification_date]" placeholder="Date of Qualification" class="form-control"  value="">
+                                  <input type="date" id="text-input" name="qualifications[${certificate_counter}][qualification_date]" placeholder="Date of Qualification" class="form-control"  value="" required>
                               </div>
                              
                              
