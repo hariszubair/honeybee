@@ -456,6 +456,7 @@
                             </div>
                     
                     <?php
+                    $experience_counter++;
                     }
                     $experience_counter=count($user_experiences);
                 else: 
