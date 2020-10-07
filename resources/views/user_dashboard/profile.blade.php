@@ -1050,7 +1050,7 @@
                     }
                     var expected_exp=0; 
                     var temp_counter=0;
-                    for (var i = 1 ; i <= counterr; i++) {
+                    for (var i = 1 ; i < counterr; i++) {
                         if($("input[name='experience["+i+"][job_to]']").val() <= $("input[name='experience["+i+"][job_from]']").val())
                         {
                             alert('Job starting date '+ $("input[name='experience["+i+"][job_to]']").val()+ ' cant be less than '+ $("input[name='experience["+i+"][job_from]']").val());
