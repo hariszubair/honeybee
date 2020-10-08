@@ -478,7 +478,7 @@ class UserDashboardController extends Controller
 
         return view('user_dashboard.short_listed');
     }
-    public function get_selected_candiates(Request $request)
+    public function get_selected_candidates(Request $request)
     {
         $user=Auth::user();
         //  $candidate=UserInfo:: join('selected_candidates', function ($join) use($user) {

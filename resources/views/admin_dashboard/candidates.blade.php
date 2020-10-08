@@ -2,6 +2,7 @@
 
 
 @section('content')
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.4/css/buttons.dataTables.min.css">
 <style type="text/css">
     table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_desc_disabled:before {
       display: none
@@ -24,7 +25,7 @@
                             <th class="th-sm">Name</th>
                             <th class="th-sm">Email</th>
                             <th class="th-sm">Updated At</th>
-                            <th class="th-sm">Action</th>
+                            <th class="th-sm notexport">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -38,7 +39,7 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Updated At</th>
-                            <th>Action</th>
+                            <th class="notexport">Action</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -53,6 +54,23 @@
 
 @endsection
 @section('footer')
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+  <script src="{{asset('public/js/dataTables.buttons.min.js')}}"></script>
+    <script src="{{asset('public/js/buttons.flash.min.js')}}"></script>
+    <script src="{{asset('public/js/jszip.min.js')}}"></script>
+<script src="{{asset('public/js/pdfmake.min.js')}}"></script>
+<script src="{{asset('public/js/vfs_fonts.js')}}"></script>
+
+     <script src="{{asset('public/js/dataTables.buttons.min.js')}}"></script>
+     <script src="{{asset('public/js/buttons.html5.min.js')}}"></script>
+  <script src="{{asset('public/js/buttons.print.min.js')}}"></script>
+     
+     
+     
+   
+    
+     
+
 <script type="text/javascript">
     $(document).ready(function() {
         candidates();
@@ -61,6 +79,46 @@
 
 
      $('#candidate_search').DataTable({
+       dom: 'Bfrltip',
+         buttons: [
+
+           {
+extend: 'excelHtml5',
+text: '<i class="fa fa-file-excel-o"></i> Excel',
+titleAttr: 'Export to Excel',
+exportOptions: {
+columns: ':not(:last-child)',
+}
+},
+{
+extend: 'csvHtml5',
+text: '<i class="fa fa-file-text-o"></i> CSV',
+titleAttr: 'CSV',
+exportOptions: {
+columns: ':not(:last-child)',
+}
+},
+{
+extend: 'pdfHtml5',
+text: '<i class="fa fa-file-pdf-o"></i> PDF',
+titleAttr: 'PDF',
+orientation: 'landscape',
+                pageSize: 'LEGAL',
+exportOptions: {
+columnDefsmns: ':not(:last-child)',
+},
+},
+{
+extend: 'print',
+exportOptions: {
+columns: ':visible'
+},
+customize: function(win) {
+$(win.document.body).find( 'table' ).find('td:last-child, th:last-child').remove();
+}
+}
+        ],
+         
         processing: true,
         serverSide: true,
          // searching: false,

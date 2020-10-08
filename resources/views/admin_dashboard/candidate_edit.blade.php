@@ -6,7 +6,7 @@
         padding-bottom: 5px !important; 
     }
 </style>
-<form id="main_form" method="post" action="../admin-candiate-update" >
+<form id="main_form" method="post" action="../admin_candidate_update" >
     {!! csrf_field() !!}
 <div class="container">
     <div class="row justify-content-center">
@@ -29,7 +29,6 @@
                                     <input type="radio" id="basic_correct_yes" name="basic_correct" value="1" checked>
                                     <label for="male">Yes</label>
                                     <input type="radio" id="basic_correct_no" name="basic_correct" value="0" <?php  echo isset($user_info[0]) &&  $user_info[0]->basic_correct ? '': 'checked';?> >
-                                    <input type="text" name="user_id" value="{{$user_info[0]->user_id}}" style="display: none">
                                     <label for="female">No</label>
                                 </div>
                             </div>
@@ -367,7 +366,8 @@
 
                     foreach ($user_experiences as $user_experience)
                     { 
-                            $experience_counter++;
+                    
+                            
                     ?>
                     
                         <div class="card-body" id="<?php echo $experience_counter ?>">
@@ -376,11 +376,11 @@
 
                             <div class="row form-group">
                                 <div class="col col-md-12">
-                                        @if($experience_counter <= 1)
+                                        @if($experience_counter == 0)
                                             <h4  style="float: left;"> Most Recent Experience</h4>
                                         @endif
-                                        @if($experience_counter > 1)
-                                            <h4  style="float: left;"> Most Recent Experience (more)</h4>
+                                        @if($experience_counter >= 1)
+                                            <h4  style="float: left;"> Experience (more)</h4>
                                             <button type="button" onclick="delete_experience(<?php echo $experience_counter ?>)" style="float: right;" class="btn btn-danger"><i class="fas fa-minus"></i></button>
                                         @endif
                                     </div>
@@ -457,7 +457,9 @@
                             </div>
                     
                     <?php
+                    $experience_counter++;
                     }
+                    $experience_counter--;
                 else: 
                 ?>
                 <div class="card-body">
@@ -508,7 +510,7 @@
                                     <label for="text-input" class=" form-control-label">No. of Employees in Company :</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <select  class="form-control" required name="experience[<?php echo $experience_counter ?>][no_of_employees]">
+                                    <select  class="form-control" required name="experience[0][no_of_employees]">
                                         <option value=""> Please Select</option>
                                         <option value="Less than 10" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == 'Less than 10' ? 'selected': '';?>>Less than 10</option>
                                         <option value="11-20" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == '11-20' ? 'selected': '';?>>11-20</option>
@@ -522,7 +524,7 @@
                                     <label for="text-input" class=" form-control-label"> Responsibilities :</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                     <textarea type="text" rows=4 required id="text-input" name="experience[<?php echo $experience_counter ?>][ex_responsibilities]" placeholder="Enter upto 4 Major Responsibilities. Each Responsibility should be entered in a new line." class="form-control" ></textarea>
+                                     <textarea type="text" rows=4 required id="text-input" name="experience[0][ex_responsibilities]" placeholder="Enter upto 4 Major Responsibilities. Each Responsibility should be entered in a new line." class="form-control" ></textarea>
                                 </div>
                             </div>
                                
@@ -600,7 +602,7 @@
                                         <label for="text-input" class=" form-control-label"> Date of certificate : </label>
                                     </div>
                                     <div class="col col-md-9">
-                                        <input type="date" id="text-input" name="qualifications[<?php echo $certificate_counter ?>][qualification_date]" placeholder="Date of Qualification" class="form-control"  value="<?php echo  date("Y-m-d", strtotime($user_qualification->qualification_date)); ?>">
+                                        <input type="date" id="text-input" name="qualifications[<?php echo $certificate_counter ?>][qualification_date]" placeholder="Date of Qualification" class="form-control"  value="<?php echo  date("Y-m-d", strtotime($user_qualification->qualification_date)); ?>" required>
                                     </div>
                                     
                                     
@@ -641,7 +643,7 @@
                                     <label for="text-input" class=" form-control-label"> Date of certificate : </label>
                                 </div>
                                 <div class="col col-md-9">
-                                    <input type="date" id="text-input" name="qualifications[0][qualification_date]" placeholder="Date of Qualification" class="form-control"  value="">
+                                    <input type="date" id="text-input" name="qualifications[0][qualification_date]" placeholder="Date of Qualification" class="form-control"  value="" required>
                                 </div>
                                
                                
@@ -901,10 +903,8 @@
     })
 </script>
 
-<script type="text/javascript">
-  
-</script>
 
+</script> -->
 
 <script type="text/javascript">
 
@@ -1000,13 +1000,15 @@
                     }
                     var expected_exp=0; 
                     var temp_counter=0;
-                    for (var i = 1 ; i <= counterr; i++) {
+                    for (var i = 0 ; i <= counterr; i++) {
                         if($("input[name='experience["+i+"][job_to]']").val() <= $("input[name='experience["+i+"][job_from]']").val())
                         {
                             alert('Job starting date '+ $("input[name='experience["+i+"][job_to]']").val()+ ' cant be less than '+ $("input[name='experience["+i+"][job_from]']").val());
                             temp_counter++;
                         }
+                        if($("input[name='experience["+i+"][job_to]']").val()){
                        expected_exp += Math.ceil((new Date($("input[name='experience["+i+"][job_to]']").val()) - new Date($("input[name='experience["+i+"][job_from]']").val()))/ (1000 * 60 * 60 * 24));
+                   }
 
 
                     }
@@ -1303,10 +1305,10 @@
                           
                           <div class="row form-group">
                              <div class="col col-md-3">
-                                  <label for="text-input" class=" form-control-label"> Date of Qualification : </label>
+                                  <label for="text-input" class=" form-control-label"> Date of certificate : </label>
                               </div>
                               <div class="col col-md-9">
-                                  <input type="date" id="text-input" name="qualifications[${certificate_counter}][qualification_date]" placeholder="Date of Qualification" class="form-control"  value="">
+                                  <input type="date" id="text-input" name="qualifications[${certificate_counter}][qualification_date]" placeholder="Date of Qualification" class="form-control"  value="" required>
                               </div>
                              
                              

@@ -424,12 +424,12 @@ color:black !important;
     <button class="custom_button" style="margin-bottom: 10px;margin-right: 5px;white-space: nowrap;" id='reset_filter'>Reset Filters</button>
     <input type="text" id="count" name="count" style="display: none" value='{{$user->unconfirmed_selected_candidates->count()}}'>  
     @if($user->userinfo->membership != 0 )
-    <form action="./proceed" method="Post" id='selected_candidates_form'> 
+    <!-- <form action="./proceed" method="Post" id='selected_candidates_form'> 
                         @csrf
 
 
 <button type="button" sclass="custom_button" style="margin-bottom: 10px;margin-right: 5px;white-space: nowrap;" id='proceed_button'>Proceed Selected Candidates</button>
-</form>
+</form> -->
 @endif
 
 </div>

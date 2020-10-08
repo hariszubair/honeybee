@@ -11,7 +11,7 @@ use App\Restaurant;
 use App\State;
 use App\UserExperience;
 use App\UserQualification;
-
+use App\User;
 class AdminDashboardController extends Controller
 {
    
@@ -43,7 +43,7 @@ class AdminDashboardController extends Controller
     public function candidates()
     {
 
-		return view('admin_dashboard/candidates', ['candiates' =>  DB::table('user_infos')->get() ] );
+		return view('admin_dashboard/candidates');
     }
         public function view_candidates()
     {
@@ -52,10 +52,10 @@ class AdminDashboardController extends Controller
         return Datatables::of($candidates)->addColumn('action',function($row) {
             $user=Auth::user();
             if($user->hasRole('Super Admin')){
-           return '<a style="margin-right:5px" class="btn btn-primary" title="edit" href="./admin-candiate-edit/'.$row->user_id.'"><i class="fas fa-edit"></i></a><a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-candiate-view/'.$row->user_id.'"><i class="fas fa-eye"></i></a>';
+           return '<a style="margin-right:5px" class="btn btn-primary" title="edit" href="./admin-candidate-edit/'.$row->user_id.'"><i class="fas fa-edit"></i></a><a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-candidate-view/'.$row->user_id.'"><i class="fas fa-eye"></i></a>';
             }
             if($user->hasRole('Admin')){
-           return '<a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-candiate-view/'.$row->user_id.'"><i class="fas fa-eye"></i></a>';
+           return '<a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-candidate-view/'.$row->user_id.'"><i class="fas fa-eye"></i></a>';
             }
 
         })
@@ -66,7 +66,7 @@ class AdminDashboardController extends Controller
        
     }
     
-    public function candiate_view($user_id)
+    public function candidate_view($user_id)
     {
           $restaurants=Restaurant::all();
         $states=State::all();
@@ -78,7 +78,7 @@ class AdminDashboardController extends Controller
                                                 'states' => $states 
                                               ]);
     }
-    public function candiate_edit($user_id)
+    public function candidate_edit($user_id)
     {
         $role=UserInfo::where('user_id',$user_id)->first()->role_id;
          $restaurants=Restaurant::all();
@@ -94,7 +94,7 @@ class AdminDashboardController extends Controller
         }
     }
     
-    public function candiate_update(Request $request)
+    public function candidate_update(Request $request)
     {
         $user_id=$request->user_id;
         $input=$request->all();
@@ -137,6 +137,96 @@ class AdminDashboardController extends Controller
            return redirect()->back();
          
     }
+
+    public function clients()
+    {
+
+        return view('admin_dashboard/clients');
+    }
+        public function view_clients()
+    {
+
+        $clients=UserInfo::where('role_id','=',3);
+        return Datatables::of($clients)->addColumn('action',function($row) {
+            $user=Auth::user();
+            if($user->hasRole('Super Admin')){
+           return '<a style="margin-right:5px" class="btn btn-primary" title="edit" href="./admin-client-edit/'.$row->user_id.'"><i class="fas fa-edit"></i></a><a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-client-view/'.$row->user_id.'"><i class="fas fa-eye"></i></a><a style="margin-right:5px" class="btn btn-info" title="Mail" href="./mail/'.$row->user_id.'"><i class="fas fa-paper-plane"></i></a>';
+            }
+            if($user->hasRole('Admin')){
+           return '<a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-client-view/'.$row->user_id.'"><i class="fas fa-eye"></i></a>';
+            }
+
+        })
+        ->addColumn('update',function($row) {
+           return explode(' ', $row->updated_at)[0];
+
+        })->escapeColumns([])->make(true);
+       
+    }
+    
+    public function client_view($user_id)
+    {
+          $restaurants=Restaurant::all();
+        $states=State::all();
+
+        return view('admin_dashboard/client_view',  [
+                                                'user_info' => UserInfo::where([ 'user_id' => $user_id])->first(), 
+                                                // 'user' => User::find($user_id), 
+                                              ]);
+    }
+    public function client_edit($user_id)
+    {
+        $user=User::find($user_id);
+         $restaurants=Restaurant::all();
+        $states=State::all();
+        if($user->hasRole('Client')){
+        return view('admin_dashboard/client_edit',compact('user','states','restaurants'));
+        }
+    }
+    
+    public function client_update(Request $request)
+    {
+        $input=$request->all();
+         if($request->get('continuous_contact') == 'on')
+          {
+                $request->merge(['continuous_contact' => 1]);  
+
+          }else{
+
+            $request->merge(['continuous_contact' => 0]);
+          }
+          $request->merge(['user_id' => $request->id]);
+
+          if(Auth::user()->hasRole('Client')){
+             $request->merge(['role_id' => 3]);
+          }
+          if(!$request->relocate_state){
+             $request->merge(['relocate_state' => null]);
+            
+          }
+          $user = UserInfo::updateOrCreate( [ 'user_id'   =>   $request->id ], $request->all());
+          
+          
+           return redirect()->back();
+         
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function update_experience($experiences, $user_Id){
       
       
@@ -175,9 +265,17 @@ class AdminDashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function mail($id=null)
     {
-        //
+
+        $user=User::find($id);
+        if($user){
+            $email=$user->email;
+        }
+        else{
+            $email='';
+        }
+        return view('admin_dashboard/mail',compact('email'));
     }
 
     /**

@@ -47,6 +47,13 @@
                             <a class="list-group-item list-group-item-action" id="list-selected_candidates-list" data-toggle="list" role="tab" aria-controls="selected_candidates"  href="selected_candidates" style="color: #238DB7 !important;width: auto !important;padding-right: 0;padding-left: 0;margin-right: 20px">
                                Short Listed</a>
                     @endif
+                    @if($current_user->hasAnyRole(['Super Admin','Admin']))
+                     <a class="list-group-item list-group-item-action" id="list-candidate_search_view-list" data-toggle="list" role="tab" aria-controls="candidate_search_view"  href="{{ URL('/all_candidates') }}" style="color: #238DB7 !important;width: auto !important;padding-right: 0;padding-left: 0;margin-right: 20px">
+                                Candidate </a>
+                                 <a class="list-group-item list-group-item-action" id="list-candidate_search_view-list" data-toggle="list" role="tab" aria-controls="{{ URL('/candidate_search_view') }}"  href="all_clients" style="color: #238DB7 !important;width: auto !important;padding-right: 0;padding-left: 0;margin-right: 20px">
+                                Client </a>
+                    @endif
+
       
     </div>
                 </div>

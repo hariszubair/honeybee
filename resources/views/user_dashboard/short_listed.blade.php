@@ -242,7 +242,7 @@ Please click on recent work experience to view candidate’s personal details (e
            headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           },
-         url:'./get_selected_candiates' ,
+         url:'./get_selected_candidates' ,
            method: 'Post',
           data: function (d) {
               d.role_apply = role_apply;

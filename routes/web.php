@@ -28,7 +28,7 @@ Route::get('/profile', 'UserDashboardController@view_profile')->name('Profile');
 Route::get('/packages', 'UserDashboardController@packages')->name('packages');//package
 Route::post('/select','UserDashboardController@select');
 Route::get('/selected_candidates','UserDashboardController@selected_candidates')->name('selected_candidates');
-Route::post('/get_selected_candiates','UserDashboardController@get_selected_candiates');
+Route::post('/get_selected_candidates','UserDashboardController@get_selected_candidates');
 Route::post('/proceed','UserDashboardController@proceed');
 Route::post('/request_interview','UserDashboardController@request_interview')->name('request_interview');
 
@@ -62,14 +62,27 @@ Route::get('/admin-register','AdminAuth\RegisterController@showRegistrationForm'
 Route::post('/admin-register', 'AdminAuth\RegisterController@register');
 
 
+Route::get('/mail/{id?}', 'AdminDashboardController@mail')->middleware(['role:Admin|Super Admin']);
+
+
 
 
 // Route::get('/admin-dashboard', 'AdminDashboardController@index');
 Route::get('/all_candidates', 'AdminDashboardController@candidates')->middleware(['role:Admin|Super Admin']);
-Route::get('/admin-candiate-edit/{id}', 'AdminDashboardController@candiate_edit')->middleware(['role:Super Admin']);
-Route::get('/admin-candiate-view/{id}', 'AdminDashboardController@candiate_view')->middleware(['role:Super Admin|Admin']);
-Route::post('/admin-candiate-update','AdminDashboardController@candiate_update')->middleware(['role:Super Admin']);
+Route::get('/admin-candidate-edit/{id}', 'AdminDashboardController@candidate_edit')->middleware(['role:Super Admin']);
+Route::get('/admin-candidate-view/{id}', 'AdminDashboardController@candidate_view')->middleware(['role:Super Admin|Admin']);
+Route::post('/admin-candidate-update','AdminDashboardController@candidate_update')->middleware(['role:Super Admin']);
 Route::post('/view_candidates', 'AdminDashboardController@view_candidates');
+
+
+
+Route::get('/all_clients', 'AdminDashboardController@clients')->middleware(['role:Admin|Super Admin']);
+Route::get('/admin-client-edit/{id}', 'AdminDashboardController@client_edit')->middleware(['role:Super Admin']);
+Route::get('/admin-client-view/{id}', 'AdminDashboardController@client_view')->middleware(['role:Super Admin|Admin']);
+Route::post('/admin-client-update','AdminDashboardController@client_update')->middleware(['role:Super Admin']);
+Route::post('/view_clients', 'AdminDashboardController@view_clients');
+
+
 
 
 Route::get('/clear-cache', function() {

@@ -33,7 +33,7 @@ var last_part = parts[parts.length-1];
     $('.list-group-horizontal a').each(function(){
         var $this = $(this);
         // if the current path is like this link, make it active
-        if($this.attr('href')== last_part){
+        if($this.attr('href').includes(last_part)){
             $this.addClass('active');
         }
         else{
