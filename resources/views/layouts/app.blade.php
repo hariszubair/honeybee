@@ -50,7 +50,7 @@
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     
-                        <img src="{{ asset('public/images/honey_bee.jpeg') }}" alt="Honey Bee"  width="200" class="img-fluid" />
+                        <img src="{{ asset('public/images/honey_bee.png') }}" alt="Honey Bee"  width="200" class="img-fluid" />
                    
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">

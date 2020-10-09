@@ -7,7 +7,7 @@
             <header class="header-desktop" style="background-color: #f5f5f5">
                 <div style="padding-left:5%;padding-right: 5% ">
                     <a href="#" >
-                    <img style="width: 200px;height: 50px" src="{{ asset('public/images/honey_bee.jpeg') }}" alt="Honey Bee" />
+                    <img style="width: 200px;height: 50px" src="{{ asset('public/images/honey_bee.png') }}" alt="Honey Bee" />
                 </a> 
                 </div>
                
