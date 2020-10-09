@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Mail;
 class HomeController extends Controller
 {
     /**
@@ -13,7 +13,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth','verified');
+        // $this->middleware('auth','verified');
     }
 
     /**
@@ -24,5 +24,17 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
+    }
+    public function contact_us(Request $request)
+    {
+      $name=$request->form_name;
+      $email=$request->email;
+      $message=$request->form_message;
+
+        Mail::send('emails.form_submit', ['name' => $name,'messages'=>$message, 'email'=>$email], function ($m) {
+            $m->from('mail@honeybeetech.com.au', 'Honey Bee');
+
+            $m->to('mail@honeybeetech.com.au', 'Honey Bee')->subject('New Registration');
+        });
     }
 }

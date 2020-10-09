@@ -115,10 +115,10 @@
             </div>
 
         <div class="row" id="home_contact_map">
-                 <div class="col-md-6  col-12  ">
+                 <div class="col-md-5  col-12  ">
                         <img src="{{ asset('public/images/map.png') }}"  />
                 </div>
-                <div class="col-md-6  col-12 " id="address_text_wrapper">
+                <div class="col-md-3  col-12 " id="address_text_wrapper"  style="padding-right: 0px">
                     <p><span class="blue">Address</span><br />
                     Paradise Point<br />
                     Gold Coast, QLD Australia
@@ -131,8 +131,89 @@
                     <p><span class="blue">Email</span><br />
                     admin@honeybeerecruiting.com.au </p>
                 </div>
+                <div class="col-md-4  col-12 " id="form_name_text_wrapper" style="padding-left: 0px;padding-right: 0px">
+                    <form method="Post" id="contact_form">
+                        @csrf
+                        
+                    <div class="form-group row">
+                            <label for="form_name" class="col-md-4 col-form-label text-md-right" style="padding-left: 0px;">Name</label>
+
+                            <div class="col-md-8">
+                                <input id="form_name" type="text" class="form-control" name="form_name" value="{{ old('form_name') }}" required autocomplete="form_name" autofocus placeholder="Please enter your full name">
+                            </div>
+                        </div>
+                         <div class="form-group row">
+                            <label for="form_email" class="col-md-4 col-form-label text-md-right" style="padding-left: 0px;">{{ __('E-Mail') }}</label>
+
+                            <div class="col-md-8">
+                                <input id="form_email" type="email" class="form-control @error('form_email') is-invalid @enderror" name="email" value="{{ old('form_email') }}" required autocomplete="form_email">
+                            </div>
+                        </div>
+                         <div class="form-group row" >
+                            <label for="form_message" class="col-md-4 col-form-label text-md-right" style="padding-left: 0px;">Message</label>
+
+                            <div class="col-md-8">
+                                <textarea id="form_message" type="text" class="form-control " name="form_message" rows="9" required autocomplete="form_message" style="resize: none;"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row" >
+                            <label for="form_message" class="col-md-4 col-form-label text-md-right" style="padding-left: 0px;"></label>
+
+                            <div class="col-md-8">
+                                <button class="btn btn-success" type="button" id='contact_form_button'>Contact Us</button>
+                            </div>
+                        </div>
+                        </form>
+
+                </div>
             </div>
     </div>
   </div>   
     </body>
 </html>
+            <script src="{{ asset('public/vendor/jquery-3.2.1.min.js') }}"></script>
+<script type="text/javascript">
+    
+$('#contact_form_button').click(function(evt) {
+    $.ajax({
+          headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+            url:'./contact_us',
+            data:$('#contact_form').serialize(),
+            type:'POST',
+             dataType: "json",
+            success:function(data){
+              if(data == 'Out of range'){
+
+                swal("Limit Exceeded!!!", "You can't select more than 20 candidates", "info"); 
+                return false;
+              }
+
+
+              if(data <= 1)
+              {
+                text=' Candidate selected.'
+              }
+              else{
+                text=' Candidates selected.'
+              }
+
+                $('#selected_candidates').html('<b>'+data+'</b>' + text)
+                if (data <= 5){
+                  $('#basic_membership').css("font-weight", "bold");
+                  $('#premium_membership').css("font-weight", "normal");
+                  $('#count').val(data);
+                }
+                else{
+                  $('#premium_membership').css("font-weight", "bold");
+                  $('#basic_membership').css("font-weight", "normal");
+                  $('#count').val(data);
+                }
+               if(type == 'checked'){
+              item.prop("checked", true);
+               } 
+            }
+         });
+});
+</script>

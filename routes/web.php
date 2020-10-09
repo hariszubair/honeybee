@@ -93,4 +93,8 @@ Route::get('/clear-cache', function() {
 Route::post('pay', 'StripePaymentController@pay')->middleware('CanNotProceed');
 Route::post('stripe', 'StripePaymentController@stripePost')->name('stripe.post');
 
+
+Route::post('/contact_us','HomeController@contact_us');
+
+
 Auth::routes(['verify' => true]);
