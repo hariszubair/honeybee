@@ -58,7 +58,7 @@
                 <div class="container-fluid">
                     <div class="header-mobile-inner">
                         <a class="logo" href="/">
-                            <img style="height:50px" src="{{ asset('public/images/honey_bee.jpeg') }}" alt="Honey Bee" />
+                            <img style="height:50px" src="{{ asset('public/images/honey_bee.png') }}" alt="Honey Bee" />
                         </a>
                         <button class="hamburger hamburger--slider" type="button">
                             <span class="hamburger-box">
