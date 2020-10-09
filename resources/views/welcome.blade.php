@@ -19,7 +19,7 @@
             <div class="row header clearfix">
                 <div class="col-md-6 col-12"> 
                      <a class="logo" href="/">
-                        <img src="{{ asset('public/images/honey_bee.jpeg') }}" alt="Honey Bee"  width="200" class="img-fluid" />
+                        <img src="{{ asset('public/images/honey_bee.png') }}" alt="Honey Bee"  width="200" class="img-fluid" />
                      </a>
                 </div>
                 <div class="col-md-6 col-12">
