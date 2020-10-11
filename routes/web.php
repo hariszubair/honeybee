@@ -81,6 +81,7 @@ Route::get('/admin-client-edit/{id}', 'AdminDashboardController@client_edit')->m
 Route::get('/admin-client-view/{id}', 'AdminDashboardController@client_view')->middleware(['role:Super Admin|Admin']);
 Route::post('/admin-client-update','AdminDashboardController@client_update')->middleware(['role:Super Admin']);
 Route::post('/view_clients', 'AdminDashboardController@view_clients');
+Route::post('/send_mail', 'AdminDashboardController@send_mail');
 
 
 

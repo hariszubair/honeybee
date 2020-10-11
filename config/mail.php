@@ -8,7 +8,7 @@ return array(
         'address' => 'mail@honeybeetech.com.au',
         'name' => 'HoneyBeeTech',
     ),
-    'encryption' =>'tls',
+    'encryption' =>'ssl',
     'username' => 'mail@honeybeetech.com.au',
     'password' => '1@O{B34#rZ~,',
     'sendmail' => '/usr/sbin/sendmail -bs',

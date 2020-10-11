@@ -48,14 +48,21 @@ class AdminDashboardController extends Controller
         public function view_candidates()
     {
 
-        $candidates=UserInfo::where('role_id','=',4);
+        $candidates=User::whereHas('roles', function ($query) {
+    return $query->where('name', 'Candidate');
+        })->with('userinfo')->get();
         return Datatables::of($candidates)->addColumn('action',function($row) {
             $user=Auth::user();
+            $temp='';
             if($user->hasRole('Super Admin')){
-           return '<a style="margin-right:5px" class="btn btn-primary" title="edit" href="./admin-candidate-edit/'.$row->user_id.'"><i class="fas fa-edit"></i></a><a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-candidate-view/'.$row->user_id.'"><i class="fas fa-eye"></i></a>';
+               if($row->userinfo){
+                $temp.='<a style="margin-right:5px" class="btn btn-primary" title="edit" href="./admin-candidate-edit/'.$row->id.'"><i class="fas fa-edit"></i></a>';
+               }     
+                $temp.= '<a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-candidate-view/'.$row->id.'"><i class="fas fa-eye"></i></a>';
+                return $temp;
             }
             if($user->hasRole('Admin')){
-           return '<a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-candidate-view/'.$row->user_id.'"><i class="fas fa-eye"></i></a>';
+           return '<a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-candidate-view/'.$row->id.'"><i class="fas fa-eye"></i></a>';
             }
 
         })
@@ -145,15 +152,23 @@ class AdminDashboardController extends Controller
     }
         public function view_clients()
     {
-
-        $clients=UserInfo::where('role_id','=',3);
+         $clients=User::whereHas('roles', function ($query) {
+    return $query->where('name', 'Client');
+        })->with('userinfo')->get();
         return Datatables::of($clients)->addColumn('action',function($row) {
             $user=Auth::user();
+            $temp='';
             if($user->hasRole('Super Admin')){
-           return '<a style="margin-right:5px" class="btn btn-primary" title="edit" href="./admin-client-edit/'.$row->user_id.'"><i class="fas fa-edit"></i></a><a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-client-view/'.$row->user_id.'"><i class="fas fa-eye"></i></a><a style="margin-right:5px" class="btn btn-info" title="Mail" href="./mail/'.$row->user_id.'"><i class="fas fa-paper-plane"></i></a>';
+               if($row->userinfo){
+                $temp.='<a style="margin-right:5px" class="btn btn-primary" title="edit" href="./admin-client-edit/'.$row->id.'"><i class="fas fa-edit"></i></a>';
+               }     
+                $temp.= '<a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-client-view/'.$row->id.'"><i class="fas fa-eye"></i></a><a style="margin-right:5px" class="btn btn-info" title="Mail" href="./mail/'.$row->id.'"><i class="fas fa-paper-plane"></i></a>';
+                return $temp;
             }
+
+
             if($user->hasRole('Admin')){
-           return '<a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-client-view/'.$row->user_id.'"><i class="fas fa-eye"></i></a>';
+           return '<a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-client-view/'.$row->id.'"><i class="fas fa-eye"></i></a>';
             }
 
         })
@@ -275,9 +290,21 @@ class AdminDashboardController extends Controller
         else{
             $email='';
         }
-        return view('admin_dashboard/mail',compact('email'));
-    }
 
+         $clients_email=User::whereHas('roles', function ($query) {
+     $query->where('name', 'Client');
+        })->get(['email']);
+          $candidates_email=User::whereHas('roles', function ($query) {
+             $query->where('name', 'Candidate');
+        })->get(['email']);
+
+
+        return view('admin_dashboard/mail',compact('email','clients_email','candidates_email'));
+    }
+    public function send_mail(Request $request)
+    {
+        return $request->email;
+    }
     /**
      * Store a newly created resource in storage.
      *

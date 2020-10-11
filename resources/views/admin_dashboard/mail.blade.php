@@ -54,19 +54,21 @@ div[data-role="editor-toolbar"] {
             <div class="card">
                 <div class="card-header">Mail</div>
                 <div class="card-body">
+                  <form action="../send_mail" method="Post" id="send_mail">
+                    @csrf
                             <div class="row form-group">
                      <div class="col col-md-4">
                                     <label for="text-input" class=" form-control-label">Email</label>
                                 </div>
                                 <div class="col-12 col-md-8">
-                                     <select id='test' multiple="multiple" name='restaurant_type'  required style="width: 100%">
+                                     <select id='test' multiple="multiple"   required name='email[]' style="width: 100%">
                                          <optgroup label="Candidates">
-                                    @foreach(\App\UserInfo::where('role_id',4)->get() as $user)
+                                    @foreach($candidates_email as $user)
                                      <option {{$user->email == $email ? 'selected' : ''}} value="{{$user->email}}">{{$user->email}}</option>
                                     @endforeach
                                 </optgroup>
                                 <optgroup label="Clients">
-                                    @foreach(\App\UserInfo::where('role_id',3)->get() as $user)
+                                    @foreach($clients_email as $user)
                                      <option {{$user->email == $email ? 'selected' : ''}} value="{{$user->email}}">{{$user->email}}</option>
                                     @endforeach
                                 </optgroup>
@@ -144,12 +146,22 @@ div[data-role="editor-toolbar"] {
 
     <div id="editor" style="width: 100%;">
     </div>
+    <textarea id="message" name='message' style="display: none"></textarea>
   </div>
  
                                      
   
                                 </div>
                             </div>
+                            <div class="row form-group">
+                     <div class="col col-md-4">
+                                    <label for="text-input" class=" form-control-label"></label>
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <button type='submit' class="btn btn-info">Email</button>
+                                </div>
+                            </div>
+                            </form>
                             <div>
                                 
                             </div>
@@ -215,7 +227,10 @@ $("select").multipleSelect({
     window.prettyPrint && prettyPrint();
 
  });
-       
+    $( "#send_mail" ).on('submit',function( event ) {
+  $('#message').val($('#editor').html());
+
+});   
 </script>
 
 @endsection
