@@ -139,7 +139,7 @@
                             <label for="form_name" class="col-md-4 col-form-label text-md-right" style="padding-left: 0px;">Name</label>
 
                             <div class="col-md-8">
-                                <input id="form_name" type="text" class="form-control" name="form_name" value="{{ old('form_name') }}" required autocomplete="form_name"  placeholder="Please enter your full name">
+                                <input id="form_name" type="text" class="form-control" name="form_name" value="{{ old('form_name') }}" required autocomplete="form_name"  placeholder="Please enter your full name" required>
                             </div>
                         </div>
                          <div class="form-group row">
@@ -153,14 +153,14 @@
                             <label for="form_message" class="col-md-4 col-form-label text-md-right" style="padding-left: 0px;">Message</label>
 
                             <div class="col-md-8">
-                                <textarea id="form_message" type="text" class="form-control " name="form_message" rows="9" required autocomplete="form_message" style="resize: none;"></textarea>
+                                <textarea id="form_message" type="text" class="form-control " name="form_message" rows="9" required autocomplete="form_message"  requiredstyle="resize: none;"></textarea>
                             </div>
                         </div>
                         <div class="form-group row" >
                             <label for="form_message" class="col-md-4 col-form-label text-md-right" style="padding-left: 0px;"></label>
 
                             <div class="col-md-8">
-                                <button class="btn btn-success" type="button" id='contact_form_button'>Contact Us</button>
+                                <button class="btn btn-success" type="submit" id='contact_form_button'>Contact Us</button>
                             </div>
                         </div>
                         </form>
@@ -172,9 +172,15 @@
     </body>
 </html>
             <script src="{{ asset('public/vendor/jquery-3.2.1.min.js') }}"></script>
+             <script src="{{asset('public/js/sweetalert.min.js')}}"></script>
+
+    @include('sweet::alert')
 <script type="text/javascript">
-    
-$('#contact_form_button').click(function(evt) {
+   
+$('#contact_form').on('submit',function(evt) {
+    evt.preventDefault();
+            swal("Message Sent", "We will contact you within 48 hours", "success");  
+                $('#contact_form')[0].reset();
     $.ajax({
           headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -182,37 +188,8 @@ $('#contact_form_button').click(function(evt) {
             url:'./contact_us',
             data:$('#contact_form').serialize(),
             type:'POST',
-             dataType: "json",
+             // dataType: "json",
             success:function(data){
-              if(data == 'Out of range'){
-
-                swal("Limit Exceeded!!!", "You can't select more than 20 candidates", "info"); 
-                return false;
-              }
-
-
-              if(data <= 1)
-              {
-                text=' Candidate selected.'
-              }
-              else{
-                text=' Candidates selected.'
-              }
-
-                $('#selected_candidates').html('<b>'+data+'</b>' + text)
-                if (data <= 5){
-                  $('#basic_membership').css("font-weight", "bold");
-                  $('#premium_membership').css("font-weight", "normal");
-                  $('#count').val(data);
-                }
-                else{
-                  $('#premium_membership').css("font-weight", "bold");
-                  $('#basic_membership').css("font-weight", "normal");
-                  $('#count').val(data);
-                }
-               if(type == 'checked'){
-              item.prop("checked", true);
-               } 
             }
          });
 });

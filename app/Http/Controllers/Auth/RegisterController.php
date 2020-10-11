@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Rules\Captcha;
+use Mail;
 class RegisterController extends Controller
 {
     /*
@@ -75,11 +76,17 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
         if($data['role_id']=='3'){
+            $role='Client';
             $user->assignRole('Client');
         }
         else if($data['role_id']=='4'){
+            $role='Candidate';
             $user->assignRole('Candidate');
         }
+          Mail::send('emails.new_registration', ['name' => $data['name'],'role'=>$role, 'email'=>$data['email']], function ($m) {
+            $m->from('mail@honeybeetech.com.au', 'Honey Bee');
+            $m->to('mail@honeybeetech.com.au', 'Admin')->subject('Registration done');
+        });
         return $user;
     }
 }

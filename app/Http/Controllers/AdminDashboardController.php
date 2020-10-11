@@ -12,6 +12,7 @@ use App\State;
 use App\UserExperience;
 use App\UserQualification;
 use App\User;
+use Mail;
 class AdminDashboardController extends Controller
 {
    
@@ -56,8 +57,10 @@ class AdminDashboardController extends Controller
             $temp='';
             if($user->hasRole('Super Admin')){
                if($row->userinfo){
-             return $temp='<a style="margin-right:5px" class="btn btn-primary" title="edit" href="./admin-candidate-edit/'.$row->id.'"><i class="fas fa-edit"></i></a><a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-candidate-view/'.$row->id.'"><i class="fas fa-eye"></i></a>';
-            }
+              $temp='<a style="margin-right:5px" class="btn btn-primary" title="edit" href="./admin-candidate-edit/'.$row->id.'"><i class="fas fa-edit"></i></a><a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-candidate-view/'.$row->id.'"><i class="fas fa-eye"></i></a>';
+                    }
+                     $temp.= '<a style="margin-right:5px" class="btn btn-info" title="Mail" href="./mail/'.$row->id.'"><i class="fas fa-paper-plane"></i></a>';
+                return $temp;
             }
             if($user->hasRole('Admin')){
                if($row->userinfo){
@@ -160,9 +163,9 @@ class AdminDashboardController extends Controller
             $temp='';
             if($user->hasRole('Super Admin')){
                if($row->userinfo){
-                $temp.='<a style="margin-right:5px" class="btn btn-primary" title="edit" href="./admin-client-edit/'.$row->id.'"><i class="fas fa-edit"></i></a>';
+                $temp.='<a style="margin-right:5px" class="btn btn-primary" title="edit" href="./admin-client-edit/'.$row->id.'"><i class="fas fa-edit"></i></a><a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-client-view/'.$row->id.'"><i class="fas fa-eye"></i></a>';
                }     
-                $temp.= '<a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-client-view/'.$row->id.'"><i class="fas fa-eye"></i></a><a style="margin-right:5px" class="btn btn-info" title="Mail" href="./mail/'.$row->id.'"><i class="fas fa-paper-plane"></i></a>';
+                $temp.= '<a style="margin-right:5px" class="btn btn-info" title="Mail" href="./mail/'.$row->id.'"><i class="fas fa-paper-plane"></i></a>';
                 return $temp;
             }
 
@@ -297,13 +300,19 @@ class AdminDashboardController extends Controller
           $candidates_email=User::whereHas('roles', function ($query) {
              $query->where('name', 'Candidate');
         })->get(['email']);
-
-
         return view('admin_dashboard/mail',compact('email','clients_email','candidates_email'));
     }
     public function send_mail(Request $request)
     {
-        return $request->email;
+        $email=$request->email;
+        $subject=$request->subject;
+        $messages=$request->message;
+          Mail::send('emails.general', ['messages'=>$messages], function ($m) use($email,$subject) {
+            $m->from('mail@honeybeetech.com.au', 'Honey Bee');
+            $m->to($email)->subject($subject);
+        });
+          return redirect()->back();
+
     }
     /**
      * Store a newly created resource in storage.
