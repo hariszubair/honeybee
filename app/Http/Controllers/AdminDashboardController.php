@@ -56,13 +56,13 @@ class AdminDashboardController extends Controller
             $temp='';
             if($user->hasRole('Super Admin')){
                if($row->userinfo){
-                $temp.='<a style="margin-right:5px" class="btn btn-primary" title="edit" href="./admin-candidate-edit/'.$row->id.'"><i class="fas fa-edit"></i></a>';
-               }     
-                $temp.= '<a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-candidate-view/'.$row->id.'"><i class="fas fa-eye"></i></a>';
-                return $temp;
+             return $temp='<a style="margin-right:5px" class="btn btn-primary" title="edit" href="./admin-candidate-edit/'.$row->id.'"><i class="fas fa-edit"></i></a><a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-candidate-view/'.$row->id.'"><i class="fas fa-eye"></i></a>';
+            }
             }
             if($user->hasRole('Admin')){
+               if($row->userinfo){
            return '<a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-candidate-view/'.$row->id.'"><i class="fas fa-eye"></i></a>';
+            }
             }
 
         })
