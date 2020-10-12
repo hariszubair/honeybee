@@ -110,7 +110,8 @@
                                     <div class="col-12 col-md-9">
                                         <div class="checkbox">
                                             <label><input class="cousine" type="checkbox" id="allCousine" name="cousine" value="Italian">Italian</label>
-                                        </div>
+                                            <input style="display: none" type="test" name="previous_cousine_experience" class="form-control" value="<?php  echo isset($user_info[0]) ?  $user_info[0]->previous_cousine_experience: '' ;?>">
+                                        </div> 
                                         <div class="checkbox">
                                             <label><input class="cousine" type="checkbox" name="cousine"  value="Mediterranean">Mediterranean</label>
                                         </div>
@@ -1027,29 +1028,42 @@
                 $('#visaType').attr("name", "visa_type");
                 document.getElementsByName('visa_type')[0].value = $("#visaType").val();
             }
-                
+                    if($('input[name=cousine]:checked').length ==0){
+                         alert('Please select Previous Cuisine Experience')
+                                return false;
+                    }
+
                     // Cousine Experience
                     var cousineExperienceChecked = [];
                     var falseChecker = false;
                     $('input[type=checkbox][name=cousine]').each(function(index){
-                        if(index == 0 && this.checked == false) {
-                            this.checked = true;
-                            falseChecker = true;
-                        }
+                        // if(index == 0 && this.checked == false) {
+                        //     this.checked = true;
+                        //     falseChecker = true;
+                        // }
                         if(this.checked) {
+                            if(this.value=='Other' && $('#otherCousine').val() !=""){
                             cousineExperienceChecked.push(this.value);
+                            cousineExperienceChecked.push($('#otherCousine').val());
+                            }
+                            else{
+                            cousineExperienceChecked.push(this.value);
+                            }
+
                         }
                     });
-                    $('#allCousine').attr("name", "previous_cousine_experience");
-                    document.getElementsByName('previous_cousine_experience')[0].value = cousineExperienceChecked;
-                    if(falseChecker == true) {
-                        cousineExperienceChecked.splice(0, 1); 
-                        document.getElementsByName('previous_cousine_experience')[0].value = cousineExperienceChecked;
-                    }
-                    if(document.getElementById('cousineChecked').checked) {
-                        cousineExperienceChecked.push($('#otherCousine').val());
-                        document.getElementsByName('previous_cousine_experience')[0].value = cousineExperienceChecked;
-                    }
+                    $("input[name='previous_cousine_experience']").val(cousineExperienceChecked);
+                    console.log(cousineExperienceChecked)
+                    // $('#allCousine').attr("name", "previous_cousine_experience");
+                    // document.getElementsByName('previous_cousine_experience')[0].value = cousineExperienceChecked;
+                    // if(falseChecker == true) {
+                    //     cousineExperienceChecked.splice(0, 1); 
+                    //     document.getElementsByName('previous_cousine_experience')[0].value = cousineExperienceChecked;
+                    // }
+                    // if(document.getElementById('cousineChecked').checked) {
+                    //     cousineExperienceChecked.push($('#otherCousine').val());
+                    //     document.getElementsByName('previous_cousine_experience')[0].value = cousineExperienceChecked;
+                    // }
                     var expected_exp=0; 
                     var temp_counter=0;
                     for (var i = 0 ; i <= counterr; i++) {

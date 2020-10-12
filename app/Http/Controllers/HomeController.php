@@ -33,7 +33,7 @@ class HomeController extends Controller
 
         Mail::send('emails.form_submit', ['name' => $name,'messages'=>$message, 'email'=>$email], function ($m) {
             $m->from('mail@honeybeetech.com.au', 'Honey Bee');
-            $m->to('mail@honeybeetech.com.au', 'Haris')->subject('Contact Us form submission');
+            $m->to('admin@honeybeerecruiting.com.au', 'Indy')->subject('Contact Us form submission');
         });
         // return 1;
     }

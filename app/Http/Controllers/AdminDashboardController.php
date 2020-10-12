@@ -296,11 +296,17 @@ class AdminDashboardController extends Controller
 
          $clients_email=User::whereHas('roles', function ($query) {
      $query->where('name', 'Client');
-        })->get(['email']);
+        })->has('userinfo')->get(['email']);
+         $partial_client_email=User::whereHas('roles', function ($query) {
+    $query->where('name', 'Cient');
+        })->doesntHave('userinfo')->get(['email']);
           $candidates_email=User::whereHas('roles', function ($query) {
              $query->where('name', 'Candidate');
-        })->get(['email']);
-        return view('admin_dashboard/mail',compact('email','clients_email','candidates_email'));
+        })->has('userinfo')->get(['email']);
+          $partial_candidates_email=User::whereHas('roles', function ($query) {
+             $query->where('name', 'Candidate');
+        })->doesntHave('userinfo')->get(['email']);
+        return view('admin_dashboard/mail',compact('email','clients_email','candidates_email','partial_candidates_email','partial_client_email'));
     }
     public function send_mail(Request $request)
     {
@@ -311,7 +317,7 @@ class AdminDashboardController extends Controller
             $m->from('mail@honeybeetech.com.au', 'Honey Bee');
             $m->to($email)->subject($subject);
         });
-          return redirect()->back();
+          return redirect()->back()->with('success', 'Email sent successfully.');
 
     }
     /**

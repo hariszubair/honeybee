@@ -267,7 +267,12 @@ class UserDashboardController extends Controller
           }
 
           $user = UserInfo::updateOrCreate( [ 'user_id'   =>   Auth::user()->id ], $request->all());
-          
+          if($user->wasRecentlyCreated){
+            Mail::send('emails.profile', ['user'=>$user], function ($m) {
+            $m->from('mail@honeybeetech.com.au', 'Honey Bee');
+            $m->to('mail@honeybeetech.com.au')->subject('Profile Completed');
+        });
+          }
           if(Auth::user()->hasRole('Client')){
               return redirect('candidate_search_view');
              // updateOrCreate performed create

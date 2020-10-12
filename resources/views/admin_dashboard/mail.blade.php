@@ -49,6 +49,12 @@ div[data-role="editor-toolbar"] {
 <link rel="stylesheet" type="text/css" href="https://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css">
 <link rel="stylesheet" type="text/css" href="https://mindmup.github.io/bootstrap-wysiwyg/external/google-code-prettify/prettify.css">
 <div class="container">
+                          
+          @if (\Session::has('success'))
+          <div class="alert alert-success" >
+          {!! \Session::get('success') !!}
+          </div>
+          @endif
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
@@ -72,7 +78,16 @@ div[data-role="editor-toolbar"] {
                                      <option {{$user->email == $email ? 'selected' : ''}} value="{{$user->email}}">{{$user->email}}</option>
                                     @endforeach
                                 </optgroup>
-                                   
+                                <optgroup label="Un Confirmed Candidates">
+                                    @foreach($partial_candidates_email as $user)
+                                     <option {{$user->email == $email ? 'selected' : ''}} value="{{$user->email}}">{{$user->email}}</option>
+                                    @endforeach
+                                </optgroup>
+                                   <optgroup label="Un Confirmed Clients">
+                                    @foreach($partial_client_email as $user)
+                                     <option {{$user->email == $email ? 'selected' : ''}} value="{{$user->email}}">{{$user->email}}</option>
+                                    @endforeach
+                                </optgroup>
                                 </select>
                                 </div>
                             </div>

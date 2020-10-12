@@ -85,7 +85,7 @@ class RegisterController extends Controller
         }
           Mail::send('emails.new_registration', ['name' => $data['name'],'role'=>$role, 'email'=>$data['email']], function ($m) {
             $m->from('mail@honeybeetech.com.au', 'Honey Bee');
-            $m->to('mail@honeybeetech.com.au', 'Admin')->subject('Registration done');
+            $m->to('indradeep.mazumdar@gmail.com', 'Indy')->subject('Registration done');
         });
         return $user;
     }
