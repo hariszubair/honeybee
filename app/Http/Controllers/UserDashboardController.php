@@ -555,7 +555,7 @@ class UserDashboardController extends Controller
     }
     public function reset_selection(Request $request){
       $user=Auth::user();
-      SelectedCandidates::where('client_id','=',$user->id)->delete();
+      SelectedCandidates::where('client_id','=',$user->id)->where('confirmed','=',null)->delete();
       return 0;
 
     }
