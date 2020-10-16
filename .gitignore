@@ -9,6 +9,7 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 /app/Rules/Captcha.php
+/config/mail.php
 /resources/views/auth/register.blade.php
 .gitignore	
 env
