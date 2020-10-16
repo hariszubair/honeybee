@@ -27,22 +27,22 @@ Route::get('/user-dashboard', 'UserDashboardController@index')->name('User Dahbo
 Route::get('/profile', 'UserDashboardController@view_profile')->name('Profile');
 Route::get('/packages', 'UserDashboardController@packages')->name('packages');//package
 Route::post('/select','UserDashboardController@select');
-Route::get('/selected_candidates','UserDashboardController@selected_candidates')->name('selected_candidates');
-Route::post('/get_selected_candidates','UserDashboardController@get_selected_candidates');
-Route::post('/proceed','UserDashboardController@proceed');
-Route::post('/request_interview','UserDashboardController@request_interview')->name('request_interview');
+Route::get('/selected_candidates','UserDashboardController@selected_candidates')->name('selected_candidates')->middleware(['WithProfile']);;
+Route::post('/get_selected_candidates','UserDashboardController@get_selected_candidates')->middleware(['WithProfile']);;
+Route::post('/proceed','UserDashboardController@proceed')->middleware(['WithProfile']);;
+Route::post('/request_interview','UserDashboardController@request_interview')->name('request_interview')->middleware(['WithProfile']);;
 
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::get('/create_profile', 'UserDashboardController@create_profile')->name('create_profile');//for client only
 Route::get('/change_password', 'UserDashboardController@change_password')->name('change_password');
 Route::post('/update_password', 'UserDashboardController@update_password')->name('update_password');
-Route::post('/candidate_data', 'UserDashboardController@candidate_data')->name('candidate_data');
-Route::post('/candidate_complete_data', 'UserDashboardController@candidate_complete_data')->name('candidate_complete_data');
-Route::post('/reset_selection', 'UserDashboardController@reset_selection')->name('reset_selection');
+Route::post('/candidate_data', 'UserDashboardController@candidate_data')->name('candidate_data')->middleware(['WithProfile']);;
+Route::post('/candidate_complete_data', 'UserDashboardController@candidate_complete_data')->name('candidate_complete_data')->middleware(['WithProfile']);;
+Route::post('/reset_selection', 'UserDashboardController@reset_selection')->name('reset_selection')->middleware(['WithProfile']);;
 Route::get('/user-profile', 'UserDashboardController@profile')->name('User Profile');//edit and creat of candidate previously created.
 Route::get('/user-message', 'UserDashboardController@message')->name('User Message');
-Route::get('/candidate_search_view', 'UserDashboardController@candidate_search_view')->name('candidate_search_view');
-Route::post('/candidate_search','UserDashboardController@candidate_search')->name('candidate_search');
+Route::get('/candidate_search_view', 'UserDashboardController@candidate_search_view')->name('candidate_search_view')->middleware(['WithProfile']);
+Route::post('/candidate_search','UserDashboardController@candidate_search')->name('candidate_search')->middleware(['WithProfile']);;
 
 Route::post('/user-profile-update','UserDashboardController@profile_update');
 
@@ -71,7 +71,7 @@ Route::get('/mail/{id?}', 'AdminDashboardController@mail')->middleware(['role:Ad
 Route::get('/all_candidates', 'AdminDashboardController@candidates')->middleware(['role:Admin|Super Admin']);
 Route::get('/admin-candidate-edit/{id}', 'AdminDashboardController@candidate_edit')->middleware(['role:Super Admin']);
 Route::get('/admin-candidate-view/{id}', 'AdminDashboardController@candidate_view')->middleware(['role:Super Admin|Admin']);
-Route::post('/admin-candidate-update','AdminDashboardController@candidate_update')->middleware(['role:Super Admin']);
+Route::post('/admin_candidate_update','AdminDashboardController@candidate_update')->middleware(['role:Super Admin']);
 Route::post('/view_candidates', 'AdminDashboardController@view_candidates');
 
 

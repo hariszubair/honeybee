@@ -196,7 +196,7 @@
                                     <label for="text-input" class=" form-control-label">City:</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text" id="text-input" name="city" placeholder="City" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->city:'';?>">
+                                    <input type="text" id="text-input" name="city" placeholder="City" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->city:'';?>" onkeyup="this.value=this.value.replace(/[^a-z]/g,'');">
                                    
                                 </div>
                             </div>
@@ -220,7 +220,7 @@
                                     <label for="text-input" class=" form-control-label">Suburb:</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text" id="text-input" name="suburb" placeholder="Suburb" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->suburb: '';?>">
+                                    <input type="text" id="text-input" name="suburb" placeholder="Suburb" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->suburb: '';?>" onkeyup="this.value=this.value.replace(/[^a-z]/g,'');">
                                    
                                 </div>
                             </div>     
@@ -299,8 +299,8 @@
                                     <label for="Yes">Yes</label>
                                     <input type="radio" id="relocate_no" name="relocate" value="0" <?php  echo isset($user_info[0]) &&  $user_info[0]->relocate ? '': 'checked';?>>
                                     <label for="No">No</label>
-                                   <div style="width: 70%; display: inline-block;vertical-align: middle;">
-                                   <select class="js-example-basic-multiple js-example-responsive" id="relocate_state" name="relocate_state[]" multiple="multiple"  style="width: 90%">
+                                   <div style="width: 70%; display: inline-block;vertical-align: middle; padding-left: 20px">
+                                   <select class="js-example-basic-multiple js-example-responsive" id="relocate_state" name="relocate_state[]" multiple="multiple"  style="width: 90%;display: none" autocomplete="off">
                                         @foreach($states as $state)
                                           <option value="{{$state->name}}" >{{$state->name}}</option>
                                         @endforeach
@@ -318,14 +318,14 @@
                                     <label for="Yes">Yes</label>
                                     <input type="radio" id="travel_no" name="travel" value="0" <?php  echo isset($user_info[0]) &&  $user_info[0]->travel ? '': 'checked';?>>
                                     <label for="No">No</label>
-                                   <div style="width: 70%; display: inline-block;vertical-align: middle;">
+                                   <div style="width: 70%; display: inline-block;vertical-align: middle;padding-left: 20px">
 
-                                    <select style="display: none" name="travel_distance" id='travel_distance' class="form-control"  >
-                                        <option  val="">Select distance</option>
-                                        <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='5' ?  'selected': ''}} value="5">5km</option>
+                                    <select style="display: none;" name="travel_distance" id='travel_distance' class="form-control"  >
+                                        <option  value="">Select distance</option>
                                         <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='10' ?  'selected': ''}} value="10">10km</option>
-                                        <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='15' ?  'selected': ''}} value="15">15km</option>
                                         <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='20' ?  'selected': ''}} value="20">20km</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='50' ?  'selected': ''}} value="50">50km</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='100' ?  'selected': ''}} value="100">100km</option>
                                     </select>
                                    
                                 </div>
@@ -351,11 +351,19 @@
                 <div id="experience_form_wrapper">
                      <div class="card-body" >
                  <div class="row form-group">
-                               <div class="col col-md-3">
-                                    <label for="text-input" class=" form-control-label">Years of Experience:</label>
+                               <div class="col col-md-5">
+                                    <label for="text-input" class=" form-control-label">Total years of experience in the industry:</label>
                                 </div>
-                                <div class="col-12 col-md-9">
-                                    <input type="number" id="yr_experience" name="yr_experience"  class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->yr_experience: '';?>">
+                                <div class="col-12 col-md-7">
+
+                                    <select type="number" id="yr_experience" name="yr_experience"  class="form-control" required value="">
+                                        <option value="">Please select the following</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='Less than 1 year' ?  'selected': ''}} value="Less than 1 year">Less than 1 year</option>
+                                        <option  {{isset($user_info[0]) && $user_info[0]->yr_experience=='1-3 years' ?  'selected': ''}} value="1-3 years">1- 3 years</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='3-5 years' ?  'selected': ''}} value="3-5 years">3-5 years</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='5-10 years' ?  'selected': ''}}  value="5-10 years">5-10 years</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='More than 10 years' ?  'selected': ''}}  value="More than 10 years">More than 10 years</option>
+                                    </select>
                                    
                                 </div>
                             </div>  
@@ -812,6 +820,26 @@
     $("#otherVisaType").css("display","none");
     $("#otherCousine").css("display","none");
     jQuery(document).ready(function($){
+         if('<?php echo Session::has('success'); ?>'){
+            swal({
+      title: "Profile Updated",
+      text: 'Do you want to logout?',
+      icon: "success",
+      showConfirmButton: true,
+      confirmButtonColor: '#8CD4F5',
+      buttons: [
+        'No, Proceed!',
+        'Yes, Logout!'
+      ],
+      dangerMode: false,
+    }).then(function(isConfirm) {
+      if (isConfirm) {
+      location.href='./logout';
+      }
+      
+    })
+
+    }
         if(all_user_info.length > 0) {
             if(all_user_info[0].visa_type) {
                 if($("#visaType").val() == 'Working Visa' || $("#visaType").val() == 'Student Visa' || $("#visaType").val() == 'Permanent Residence' || $("#visaType").val() == 'Citizen') {
@@ -1053,7 +1081,7 @@
                         }
                     });
                     $("input[name='previous_cousine_experience']").val(cousineExperienceChecked);
-                    console.log(cousineExperienceChecked)
+                    // console.log(cousineExperienceChecked)
                     // $('#allCousine').attr("name", "previous_cousine_experience");
                     // document.getElementsByName('previous_cousine_experience')[0].value = cousineExperienceChecked;
                     // if(falseChecker == true) {
@@ -1066,6 +1094,8 @@
                     // }
                     var expected_exp=0; 
                     var temp_counter=0;
+                    var test_responsibilities=0;
+
                     for (var i = 0 ; i <= counterr; i++) {
                         if($("input[name='experience["+i+"][job_to]']").val() <= $("input[name='experience["+i+"][job_from]']").val())
                         {
@@ -1075,17 +1105,71 @@
                         if($("input[name='experience["+i+"][job_to]']").val()){
                        expected_exp += Math.ceil((new Date($("input[name='experience["+i+"][job_to]']").val()) - new Date($("input[name='experience["+i+"][job_from]']").val()))/ (1000 * 60 * 60 * 24));
                    }
-
-
+                  const regex = /\../gm;
+                   $.each($("textarea[name='experience["+i+"][ex_responsibilities]']").val().split('\n'), function( index, value ) {
+                            if (regex.test(value)) {
+                            test_responsibilities++;
+                            }
+                    });
                     }
+                    if(test_responsibilities >0){
+                        swal({
+                          title: "Responsibilities are in incorrect format!!!",
+                          text: "Each responsibility should be on a new line. Do you still want to continue?",
+                          icon: "warning",
+                          buttons: [
+                            'No, verify it!',
+                            'Yes, continue!'
+                          ],
+                          dangerMode: true,
+                        }).then(function(isConfirm) {
+                          if (!isConfirm) {
+                        return false
+                          }
+                          else{
+                            $('#main_form_submit').click();
+
+                          }
+                        })
+                        return false
+                    }
+
                      var dob=new Date($('#date_birth').val());
                     var ageDifMs = Date.now() - dob.getTime();
                     var ageDate = new Date(ageDifMs); // miliseconds from epoch
                      if(Math.abs(ageDate.getUTCFullYear() - 1970) <16){
-                         swal("Under Age!!!", "You must be atleast 16 years old.", "error"); 
+                         swal("Under Age!!!", "You must be at least 16 years old.", "error"); 
                                 return false;
                      }
-                    if($('#yr_experience').val() != parseInt(expected_exp/365)){
+                     var exp_verification=0;
+                    switch($('#yr_experience').val()) {
+                      case "Less than 1 year":
+                        if(parseInt(expected_exp/365) < 1){
+                            exp_verification=1;
+                        }
+                        break;
+                      case "1-3 years":
+                        if(1 <= parseInt(expected_exp/365) && parseInt(expected_exp/365) < 3){
+                            exp_verification=1;
+                        }
+                        break;
+                        case "3-5 years":
+                        if(3 <= parseInt(expected_exp/365) && parseInt(expected_exp/365) < 5){
+                            exp_verification=1;
+                        }
+                        break;
+                        case "5-10 years":
+                        if(5 <= parseInt(expected_exp/365) && parseInt(expected_exp/365) < 10){
+                            exp_verification=1;
+                        }
+                        break;
+                      case "More than 10 years":
+                        if(parseInt(expected_exp/365) >= 10){
+                            exp_verification=1;
+                        }
+                        break;
+                    }
+                    if(exp_verification == 0){
                         swal({
                           title: "Experience Mismatch!!!",
                           text: $('#yr_experience').val()+" year(s) of total experience dont match with the experience you enter in indiviual experience. Do you still want to continue?",

@@ -106,7 +106,7 @@ class AdminDashboardController extends Controller
     
     public function candidate_update(Request $request)
     {
-        $user_id=$request->user_id;
+         $user_id=$request->id;
         $input=$request->all();
          $experiences = $request->get('experience');
            $this->update_experience($experiences,  $user_id);
@@ -133,7 +133,7 @@ class AdminDashboardController extends Controller
 
             $request->merge(['continuous_contact' => 0]);
           }
-          $request->merge(['user_id' => $request->user_id]);
+          $request->merge(['user_id' => $request->id]);
 
          
           if(!$request->relocate_state){
@@ -141,7 +141,7 @@ class AdminDashboardController extends Controller
             
           }
 
-          $user = UserInfo::updateOrCreate( [ 'user_id'   =>   $request->user_id ], $request->all());
+          $user = UserInfo::updateOrCreate( [ 'user_id'   =>   $request->id ], $request->all());
           
           
            return redirect()->back();

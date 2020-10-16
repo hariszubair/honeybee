@@ -1,4 +1,15 @@
 <!DOCTYPE html>
+ <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script>
+       function onSubmit(token) {
+         document.getElementById("registration").submit();
+       }
+     </script>
+     <style type="text/css">
+         .rc-anchor-light.rc-anchor-normal {
+            width: 80%
+         }
+     </style>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -92,9 +103,37 @@
                     Gone are the days of writing an ad on Seek, sifting through hundreds of <br>
                     resumes or spending hours on interviewing the candidate.
                     </p>
+                    <div class="row" style="padding-top: 0px;padding-bottom: 10px">
+<div class="col-md-6">
+<div class="card">
+<div class="card-header" style="text-align: center;">
+<strong class="card-title">Register as client</strong>
+</div>
+<div class="card-body" style="text-align: center;    color: #238DB7 !important">
+<p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</p>
+</div>
+</div>
+
+</div>
+<div class="col-md-6">
+<div class="card">
+<div class="card-header" style="text-align: center;">
+<strong class="card-title" >Register as Candidate</strong>
+</div>
+<div class="card-body" style="text-align: center;   color: #238DB7 !important">
+<p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</p>
+</div>
+
+</div>
+
+</div>
+        </div>
                 </div>
             </div>
-        </div>
 
 
 
@@ -125,11 +164,7 @@
                     </p>
                     <p><span class="blue">Web</span><br />
                         www.honeybeetech.com.au</p>
-                    <p><span class="blue">Phone</span><br />
-                    Indy - 0424 853 384<br />
-                    Dan - 0499 204 775</p>
-                    <p><span class="blue">Email</span><br />
-                    admin@honeybeerecruiting.com.au </p>
+                    
                 </div>
                 <div class="col-md-4  col-12 " id="form_name_text_wrapper" style="padding-left: 0px;padding-right: 0px">
                     <form method="Post" id="contact_form">
@@ -143,7 +178,7 @@
                             </div>
                         </div>
                          <div class="form-group row">
-                            <label for="form_email" class="col-md-4 col-form-label text-md-right" style="padding-left: 0px;">{{ __('E-Mail') }}</label>
+                            <label for="form_email" class="col-md-4 col-form-label text-md-right" style="padding-left: 0px;">{{ __('Email') }}</label>
 
                             <div class="col-md-8">
                                 <input id="form_email" type="email" class="form-control @error('form_email') is-invalid @enderror" name="email" value="{{ old('form_email') }}" required autocomplete="form_email">
@@ -155,6 +190,21 @@
                             <div class="col-md-8">
                                 <textarea id="form_message" type="text" class="form-control " name="form_message" rows="9" required autocomplete="form_message"  requiredstyle="resize: none;"></textarea>
                             </div>
+                        </div>
+                        <div class="form-group row" style="width: 80%">
+                                <label class="col-md-4 col-form-label text-md-right"></label>
+                                <div class="g-recaptcha col-md-6" data-sitekey="6LdmZdEZAAAAAOZrXQ5XRAcMLVjJXsDj4ZvSRPuj">
+                                    
+                                </div>
+                                 <label class="col-md-4 col-form-label text-md-right"></label>
+                                <div class="col-md-6">
+
+                                @if($errors->has('g-recaptcha-response'))
+                                    <span class="invalid-feedback" style="display: block">
+                                        <strong>{{$errors->first('g-recaptcha-response')}}</strong>
+                                    </span>
+                                    @endif
+                                </div>
                         </div>
                         <div class="form-group row" >
                             <label for="form_message" class="col-md-4 col-form-label text-md-right" style="padding-left: 0px;"></label>
@@ -179,14 +229,21 @@
    
 $('#contact_form').on('submit',function(evt) {
     evt.preventDefault();
-            swal("Message Sent", "We will contact you within 48 hours", "success");  
+     if(grecaptcha.getResponse() == "") {
+    alert("Please verify you are not a robot");
+    return false;
+  }
+
+            swal("Message Sent", "We will contact you soon", "success"); 
+                var data= $('#contact_form').serialize();
                 $('#contact_form')[0].reset();
+                grecaptcha.reset();
     $.ajax({
           headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           },
             url:'./contact_us',
-            data:$('#contact_form').serialize(),
+            data:data,
             type:'POST',
              // dataType: "json",
             success:function(data){

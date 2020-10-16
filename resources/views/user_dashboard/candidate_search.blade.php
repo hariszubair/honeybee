@@ -30,6 +30,18 @@
 padding-left: 10px;
 padding-right: 10px;
 }
+
+element.style {
+    width: 153px;
+}
+.select2-container {
+    color: #272f66 !important;
+    margin-right: 5px;
+    outline: none;
+    font-size: 11px;
+    padding-top: 15px;
+}
+.select2-selection:hover {background-color: #ddd}
 .select2-container--default .select2-selection--single .select2-selection__placeholder{
   color:#272f66 !important;
 
@@ -123,7 +135,11 @@ background: #fff;
 border-radius: 50px;
 border-color: #272f66;
 }
-
+.dataTables_wrapper .dataTables_processing {
+  background: #fffff00;
+  border: 0;
+  color:white;
+}
 .page-item.active .page-link:hover {
     /* z-index: 2; */
     color: #272f66;
@@ -312,7 +328,7 @@ color:black !important;
 @endif
 <div id='page'>
 
-  <div class="row" style="z-index: 99999;width: 100%;margin:0;padd" id='plan'>
+  <div class="row" style="z-index: 99999;width: 100%;margin:0;padding-bottom: 20px" id='plan'>
     <div class="col-lg-12" style="padding-right: 0;padding-left: 0">
 <div class="card" >
 <div class="card-header">
@@ -353,10 +369,7 @@ color:black !important;
     <div class="col" style="text-align: right;padding-right: 0;color: #272f66;font-size: 10px;float: left;width: 55%" id='result' >
       
     </div>
-    <div style="float: left;font-size: 12px;width:100%">
-    Click on most recent work experience to view all candidate details
-    </div>
-  </div>
+     </div>
 </div>
 </div>
 </div>
@@ -465,7 +478,7 @@ color:black !important;
                           <th >Last Updated</th>
                         </tr>
                       </thead>
-                      <tbody style="border:0">
+                      <tbody style="border:0" title="Click on the most recent work experience to view candidate detail">
                      
                       </tbody>
                     </table>
@@ -539,10 +552,14 @@ color:black !important;
 <script type="text/javascript">
 	
 	$(document).ready(function() {
-    console.log('<?php echo Session::has('success'); ?>')
-    if('<?php echo Session::has('success'); ?>'){
+    if('<?php echo Session::get('success'); ?>'=='Payment successful!'){
       swal("Payment Successful", "Thanks for the payment.   Click on Short Listed Menu tab to view Short listed candidates. Your selected candidates are available for only 7 days. After 7 days you cant view their personal details", "success");
     }
+    if('<?php echo Session::get('success'); ?>' == 'View Candidate'){
+
+             swal("Welcome!!!", "To view candidates please select a role.", "success");
+
+        }
     // table= $('#candidate_search').DataTable();
   
     $('.js-example-basic-single').select2({});
@@ -877,7 +894,7 @@ function resume(clicked){
                   $.each(data.experiences, function( index, experience ) {
                   $('#all_experiences').html(
                     $('#all_experiences').html()+
-                    experience.previous_company+' ('+experience.no_of_employees+' Employees'+')<br>'+experience.job_from+' to '+experience.job_to+'<br>'+experience.job_title
+                    '<b>'+experience.previous_company+'</b> ('+experience.no_of_employees+' Employees'+')<br>'+experience.job_from+' to '+experience.job_to+'<br>'+experience.job_title
                       );
                   if(experience.ex_responsibilities != null){
                     var responsibilities=experience.ex_responsibilities.split(/\n/g);
@@ -936,14 +953,31 @@ function resume(clicked){
                  var ageDifMs = Date.now() - dob.getTime();
               var ageDate = new Date(ageDifMs); // miliseconds from epoch
                var age= Math.abs(ageDate.getUTCFullYear() - 1970);
+                if(data.userinfo.personal_summary){
+                  var personal_detail='<b>Personal Summary: </b>'+data.userinfo.personal_summary+'<br>';
+                }
+                else{
+                  var personal_detail=''
+                }
+                 if(data.userinfo.work_experience){
+                  var work_experience='<b>Work Experience Summary: </b>'+data.userinfo.work_experience+'<br>';
+                }
+                else{
+                  var work_experience=''
+                }
+                if(data.userinfo.availability){
+                  var available=data.userinfo.availability+ ' available.<br>';
+                }
+                else{
+                  var available=''
+                }
                   $('#personal_detail').html(
                       '<b>Email: </b>'+'<i class="fas fa-lock"></i><br>'+
-                      '<b>Phone #: </b>'+'<i class="fas fa-lock"></i><br>'+
-                      age+ ' Years old <br>'+
-                      '<b>Personal Summary: </b>'+data.userinfo.personal_summary+'<br>'+
-                      '<b>Work Experience Summary: </b>'+data.userinfo.work_experience+'<br>'+
-                      data.userinfo.availability+ ' available.<br>'+
-                      '<b>Full Street address: </b>'+'<i class="fas fa-lock"></i><br>'+
+                      '<b>Phone: </b>'+'<i class="fas fa-lock"></i><br>'+
+                      '<b>Age: </b>'+age+ ' Years old <br>'+
+                      personal_detail+
+                      work_experience+
+                      available+
                      '<b>City: </b>'+data.userinfo.city+
                      '<br><b>State: </b>'+data.userinfo.state+
                      '<br><b>Have a car: </b>'+have_car+
@@ -965,10 +999,10 @@ $(window).scroll(function(e) {
   if ( $(window).scrollTop() > 147) {
     $('#plan').addClass("fixed_top");
     if($( window ).width() <600){
-    $('#filter_div').css('padding-top','235px')
+    $('#filter_div').css('padding-top','255px')
     }
     else{
-    $('#filter_div').css('padding-top','170px')
+    $('#filter_div').css('padding-top','190px')
     }  
 
   } else {
@@ -1000,71 +1034,74 @@ $('#reset_selection').click(function(evt) {
             }
          });
 });
-$( "#proceed_button" ).click(function( event ) {
-  event.preventDefault();
- var  membership=<?php echo Auth::user()->userinfo->membership; ?>;
-  if(membership == 1){
-    if($('#count').val() > 10){
-       swal("Upgrade Membership!!!", "Kindly upgrade your membership to proceed with "+ $('#count').val()+ " candidates.", "info"); 
-                return false;
-    }
-    if($('#count').val() == 10){
-    var message='You have selected 10 candidates. Do you want to proceed?'
-    }
-    else{
-      var diff=10-$('#count').val();
-    var message='You can select '+ diff + ' more candidate(s). Do you want to proceed with selected candidates?'
-    }
+// $( "#proceed_button" ).click(function( event ) {
+//   event.preventDefault();
+//  var  membership=<?php echo Auth::user()->userinfo->membership; ?>;
+//   if(membership == 1){
+//     if($('#count').val() > 10){
+//        swal("Upgrade Membership!!!", "Kindly upgrade your membership to proceed with "+ $('#count').val()+ " candidates.", "info"); 
+//                 return false;
+//     }
+//     if($('#count').val() == 10){
+//     var message='You have selected 10 candidates. Do you want to proceed?'
+//     }
+//     else{
+//       var diff=10-$('#count').val();
+//     var message='You can select '+ diff + ' more candidate(s). Do you want to proceed with selected candidates?'
+//     }
 
-  }
-  else if(membership == 2){
-    if($('#count').val() == 20){
-    var message='You have selected 20 candidates. Do you want to proceed?'
-    }
-    else{
-      var diff=20-$('#count').val();
-    var message='You can select '+ diff + ' more candidate(s). Do you want to proceed with selected candidates?'
-    }
+//   }
+//   else if(membership == 2){
+//     if($('#count').val() == 20){
+//     var message='You have selected 20 candidates. Do you want to proceed?'
+//     }
+//     else{
+//       var diff=20-$('#count').val();
+//     var message='You can select '+ diff + ' more candidate(s). Do you want to proceed with selected candidates?'
+//     }
 
-  }
+//   }
 
- swal({
-      title: "Are you sure?",
-      text: message,
-      icon: "info",
-      showConfirmButton: true,
-      confirmButtonColor: '#8CD4F5',
-      buttons: [
-        'No!',
-        'Yes, Proceed!'
-      ],
-      dangerMode: false,
-    }).then(function(isConfirm) {
-      if (isConfirm) {
-      $('#selected_candidates_form').submit()
-      }
-      else{
-      event.preventDefault();
-      } 
-    })
+//  swal({
+//       title: "Are you sure?",
+//       text: message,
+//       icon: "info",
+//       showConfirmButton: true,
+//       confirmButtonColor: '#8CD4F5',
+//       buttons: [
+//         'No!',
+//         'Yes, Proceed!'
+//       ],
+//       dangerMode: false,
+//     }).then(function(isConfirm) {
+//       if (isConfirm) {
+//       $('#selected_candidates_form').submit()
+//       }
+//       else{
+//       event.preventDefault();
+//       } 
+//     })
 
-});
+// });
 $( "#pay_now" ).click(function( event ) {
   event.preventDefault();
  var  membership=<?php echo Auth::user()->userinfo->membership; ?>;
  var message=''
-  if(!$('#count').val())
+  if(!$('#count').val() || $('#count').val()==0)
   {
      swal("No Candidate Selected!!!", "Kindly select candidates to proceed.", "info"); 
                 return false;
   }
     else if(parseInt($('#count').val()) < 5){
       $diff=5-$('#count').val();
-      message="Do you want to select "+ $diff+ " more candidates.";
+      var package='basic';
+      message="You can select "+$diff+" more candidates. If you don't select them now then you will not be able to select more candidates as part of this subscription later. Do you want to continue with "+$diff+" candidates."
     }
    else if(parseInt($('#count').val()) > 5 &&  parseInt($('#count').val()) < 10 ){
+        event.preventDefault();
      $diff=10-$('#count').val();
-      message="Do you want to select "+ $diff+ " more candidates.";
+      var package='premium';
+      message="You can select "+$diff+" more candidates. If you don't select them now then you will not be able to select more candidates as part of this subscription later. Do you want to continue with "+$diff+" candidates."
     }
     else if(parseInt($('#count').val()) == 5 || parseInt($('#count').val()) == 10 ){
           swal({
@@ -1093,23 +1130,22 @@ $( "#pay_now" ).click(function( event ) {
 
 
  swal({
-      title: "Limit Available!!!",
+      title: "Limit Available!!!.You have  chosen "+package+" package",
       text: message,
       icon: "info",
       showConfirmButton: true,
       confirmButtonColor: '#8CD4F5',
       buttons: [
-        'No, Proceed!',
-        'Yes!'
+        'No, choose more!',
+        'Yes, proceed!'
       ],
       dangerMode: false,
     }).then(function(isConfirm) {
       if (isConfirm) {
-      event.preventDefault();
-
+      $('#pay_form').submit()
       }
       else{
-        $('#pay_form').submit()
+      event.preventDefault();
       } 
     })
 

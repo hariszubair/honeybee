@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class BasicMembership
+class WithProfile
 {
     /**
      * Handle an incoming request.
@@ -17,7 +17,7 @@ class BasicMembership
     public function handle($request, Closure $next)
     {
         $user=Auth::user();
-        if($user->userinfo->membership == 1)
+        if($user->userinfo)
         {
             return $next($request);
         }

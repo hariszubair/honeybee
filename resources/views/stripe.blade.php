@@ -109,9 +109,9 @@
                                 <label class='control-label'>Membership</label> 
                                 <select name='membership' required class="form-control">
                                     @if(Auth::user()->unconfirmed_selected_candidates->count() <= 5)
-                                    <option value="1">Basic Membership ($200)</option>
+                                    <option value="1">Basic Membership (AUD $200)</option>
                                     @else (Auth::user()->unconfirmed_selected_candidates->count() <= 10)
-                                    <option value="2">Premium Membership ($300)</option>
+                                    <option value="2">Premium Membership (AUD $300)</option>
                                     @endif
                                 </select>
                             </div>
@@ -128,7 +128,7 @@
                              <h4 style="padding-top: 0">You have selected {{Auth::user()->unconfirmed_selected_candidates->count()}} candidate(s)</h4>
                          </div>
                             <div class="col-xs-3">
-                                <button class="btn btn-primary btn-lg btn-block" type="submit" style="background-color:#238db7">Pay Now</button>
+                                <button class="btn btn-success btn-lg btn-block" type="submit" >Pay Now</button>
                             </div>
                         </div>
                           

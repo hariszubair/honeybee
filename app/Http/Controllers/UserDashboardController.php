@@ -19,6 +19,7 @@ use \Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Yajra\Datatables\Datatables;
 use Mail;
+use Session;
 class UserDashboardController extends Controller
 {
     /**
@@ -274,10 +275,14 @@ class UserDashboardController extends Controller
         });
           }
           if(Auth::user()->hasRole('Client')){
+             if($user->wasRecentlyCreated){
+            Session::flash('success', 'View Candidate');
+             }
               return redirect('candidate_search_view');
              // updateOrCreate performed create
           }
           else{
+        Session::flash('success', 'Profile Update');
             return redirect('profile');
           }     
          
@@ -369,7 +374,16 @@ class UserDashboardController extends Controller
               //   $years++;
               // }
               // // ($years <= 1 ? $years.= ' year ' : $years.= ' years ');
-              ($months <= 1 ? $months.= ' month' : $months.= ' months');
+              if ($months == 0) {
+               $months= 'Less than 1 month';
+              }
+              elseif($months <= 1){
+                $months.= ' month'; 
+              }
+              else{
+                $months.= ' months';  
+              }
+              // ($months <= 1 ? $months.= ' month' : $months.= ' months');
               // ($days <= 1 ? $days.= ' day' : $days.= ' days');
               $data='';
               $responsibility='';
@@ -379,8 +393,8 @@ class UserDashboardController extends Controller
               else{
                 $responsibility='<br>'.$row->recent_experience->ex_responsibilities;
               }
-              $data.='<a type="button" class="resume" id="'.$row->user_id.'"" style="color:#272f66" onclick="resume($(this))"><b>'.$row->recent_experience->previous_company.'</b></a>';
-              $data.='<br>'.$row->recent_experience->job_title.' ('.$months.')'.$responsibility;
+              $data.='<a type="button" class="resume" id="'.$row->user_id.'"" style="color:#272f66" onclick="resume($(this))"><div><b>'.$row->recent_experience->previous_company.'</b>';
+              $data.='<br>'.$row->recent_experience->job_title.' ('.$months.')'.$responsibility.'</div></a>';
 
               return $data;
             })->addColumn('cuisine',function($row) {
@@ -523,8 +537,17 @@ class UserDashboardController extends Controller
               // if($months >=7){
               //   $years++;
               // }
+              if ($months == 0) {
+               $months= 'Less than 1 month';
+              }
+              elseif($months <= 1){
+                $months.= ' month'; 
+              }
+              else{
+                $months.= ' months';  
+              }
               // ($years <= 1 ? $years.= ' year ' : $years.= ' years ');
-              ($months <= 1 ? $months.= ' month' : $months.= ' months');
+              // ($months <= 1 ? $months.= ' month' : $months.= ' months');
               // ($days <= 1 ? $days.= ' day' : $days.= ' days');
               $data='';
               $responsibility='';
@@ -534,8 +557,8 @@ class UserDashboardController extends Controller
               else{
                 $responsibility='<br>'.$row->recent_experience->ex_responsibilities;
               }
-              $data.='<a type="button" class="resume" id="'.$row->user_id.'"" style="color:#272f66" onclick="resume($(this))"><b>'.$row->recent_experience->previous_company.'</b></a>';
-            $data.='<br>'.$row->recent_experience->job_title.' ('.$months.')'.$responsibility;
+              $data.='<a type="button" class="resume" id="'.$row->user_id.'"" style="color:#272f66" onclick="resume($(this))"><b>'.$row->recent_experience->previous_company.'</b>';
+            $data.='<br>'.$row->recent_experience->job_title.' ('.$months.')'.$responsibility.'</a>';
 
               return $data;
             })->escapeColumns([])->make(true);

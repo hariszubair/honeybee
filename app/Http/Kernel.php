@@ -68,7 +68,7 @@ class Kernel extends HttpKernel
         'NonMember' => \App\Http\Middleware\NonMember::class,
         'Member' => \App\Http\Middleware\Member::class,
         'CanProceed' => \App\Http\Middleware\CanProceed::class,
-        'BasicMembership' => \App\Http\Middleware\BasicMembership::class,
+        'WithProfile' => \App\Http\Middleware\WithProfile::class,
         'PremiumMembership' => \App\Http\Middleware\PremiumMembership::class,
         'CanNotProceed' => \App\Http\Middleware\CanNotProceed::class,
         'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,

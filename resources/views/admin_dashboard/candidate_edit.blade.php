@@ -26,6 +26,7 @@
                                     <label for="text-input" class=" form-control-label">Are your basic details correct?</label>
                                 </div>
                                 <div class="col-12 col-md-8">
+                                     <input class="form-control" value="{{$user_info[0]->user_id}}" name='id' required readonly style="display: none">
                                     <input type="radio" id="basic_correct_yes" name="basic_correct" value="1" checked>
                                     <label for="male">Yes</label>
                                     <input type="radio" id="basic_correct_no" name="basic_correct" value="0" <?php  echo isset($user_info[0]) &&  $user_info[0]->basic_correct ? '': 'checked';?> >

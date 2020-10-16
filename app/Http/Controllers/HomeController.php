@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Mail;
+use Validator;
 class HomeController extends Controller
 {
     /**
@@ -13,7 +14,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('auth','verified');
+        // $this->midd leware('auth','verified');
     }
 
     /**
@@ -32,8 +33,9 @@ class HomeController extends Controller
       $message=$request->form_message;
 
         Mail::send('emails.form_submit', ['name' => $name,'messages'=>$message, 'email'=>$email], function ($m) {
+            $m->replyTo('admin@honeybeerecruiting.com.au');
             $m->from('mail@honeybeetech.com.au', 'Honey Bee');
-            $m->to('admin@honeybeerecruiting.com.au', 'Indy')->subject('Contact Us form submission');
+            $m->to('indradeep.mazumdar@gmail.com', 'Indy')->subject('Contact Us form submission');
         });
         // return 1;
     }

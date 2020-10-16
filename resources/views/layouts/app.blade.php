@@ -44,6 +44,12 @@
     <!-- Styles -->
     <link href="{{ asset('public/css/app.css') }}" rel="stylesheet">
 </head>
+<!-- <style type="text/css">
+@font-face {
+    font-family: Poppins,sans-serif;
+    src: url('https://fonts.googleapis.com/css?family=Poppins,sans-serif');
+}
+</style> -->
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">

@@ -6,9 +6,11 @@
             <!-- HEADER DESKTOP-->
             <header class="header-desktop" style="background-color: #f5f5f5">
                 <div style="padding-left:5%;padding-right: 5% ">
-                    <a href="#" >
-                    <img style="width: 200px;height: 50px" src="{{ asset('public/images/honey_bee.png') }}" alt="Honey Bee" />
-                </a> 
+                   <a class="navbar-brand" href="{{ url('/') }}">
+                    
+                        <img src="{{ asset('public/images/honey_bee.png') }}" alt="Honey Bee"  width="200" class="img-fluid" />
+                   
+                </a>
                 </div>
                
                 
@@ -52,6 +54,9 @@
                                 Candidate </a>
                                  <a class="list-group-item list-group-item-action" id="list-candidate_search_view-list" data-toggle="list" role="tab"  href="{{ URL('all_clients') }}" style="color: #238DB7 !important;width: auto !important;padding-right: 0;padding-left: 0;margin-right: 20px">
                                 Client </a>
+                    @endif
+                     @if($current_user->hasAnyRole(['Admin']))
+
                     @endif
 
       

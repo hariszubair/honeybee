@@ -152,6 +152,9 @@
 <script type="text/javascript">
     
     $(document).ready(function() {
+
+        
+
     $('.js-example-basic-single').select2({});
     if('<?php echo $user->userinfo->restaurant_type; ?>' == 'Other')
     {

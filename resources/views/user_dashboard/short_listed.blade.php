@@ -156,7 +156,7 @@ Please click on recent work experience to view candidate’s personal details (e
                           <th >Selected On</th>
                         </tr>
                       </thead>
-                      <tbody style="border:0">
+                      <tbody style="border:0" title="Click on the most recent work experience to view candidate detail">
                      
                       </tbody>
                     </table>
@@ -332,7 +332,7 @@ function resume(clicked){
                   $.each(data.experiences, function( index, experience ) {
                   $('#all_experiences').html(
                     $('#all_experiences').html()+
-                    experience.previous_company+' ('+experience.no_of_employees+' Employees'+')<br>'+experience.job_from+' to '+experience.job_to+'<br>'+experience.job_title
+                    '<b>'+experience.previous_company+'</b> ('+experience.no_of_employees+' Employees'+')<br>'+experience.job_from+' to '+experience.job_to+'<br>'+experience.job_title
                       );
                   if(experience.ex_responsibilities != null){
                     var responsibilities=experience.ex_responsibilities.split(/\n/g);
@@ -382,14 +382,31 @@ function resume(clicked){
                  var ageDifMs = Date.now() - dob.getTime();
               var ageDate = new Date(ageDifMs); // miliseconds from epoch
                var age= Math.abs(ageDate.getUTCFullYear() - 1970);
+               if(data.userinfo.personal_summary){
+                  var personal_detail='<b>Personal Summary: </b>'+data.userinfo.personal_summary+'<br>';
+                }
+                else{
+                  var personal_detail=''
+                }
+                 if(data.userinfo.work_experience){
+                  var work_experience='<b>Work Experience Summary: </b>'+data.userinfo.work_experience+'<br>';
+                }
+                else{
+                  var work_experience=''
+                }
+                if(data.userinfo.availability){
+                  var available=data.userinfo.availability+ ' available.<br>';
+                }
+                else{
+                  var available=''
+                }
                   $('#personal_detail').html(
                       '<b>Email: </b>'+data.userinfo.email+'<br>'+
-                      '<b>Phone #: </b>'+data.userinfo.phone_number+'<br>'+
-                      age+ ' Years old <br>'+
-                      '<b>Personal Summary: </b>'+data.userinfo.personal_summary+'<br>'+
-                      '<b>Work Experience Summary: </b>'+data.userinfo.work_experience+'<br>'+
-                      data.userinfo.Availability+ ' available.<br>'+
-                      '<b>Full Street address: </b>'+data.userinfo.street_address+'<br>'+
+                      '<b>Phone: </b>'+data.userinfo.phone_number+'<br>'+
+                      '<b>Age: </b>'+age+ ' Years old <br>'+
+                       personal_detail+
+                      work_experience+
+                      available+
                      '<b>City: </b>'+data.userinfo.city+
                      '<br><b>State: </b>'+data.userinfo.state+
                      '<br><b>Have a car: </b>'+have_car+
