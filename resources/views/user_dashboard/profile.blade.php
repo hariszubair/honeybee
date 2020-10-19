@@ -1130,11 +1130,13 @@
                     for (var i = 0 ; i <= counterr; i++) {
                         var job_to=$("input[name='experience["+i+"][job_to]']").val().split("-");
                         var job_from=$("input[name='experience["+i+"][job_from]']").val().split("-");
+                         if($("input[name='experience["+i+"][job_to]']").val()){
                         if( new Date(job_to[2], job_to[1] - 1, job_to[0]) <= new Date(job_from[2], job_from[1] - 1, job_from[0]))
                         {
                             alert('Job starting date '+ $("input[name='experience["+i+"][job_to]']").val()+ ' cant be less than '+ $("input[name='experience["+i+"][job_from]']").val());
                             temp_counter++;
                         }
+                    }
                         if($("input[name='experience["+i+"][job_to]']").val()){
                        expected_exp += Math.ceil((new Date(job_to[2], job_to[1] - 1, job_to[0]) - new Date(job_from[2], job_from[1] - 1, job_from[0]))/ (1000 * 60 * 60 * 24));
                    }
