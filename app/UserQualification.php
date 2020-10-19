@@ -11,17 +11,18 @@ class UserQualification extends Model
      *
      * @var array
      */
-    protected $fillable = [ 
- 	    'qualification_name','qualification_date'
-    ];
-
+   
+    
     public function user()
 	{
 		return $this->belongsTo('App\User');
 	}
+   
     public function getQualificationDateAttribute($value)
     {
         $date=date_create($value);
         return date_format($date,"d-M-Y");
     }
+
+  
 }

@@ -194,6 +194,8 @@ class UserDashboardController extends Controller
 
       foreach ($experiences as $experience)
       {
+       $experience['job_from']=Carbon::parse($experience['job_from'])->format('Y-m-d');
+       $experience['job_to']=Carbon::parse($experience['job_to'])->format('Y-m-d');
         if($experience != null) {
           DB::insert('insert into user_experiences (user_id, job_title,job_from,job_to,previous_company,ex_role,ex_responsibilities,no_of_employees	) values (?, ?,?, ?,?, ?,?,? )', [ $user_Id , $experience['job_title'],$experience['job_from'],$experience['job_to'],$experience['previous_company'],'',$experience['ex_responsibilities'],$experience['no_of_employees']]);
         }
@@ -211,7 +213,7 @@ class UserDashboardController extends Controller
 
       foreach ($qualifications as $qualification)
       {
-        
+        $qualification['qualification_date']=Carbon::parse($qualification['qualification_date'])->format('Y-m-d');
          DB::insert('insert into user_qualifications (user_id, 	qualification_name,qualification_date	) values (?, ?,?)', [ $user_Id , $qualification['qualification_name'],$qualification['qualification_date']]);
       } 
       return true;
@@ -266,7 +268,10 @@ class UserDashboardController extends Controller
              $request->merge(['relocate_state' => null]);
             
           }
-
+             $request->merge(['date_birth' => Carbon::parse($request->date_birth)->format('Y-m-d')]);
+          
+        // $request->date_birth=Carbon::parse($request->date_birth)->format('Y-m-d');
+        
           $user = UserInfo::updateOrCreate( [ 'user_id'   =>   Auth::user()->id ], $request->all());
           if($user->wasRecentlyCreated){
             Mail::send('emails.profile', ['user'=>$user], function ($m) {
@@ -393,8 +398,8 @@ class UserDashboardController extends Controller
               else{
                 $responsibility='<br>'.$row->recent_experience->ex_responsibilities;
               }
-              $data.='<a  class="resume" id="'.$row->user_id.'" style="color:#272f66;" onclick="resume($(this))"><b>'.$row->recent_experience->previous_company.'</b>';
-              $data.='<br>'.$row->recent_experience->job_title.' ('.$months.')'.$responsibility.'</a>';
+              $data.='<div style="color:#272f66;background-color:#fffff00"><a type="button" class="resume" id="'.$row->user_id.'" style="color:#272f66;background-color:#fffff00" onclick="resume($(this))"><b>'.$row->recent_experience->previous_company.'</b>';
+              $data.='<br>'.$row->recent_experience->job_title.' ('.$months.')'.$responsibility.'</a></div>';
 
               return $data;
             })->addColumn('cuisine',function($row) {

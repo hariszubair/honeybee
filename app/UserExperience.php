@@ -29,4 +29,15 @@ class UserExperience extends Model
         $date=date_create($value);
         return date_format($date,"d-M-Y");
     }
+     public function setJobToAttribute($value)
+    {
+      $date=date_create($value);   
+        $this->attributes['job_to'] = date_format($date,"Y-m-d");
+    }
+     public function setJobFromAttribute($value)
+    {
+      $date=date_create($value);   
+        $this->attributes['job_from'] = date_format($date,"Y-m-d");
+    }
+
 }

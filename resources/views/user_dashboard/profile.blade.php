@@ -1,10 +1,21 @@
 @extends('layouts.master')
 
 @section('content')
+    <link rel="stylesheet" href="{{asset('public/css/datepicker.min.css')}}">
+
 <style type="text/css">
     .select2-selection__rendered{
         padding-bottom: 5px !important; 
     }
+    .select2-selection--multiple:before {
+    content: "";
+    position: absolute;
+    right: 7px;
+    top: 42%;
+    border-top: 5px solid #888;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+}
 </style>
 <form id="main_form" method="post" action="./user-profile-update" >
     {!! csrf_field() !!}
@@ -174,7 +185,9 @@
                                     <label for="text-input" class=" form-control-label">Date of birth</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="date" id="date_birth" name="date_birth" placeholder="Date of birth" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->date_birth: '';?>">
+                                    <!-- input type="date" id="date_birth" name="date_birth"  class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->date_birth: '';?>"> -->
+
+                                    <input data-toggle="datepicker"  name="date_birth" id='date_birth' class="form-control" placeholder="Date of birth" autocomplete="off"  readonly='true' value="<?php  echo isset($user_info[0]) ?  date_format(date_create($user_info[0]->date_birth),"d-m-Y")  : '';?>" required>
                                    
                                 </div>
                             </div>
@@ -196,7 +209,7 @@
                                     <label for="text-input" class=" form-control-label">City:</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text" id="text-input" name="city" placeholder="City" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->city:'';?>" onkeyup="this.value=this.value.replace(/[^a-z]/g,'');">
+                                    <input type="text" id="text-input" name="city" placeholder="City" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->city:'';?>" onkeyup="this.value=this.value.replace(/[^a-zA-Z]/g,'');">
                                    
                                 </div>
                             </div>
@@ -220,7 +233,7 @@
                                     <label for="text-input" class=" form-control-label">Suburb:</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text" id="text-input" name="suburb" placeholder="Suburb" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->suburb: '';?>" onkeyup="this.value=this.value.replace(/[^a-z]/g,'');">
+                                    <input type="text" id="text-input" name="suburb" placeholder="Suburb" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->suburb: '';?>" onkeyup="this.value=this.value.replace(/[^a-zA-Z]/g,'');">
                                    
                                 </div>
                             </div>     
@@ -322,10 +335,10 @@
 
                                     <select style="display: none;" name="travel_distance" id='travel_distance' class="form-control"  >
                                         <option  value="">Select distance</option>
-                                        <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='10' ?  'selected': ''}} value="10">10km</option>
-                                        <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='20' ?  'selected': ''}} value="20">20km</option>
-                                        <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='50' ?  'selected': ''}} value="50">50km</option>
-                                        <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='100' ?  'selected': ''}} value="100">100km</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='10' ?  'selected': ''}} value="10">10 km</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='20' ?  'selected': ''}} value="20">20 km</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='50' ?  'selected': ''}} value="50">50 km</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='100' ?  'selected': ''}} value="100">100 km</option>
                                     </select>
                                    
                                 </div>
@@ -359,9 +372,9 @@
                                     <select type="number" id="yr_experience" name="yr_experience"  class="form-control" required value="">
                                         <option value="">Please select the following</option>
                                         <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='Less than 1 year' ?  'selected': ''}} value="Less than 1 year">Less than 1 year</option>
-                                        <option  {{isset($user_info[0]) && $user_info[0]->yr_experience=='1-3 years' ?  'selected': ''}} value="1-3 years">1- 3 years</option>
-                                        <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='3-5 years' ?  'selected': ''}} value="3-5 years">3-5 years</option>
-                                        <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='5-10 years' ?  'selected': ''}}  value="5-10 years">5-10 years</option>
+                                        <option  {{isset($user_info[0]) && $user_info[0]->yr_experience=='1 - 3 years' ?  'selected': ''}} value="1 - 3 years">1 - 3 years</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='3 - 5 years' ?  'selected': ''}} value="3 - 5 years">3 - 5 years</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='5 - 10 years' ?  'selected': ''}}  value="5 - 10 years">5 - 10 years</option>
                                         <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='More than 10 years' ?  'selected': ''}}  value="More than 10 years">More than 10 years</option>
                                     </select>
                                    
@@ -418,10 +431,16 @@
                                         <label for="text-input" class=" form-control-label"> Period of Employment : </label>
                                     </div>
                                     <div class="col col-md-4">
-                                        <input type="date" required id="text-input" name="experience[<?php echo $experience_counter ?>][job_from]" placeholder="From" class="form-control"  value="<?php echo  date("Y-m-d", strtotime($user_experience->job_from)); ?>">
+                                        <input data-toggle="datepicker"  name="experience[<?php echo $experience_counter ?>][job_from]" id='text-input' class="form-control" placeholder="From" autocomplete="off"  readonly='true' value="<?php  echo isset($user_info[0]) ?  date_format(date_create($user_experience->job_from),"d-m-Y")  : '';?>" required>
+
+
+                                        <!-- <input type="date" required id="text-input" name="experience[<?php echo $experience_counter ?>][job_from]" placeholder="From" class="form-control"  value="<?php echo  date("Y-m-d", strtotime($user_experience->job_from)); ?>"> -->
                                     </div>
                                     <div class="col col-md-4">
-                                        <input type="date" id="text-input" name="experience[<?php echo $experience_counter ?>][job_to]" placeholder="To" class="form-control"  value="<?php echo date("Y-m-d", strtotime($user_experience->job_to)); ?>">
+                                         <input data-toggle="datepicker"  name="experience[<?php echo $experience_counter ?>][job_to]" id='text-input' class="form-control" placeholder="To" autocomplete="off"  readonly='true' value="<?php  echo isset($user_info[0]) ?  date_format(date_create($user_experience->job_to),"d-m-Y")  : '';?>" required>
+
+                                        <!-- 
+                                        <input type="date" id="text-input" name="experience[<?php echo $experience_counter ?>][job_to]" placeholder="To" class="form-control"  value="<?php echo date("Y-m-d", strtotime($user_experience->job_to)); ?>"> -->
                                     </div>
                                 
                                 </div>
@@ -497,10 +516,12 @@
                                     <label for="text-input" class="form-control-label"> Period of Employment : </label>
                                 </div>
                                 <div class="col col-md-4">
-                                    <input type="date" required id="text-input" name="experience[0][job_from]" placeholder="From" class="form-control"  value="">
+                                    <input data-toggle="datepicker"  name="experience[0][job_from]" id='text-input' class="form-control" placeholder="From" autocomplete="off"  readonly='true' value="" required>
+                                    <!-- <input type="date" required id="text-input" name="experience[0][job_from]" placeholder="From" class="form-control"  value=""> -->
                                 </div>
                                 <div class="col col-md-4">
-                                    <input type="date" id="text-input" name="experience[0][job_to]" placeholder="To" class="form-control"  value="">
+                                    <input data-toggle="datepicker"  name="experience[0][job_to]" id='text-input' class="form-control" placeholder="To" autocomplete="off"  readonly='true' value="" required>
+                                    <!-- <input type="date" id="text-input" name="experience[0][job_to]" placeholder="To" class="form-control"  value=""> -->
                                 </div>
                                
                             </div>
@@ -611,7 +632,9 @@
                                         <label for="text-input" class=" form-control-label"> Date of certificate : </label>
                                     </div>
                                     <div class="col col-md-9">
-                                        <input type="date" id="text-input" name="qualifications[<?php echo $certificate_counter ?>][qualification_date]" placeholder="Date of Qualification" class="form-control"  value="<?php echo  date("Y-m-d", strtotime($user_qualification->qualification_date)); ?>" required>
+                                         <input data-toggle="datepicker"  name="qualifications[<?php echo $certificate_counter ?>][qualification_date]" id='text-input' class="form-control" placeholder="Date of Qualification" autocomplete="off"  readonly='true'  value="<?php echo  date_format(date_create($user_qualification->qualification_date),"d-m-Y"); ?>" required>
+                                       
+                                    
                                     </div>
                                     
                                     
@@ -652,7 +675,10 @@
                                     <label for="text-input" class=" form-control-label"> Date of certificate : </label>
                                 </div>
                                 <div class="col col-md-9">
-                                    <input type="date" id="text-input" name="qualifications[0][qualification_date]" placeholder="Date of Qualification" class="form-control"  value="" required>
+                                     <input data-toggle="datepicker"  name="qualifications[0][qualification_date]" id='text-input' class="form-control" placeholder="Date of Qualification" autocomplete="off"  readonly='true'  value="" required>
+<!-- 
+
+                                    <input type="date" id="text-input" name="qualifications[0][qualification_date]" placeholder="Date of Qualification" class="form-control"  value="" required> -->
                                 </div>
                                
                                
@@ -812,6 +838,7 @@
     </div>
     </form>
     <script src="{{asset('public/js/select2.multi-checkboxes.js')}}"></script>
+       <script src="{{asset('public/js/datepicker.min.js')}}"></script>
 
 <script type="text/javascript">
     var all_user_info = <?php echo $user_info ?>;
@@ -820,6 +847,10 @@
     $("#otherVisaType").css("display","none");
     $("#otherCousine").css("display","none");
     jQuery(document).ready(function($){
+          $('[data-toggle="datepicker"]').datepicker({
+        autoHide:'true',
+        format: 'dd-mm-yyyy'
+       });
          if('<?php echo Session::has('success'); ?>'){
             swal({
       title: "Profile Updated",
@@ -1097,13 +1128,15 @@
                     var test_responsibilities=0;
 
                     for (var i = 0 ; i <= counterr; i++) {
-                        if($("input[name='experience["+i+"][job_to]']").val() <= $("input[name='experience["+i+"][job_from]']").val())
+                        var job_to=$("input[name='experience["+i+"][job_to]']").val().split("-");
+                        var job_from=$("input[name='experience["+i+"][job_from]']").val().split("-");
+                        if( new Date(job_to[2], job_to[1] - 1, job_to[0]) <= new Date(job_from[2], job_from[1] - 1, job_from[0]))
                         {
                             alert('Job starting date '+ $("input[name='experience["+i+"][job_to]']").val()+ ' cant be less than '+ $("input[name='experience["+i+"][job_from]']").val());
                             temp_counter++;
                         }
                         if($("input[name='experience["+i+"][job_to]']").val()){
-                       expected_exp += Math.ceil((new Date($("input[name='experience["+i+"][job_to]']").val()) - new Date($("input[name='experience["+i+"][job_from]']").val()))/ (1000 * 60 * 60 * 24));
+                       expected_exp += Math.ceil((new Date(job_to[2], job_to[1] - 1, job_to[0]) - new Date(job_from[2], job_from[1] - 1, job_from[0]))/ (1000 * 60 * 60 * 24));
                    }
                   const regex = /\../gm;
                    $.each($("textarea[name='experience["+i+"][ex_responsibilities]']").val().split('\n'), function( index, value ) {
@@ -1133,8 +1166,9 @@
                         })
                         return false
                     }
+                    var temp_dob=$('#date_birth').val().split('-');
 
-                     var dob=new Date($('#date_birth').val());
+                     var dob= new Date(temp_dob[2], temp_dob[1]-1, temp_dob[0]);
                     var ageDifMs = Date.now() - dob.getTime();
                     var ageDate = new Date(ageDifMs); // miliseconds from epoch
                      if(Math.abs(ageDate.getUTCFullYear() - 1970) <16){
@@ -1148,17 +1182,17 @@
                             exp_verification=1;
                         }
                         break;
-                      case "1-3 years":
+                      case "1 - 3 years":
                         if(1 <= parseInt(expected_exp/365) && parseInt(expected_exp/365) < 3){
                             exp_verification=1;
                         }
                         break;
-                        case "3-5 years":
+                        case "3 - 5 years":
                         if(3 <= parseInt(expected_exp/365) && parseInt(expected_exp/365) < 5){
                             exp_verification=1;
                         }
                         break;
-                        case "5-10 years":
+                        case "5 - 10 years":
                         if(5 <= parseInt(expected_exp/365) && parseInt(expected_exp/365) < 10){
                             exp_verification=1;
                         }
@@ -1335,15 +1369,22 @@
                             return false;
                         }
 
-
-
-
-                        if($("input[name='experience["+counterr+"][job_to]']").val() <= $("input[name='experience["+counterr+"][job_from]']").val())
+                         var job_to=$("input[name='experience["+counterr+"][job_to]']").val().split("-");
+                        var job_from=$("input[name='experience["+counterr+"][job_from]']").val().split("-");
+                        if( new Date(job_to[2], job_to[1] - 1, job_to[0]) <= new Date(job_from[2], job_from[1] - 1, job_from[0]))
                         {
-                            alert('Job starting date '+ $("input[name='experience["+counterr+"][job_to]']").val()+ ' cant be less than '+ $("input[name='experience["+counterr+"][job_from]']").val())
+                                 alert('Job starting date '+ $("input[name='experience["+counterr+"][job_to]']").val()+ ' cant be less than '+ $("input[name='experience["+counterr+"][job_from]']").val())
                             return false;
 
                         }
+
+
+                        // if($("input[name='experience["+counterr+"][job_to]']").val() <= $("input[name='experience["+counterr+"][job_from]']").val())
+                        // {
+                        //     alert('Job starting date '+ $("input[name='experience["+counterr+"][job_to]']").val()+ ' cant be less than '+ $("input[name='experience["+counterr+"][job_from]']").val())
+                        //     return false;
+
+                        // }
             experience_counter++;
 
             counterr++;
@@ -1371,10 +1412,12 @@
                                     <label for="text-input" class=" form-control-label"> Period of Employment : </label>
                                 </div>
                                 <div class="col col-md-4">
-                                    <input type="date" required id="text-input" name="experience[${experience_counter}][job_from]" placeholder="From" class="form-control"  value="">
+                                <input data-toggle="datepicker"  name="experience[${experience_counter}][job_from]" id='text-input' class="form-control" placeholder="From" autocomplete="off"  readonly='true' value="" required>
+
                                 </div>
                                 <div class="col col-md-4">
-                                    <input type="date" id="text-input" name="experience[${experience_counter}][job_to]" placeholder="To" class="form-control"  value="">
+                                <input data-toggle="datepicker"  name="experience[${experience_counter}][job_to]" id='text-input' class="form-control" placeholder="To" autocomplete="off"  readonly='true' value="" required>
+
                                 </div>
                                
                             </div>
@@ -1421,6 +1464,10 @@
             
                 `;
             $('#experience_form_wrapper').append(html);
+            $('[data-toggle="datepicker"]').datepicker({
+        autoHide:'true',
+        format: 'dd-mm-yyyy'
+       });
         });
     })
 </script>
@@ -1458,7 +1505,9 @@
                                   <label for="text-input" class=" form-control-label"> Date of certificate : </label>
                               </div>
                               <div class="col col-md-9">
-                                  <input type="date" id="text-input" name="qualifications[${certificate_counter}][qualification_date]" placeholder="Date of Qualification" class="form-control"  value="" required>
+
+                                 <input data-toggle="datepicker"  name="qualifications[${certificate_counter}][qualification_date]" id='text-input' class="form-control" placeholder="Date of Qualification" autocomplete="off"  readonly='true'  value="" required>
+                                
                               </div>
                              
                              
