@@ -2,17 +2,19 @@
 
 return array(
     'driver' => 'smtp',
-    'host' => 'smtp.office365.com',
-    'port' => 587,
+    'host' => 'a2plcpnl0363.prod.iad2.secureserver.net',
+    'port' => 465,
     'from' => array(
         'address' => 'mail@honeybeetech.com.au',
         'name' => 'HoneyBeeTech',
     ),
-    'encryption' =>'tls',
-    'username' => 'admin@honeybeetech.com.au',
-    'password' => 'Honeybee01',
+    'encryption' =>'ssl',
+    'username' => 'mail@honeybeetech.com.au',
+    'password' => '1@O{B34#rZ~,',
     'sendmail' => '/usr/sbin/sendmail -bs',
     'timeout' => null,
     'auth_mode' => null,
-    'pretend' => false
+    'pretend' => false,
+   
+   
 );
