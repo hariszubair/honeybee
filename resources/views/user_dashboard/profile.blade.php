@@ -1139,13 +1139,14 @@
                         }
                    
                        expected_exp += Math.ceil((new Date(job_to[2], job_to[1] - 1, job_to[0]) - new Date(job_from[2], job_from[1] - 1, job_from[0]))/ (1000 * 60 * 60 * 24));
-                   }
+                   
                   const regex = /\../gm;
                    $.each($("textarea[name='experience["+i+"][ex_responsibilities]']").val().split('\n'), function( index, value ) {
                             if (regex.test(value)) {
                             test_responsibilities++;
                             }
                     });
+                   }
                     }
                     if(test_responsibilities >0){
                         swal({
