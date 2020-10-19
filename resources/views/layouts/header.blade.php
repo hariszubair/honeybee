@@ -92,6 +92,19 @@
                         </li>
                       
                         @endif
+                        @if(Auth::user()->hasAnyRole(['Super Admin','Admin']))
+                        <li>
+                        <a style="color: #238DB7 !important" href="{{ URL('/all_candidates') }}">
+                                <i style="color: #238DB7 !important" class="fas fa-user"></i>Candidate</a>
+                            </li><li>
+                                <a style="color: #238DB7 !important;" href="{{ URL('all_clients') }}">
+                                <i style="color: #238DB7 !important" class="fas fa-user"></i>Client</a></li>
+
+
+                    @endif
+
+
+
                         <li >
                             <a style="color: #238DB7 !important" href="{{ URL('/change_password') }}">
                                 <i style="color: #238DB7 !important" class="fas fa-user"></i>Change Password</a>

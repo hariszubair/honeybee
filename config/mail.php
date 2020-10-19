@@ -2,15 +2,15 @@
 
 return array(
     'driver' => 'smtp',
-    'host' => 'smtp.gmail.com',
-    'port' => 465,
+    'host' => 'smtp.office365.com',
+    'port' => 587,
     'from' => array(
         'address' => 'mail@honeybeetech.com.au',
         'name' => 'HoneyBeeTech',
     ),
-    'encryption' =>'ssl',
-    'username' => 'honeybeerecruiting@gmail.com',
-    'password' => 'gixtnzxiygjzqpoi',
+    'encryption' =>'tls',
+    'username' => 'admin@honeybeetech.com.au',
+    'password' => 'Honeybee01',
     'sendmail' => '/usr/sbin/sendmail -bs',
     'timeout' => null,
     'auth_mode' => null,

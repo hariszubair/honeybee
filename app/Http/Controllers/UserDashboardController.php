@@ -393,8 +393,8 @@ class UserDashboardController extends Controller
               else{
                 $responsibility='<br>'.$row->recent_experience->ex_responsibilities;
               }
-              $data.='<a type="button" class="resume" id="'.$row->user_id.'"" style="color:#272f66" onclick="resume($(this))"><div><b>'.$row->recent_experience->previous_company.'</b>';
-              $data.='<br>'.$row->recent_experience->job_title.' ('.$months.')'.$responsibility.'</div></a>';
+              $data.='<a  class="resume" id="'.$row->user_id.'" style="color:#272f66;" onclick="resume($(this))"><b>'.$row->recent_experience->previous_company.'</b>';
+              $data.='<br>'.$row->recent_experience->job_title.' ('.$months.')'.$responsibility.'</a>';
 
               return $data;
             })->addColumn('cuisine',function($row) {
@@ -426,7 +426,8 @@ class UserDashboardController extends Controller
 
       if(Auth::user()->hasRole('Super Admin'))
       {
-        return 1;
+         return view('admin_dashboard/index');
+        
       }
       else if( $user->hasRole('Candidate')) {
         return view('user_dashboard/profile',  [
@@ -557,7 +558,7 @@ class UserDashboardController extends Controller
               else{
                 $responsibility='<br>'.$row->recent_experience->ex_responsibilities;
               }
-              $data.='<a type="button" class="resume" id="'.$row->user_id.'"" style="color:#272f66" onclick="resume($(this))"><b>'.$row->recent_experience->previous_company.'</b>';
+              $data.='<a  class="resume" id="'.$row->user_id.'"" style="color:#272f66" onclick="resume($(this))"><b>'.$row->recent_experience->previous_company.'</b>';
             $data.='<br>'.$row->recent_experience->job_title.' ('.$months.')'.$responsibility.'</a>';
 
               return $data;
