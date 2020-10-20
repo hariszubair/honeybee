@@ -110,9 +110,8 @@
 <strong class="card-title">Register as client</strong>
 </div>
 <div class="card-body" style="text-align: center;    color: #238DB7 !important">
-<p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-</p>
+<p style="text-align: justify;">
+No more posting ads, writing job descriptions and then reviewing and shortlisting hundreds of candidates. All of these are things of the past. With HoneybeeTech’s online solution, you can login and select using simple drop-downs what you are looking for in your ideal candidate. The platform allows you the flexibility to compare all relevant candidates in one screen, you can view standardised resumes for all candidates in one consistent form. View candidate details and only pay to view candidate’s personal details (email and phone number) if you are satisfied with the calibre of candidates. Payment is simple and at a fraction of a cost with a Seek ad.</p>
 </div>
 </div>
 
@@ -123,8 +122,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 <strong class="card-title" >Register as Candidate</strong>
 </div>
 <div class="card-body" style="text-align: center;   color: #238DB7 !important">
-<p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+<p  style="text-align: justify;">
+As a candidate, looking for work has never been so easy. You don’t need to look for work on Seek or indeed. You don’t need to upload your resume. As long as your profile is updated on our system, let the clients find you. Your profile on our platform is what clients will look at – so the more detailed and articulate your profile is, the better chance there is, for you to stand out and for clients to select you. It takes less than 10 minutes to complete your profile and less than 30 seconds to notify the platform that you are still looking for work. Whether you are looking to relocate or work full time or part time, just let the platform know. Get in before the rest of the candidates do.
 </p>
 </div>
 
