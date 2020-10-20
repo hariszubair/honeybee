@@ -59,6 +59,7 @@ class UserDashboardController extends Controller
      */
     public function index()
     {
+
       $restaurants=Restaurant::all();
         $states=State::all();
        $user=User::with('userinfo')->find(Auth::id());
@@ -85,12 +86,11 @@ class UserDashboardController extends Controller
 
       if($user->hasRole('Client'))
       {
-        if($user->userinfo->proceed == 0){
+        if(Session::get('success')=='View Candidate'){
+            Session::flash('success', 'View Candidate');
+        }
         return redirect('/candidate_search_view');
-        }
-        else{
-        return redirect('/selected_candidates');
-        }
+        
       }
       if($user->hasRole('Candidate')){
         return redirect('/profile');
@@ -563,8 +563,8 @@ class UserDashboardController extends Controller
               else{
                 $responsibility='<br>'.$row->recent_experience->ex_responsibilities;
               }
-              $data.='<a  class="resume" id="'.$row->user_id.'"" style="color:#272f66" onclick="resume($(this))"><b>'.$row->recent_experience->previous_company.'</b>';
-            $data.='<br>'.$row->recent_experience->job_title.' ('.$months.')'.$responsibility.'</a>';
+              $data.='<div style="color:#272f66;background-color:#fffff00"><a type="button" class="resume" id="'.$row->user_id.'" style="color:#272f66;background-color:#fffff00" onclick="resume($(this))"><b>'.$row->recent_experience->previous_company.'</b>';
+              $data.='<br>'.$row->recent_experience->job_title.' ('.$months.')'.$responsibility.'</a></div>';
 
               return $data;
             })->escapeColumns([])->make(true);
@@ -598,5 +598,21 @@ class UserDashboardController extends Controller
         });
       return 1;
 
+    }
+    public function delete_profile($id)
+    {
+      // return  $id;
+      $user=User::find($id);
+      if($user->hasRole('Candidate')){
+        UserExperience::where('user_id',$id)->delete();
+        UserQualification::where('user_id',$id)->delete();
+        UserInfo::where('user_id',$id)->delete();
+        $user->delete();
+      }
+      else if($user->hasRole('Client')){
+        UserInfo::where('user_id',$id)->delete();
+        $user->delete();
+      }
+      return redirect()->back();
     }
 }

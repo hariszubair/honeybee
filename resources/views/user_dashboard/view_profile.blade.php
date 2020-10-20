@@ -144,7 +144,26 @@
     </div>
 </div>
 </form>
+@if(isset($user))
+ <form action="{{ url('/delete_profile', ['id' => $user->id]) }}" method="post" name='delete_profile' style="margin-bottom: 0">
+ <div class="card" style="margin-left: 10px;margin-right: 10px;">
+                <div class="card-header">Delete Profile</div>
 
+                <div class="card-body">
+                 <div>
+                            <div class="row form-group">
+    
+                            
+                            @csrf
+                            @method('delete')
+                              I agree to delete my profile.
+                              <button style="margin-left: 5px" type="button" class="btn btn-danger delete_profile" name="delete_profile"><i class="fas fa-trash"></i></button>
+                      </div>
+                  </div>
+                  </div>
+                </div>
+                          </form>
+                      @endif
 
 @endsection()
 
@@ -173,5 +192,23 @@
         $("#restaurant_other").prop('required',false);
     }   
     });
+     $(".delete_profile").click(function(){
+  var temp =$(this);
+    swal({
+      title: "Are you sure?",
+      text: 'This will delete your profile permanently!!!',
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(function(isConfirm) {
+      if (isConfirm) {
+      $('form[name="delete_profile"]').submit();      
+    }
+      else{
+      return false;
+      } 
+    })
+
+});
 </script>
 @endsection()

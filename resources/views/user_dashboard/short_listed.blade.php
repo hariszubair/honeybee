@@ -220,6 +220,9 @@ Please click on recent work experience to view candidate’s personal details (e
 <script type="text/javascript">
 	$(document).ready(function() {
 		short_listed();
+    if('<?php echo Session::get('success'); ?>'=='Payment successful!'){
+      swal("Payment Successful", "Thanks for the payment.   Click on Short Listed Menu tab to view Short listed candidates. Your selected candidates are available for only 7 days. After 7 days you cannot view their personal details", "success");
+    }
 });
 		function short_listed () {
 
@@ -395,7 +398,7 @@ function resume(clicked){
                   var work_experience=''
                 }
                 if(data.userinfo.availability){
-                  var available=data.userinfo.availability+ ' available.<br>';
+                  var available='<b>Availability:</b>'+data.userinfo.availability+ '<br>';
                 }
                 else{
                   var available=''

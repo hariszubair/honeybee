@@ -104,6 +104,10 @@
                     @endif
 
 
+                        <li >
+                            <a style="color: #238DB7 !important" href="{{ Route('contact') }}">
+                               <i style="color: #238DB7 !important" class="fas fa-address-card"></i> Contact Us</a>
+                        </li>
 
                         <li >
                             <a style="color: #238DB7 !important" href="{{ URL('/change_password') }}">

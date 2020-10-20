@@ -341,7 +341,7 @@ color:black !important;
 @if(Auth::user()->userinfo->membership == 0)
   <form action="pay" method="Post" id='pay_form'> 
                         @csrf
-<button type="button" class="btn btn-success" style="margin: 5px; position: fixed; bottom: 5px; right: 0px;z-index: 3000;" id='pay_now'>Pay Now !</button>
+<button type="button" class="btn btn-success" style="margin: 5px; position: fixed; bottom: 5px; right: 0px;z-index: 3000;" id='pay_now'>Pay and View Email/Phone</button>
 </form>
 @endif
 <!-- @if(Auth::user()->userinfo->membership == 1)
@@ -553,7 +553,7 @@ color:black !important;
 	
 	$(document).ready(function() {
     if('<?php echo Session::get('success'); ?>'=='Payment successful!'){
-      swal("Payment Successful", "Thanks for the payment.   Click on Short Listed Menu tab to view Short listed candidates. Your selected candidates are available for only 7 days. After 7 days you cant view their personal details", "success");
+      swal("Payment Successful", "Thanks for the payment.   Click on Short Listed Menu tab to view Short listed candidates. Your selected candidates are available for only 7 days. After 7 days you cannot view their personal details", "success");
     }
     if('<?php echo Session::get('success'); ?>' == 'View Candidate'){
 
@@ -966,7 +966,7 @@ function resume(clicked){
                   var work_experience=''
                 }
                 if(data.userinfo.availability){
-                  var available=data.userinfo.availability+ ' available.<br>';
+                  var available='<b>Availability:</b>'+data.userinfo.availability+ '<br>';
                 }
                 else{
                   var available=''
@@ -1130,7 +1130,7 @@ $( "#pay_now" ).click(function( event ) {
 
 
  swal({
-      title: "Limit Available!!!.You have  chosen "+package+" package",
+      title: "You have  chosen "+package+" package",
       text: message,
       icon: "info",
       showConfirmButton: true,

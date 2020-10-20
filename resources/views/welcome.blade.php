@@ -9,6 +9,10 @@
          .rc-anchor-light.rc-anchor-normal {
             width: 80%
          }
+         .rc-anchor-normal {
+    height: 74px;
+    width: 80%;
+}
      </style>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -40,6 +44,7 @@
                             <ul class="nav nav-pills float-right">
                                 @auth
                                 <li><a href="{{ url('/profile') }}">Profile</a></li>
+
                                 @else
                                     <li><a href="{{ route('login') }}">Login</a></li>
                                         @if (Route::has('register'))
@@ -47,6 +52,10 @@
                                         @endif
                                     
                                 @endauth
+                                <li >
+                                <a href="{{ route('contact') }}">{{ __('Contact Us') }}</a>
+                            </li>
+                            </li>
                             </ul>
                         </nav>
                     @endif
@@ -62,7 +71,7 @@
                     <div class="registration_box">See for yourself the candidates on<br /> 
                         our platform by a press of a button
                         
-                            <div class="button_wrapper"><a href="/register" style="width: 145px;" class="blue_button">Register Now </a></div>
+                            <div class="button_wrapper"><a href="{{ route('register') }}" style="width: 245px;" class="blue_button">Register as Client/Candidate </a></div>
 
                     </div>
                 </div>
@@ -173,7 +182,7 @@ As a candidate, looking for work has never been so easy. You don’t need to loo
                             <label for="form_name" class="col-md-4 col-form-label text-md-right" style="padding-left: 0px;">Name</label>
 
                             <div class="col-md-8">
-                                <input id="form_name" type="text" class="form-control" name="form_name" value="{{ old('form_name') }}" required autocomplete="form_name"  placeholder="Please enter your full name" required>
+                                <input id="form_name" type="text" class="form-control" name="form_name" value="{{ old('form_name') }}" required autocomplete="form_name"  required>
                             </div>
                         </div>
                          <div class="form-group row">
@@ -190,9 +199,9 @@ As a candidate, looking for work has never been so easy. You don’t need to loo
                                 <textarea id="form_message" type="text" class="form-control " name="form_message" rows="9" required autocomplete="form_message"  requiredstyle="resize: none;"></textarea>
                             </div>
                         </div>
-                        <div class="form-group row" style="width: 80%">
+                        <div class="form-group row" >
                                 <label class="col-md-4 col-form-label text-md-right"></label>
-                                <div class="g-recaptcha col-md-6" data-sitekey="6LdmZdEZAAAAAOZrXQ5XRAcMLVjJXsDj4ZvSRPuj">
+                                <div class="g-recaptcha col-md-6" data-sitekey="6LdmZdEZAAAAAOZrXQ5XRAcMLVjJXsDj4ZvSRPuj" >
                                     
                                 </div>
                                  <label class="col-md-4 col-form-label text-md-right"></label>
@@ -225,7 +234,15 @@ As a candidate, looking for work has never been so easy. You don’t need to loo
 
     @include('sweet::alert')
 <script type="text/javascript">
-   
+   $(document).ready(function() {
+if('<?php echo Session::get('success'); ?>'=='contact'){
+          $("html, body").animate({ 
+                    scrollTop: $( 
+                      'html, body').get(0).scrollHeight 
+                }, 2000); 
+}
+});
+
 $('#contact_form').on('submit',function(evt) {
     evt.preventDefault();
      if(grecaptcha.getResponse() == "") {
@@ -250,3 +267,8 @@ $('#contact_form').on('submit',function(evt) {
          });
 });
 </script>
+<style type="text/css">
+ .rc-anchor-container {
+    width: 80%;
+}
+     </style>

@@ -22,6 +22,7 @@
                         <div class="header-wrap">
                             
                             <div class="header-button">
+                              <a class="btn btn-success" style="margin-right: 10px;background-color: #238db7;border-radius: 22px" href="{{ route('contact') }}">{{ __('Contact Us') }}</a>
                                <div class="dropdown">
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border: 1px solid #238db7;background-color: #f5f5f5;color:#272f66">
    {{$current_user->name}}
@@ -55,6 +56,7 @@
                                  <a class="list-group-item list-group-item-action" id="list-candidate_search_view-list" data-toggle="list" role="tab"  href="{{ URL('all_clients') }}" style="color: #238DB7 !important;width: auto !important;padding-right: 0;padding-left: 0;margin-right: 20px">
                                 Client </a>
                     @endif
+                   
 
 
       

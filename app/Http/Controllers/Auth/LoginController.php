@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Session;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -28,7 +30,12 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = '/dashboard';
-
+      protected function authenticated(Request $request, $user)
+ {
+    // $request->session()->flash('flash_notification.success', 'Congratulations, you have cracked the code!');
+            Session::flash('success', 'View Candidate');
+    return redirect()->intended($this->redirectPath());
+ }
     /**
      * Create a new controller instance.
      *
@@ -42,5 +49,6 @@ class LoginController extends Controller
   Auth::logout();
   return redirect('/login');
         }
+
         
 }

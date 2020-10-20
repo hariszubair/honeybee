@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 Route::get('/home', function () {
     return view('welcome');
-});
+})->name('home');
 
 Auth::routes();
 Route::get('/dashboard', 'UserDashboardController@index')->name('User Dahboard');
@@ -41,12 +41,13 @@ Route::post('/candidate_complete_data', 'UserDashboardController@candidate_compl
 Route::post('/reset_selection', 'UserDashboardController@reset_selection')->name('reset_selection')->middleware(['WithProfile']);;
 Route::get('/user-profile', 'UserDashboardController@profile')->name('User Profile');//edit and creat of candidate previously created.
 Route::get('/user-message', 'UserDashboardController@message')->name('User Message');
-Route::get('/candidate_search_view', 'UserDashboardController@candidate_search_view')->name('candidate_search_view')->middleware(['WithProfile']);
-Route::post('/candidate_search','UserDashboardController@candidate_search')->name('candidate_search')->middleware(['WithProfile']);;
+Route::get('/candidate_search_view', 'UserDashboardController@candidate_search_view')->name('candidate_search_view')->middleware(['WithProfile','role:Client']);
+Route::post('/candidate_search','UserDashboardController@candidate_search')->name('candidate_search')->middleware(['WithProfile','role:Client']);;
 
 Route::post('/user-profile-update','UserDashboardController@profile_update');
 
-
+Route::delete('/delete_profile/{id}', 'UserDashboardController@delete_profile')->name('delete_profile');
+Route::get('/candidate_search_view', 'UserDashboardController@candidate_search_view')->name('candidate_search_view')->middleware(['WithProfile']);
 
 
 
@@ -96,6 +97,7 @@ Route::post('stripe', 'StripePaymentController@stripePost')->name('stripe.post')
 
 
 Route::post('/contact_us','HomeController@contact_us');
+Route::get('/contact','HomeController@contact')->name('contact');
 
 
 Auth::routes(['verify' => true]);

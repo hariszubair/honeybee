@@ -837,6 +837,25 @@
         
     </div>
     </form>
+     @if(isset($user_info[0]))
+        <div class="card" style="margin-left: 40px;margin-right: 40px;">
+                <div class="card-header">Delete Profile</div>
+
+                <div class="card-body">
+                 <div>
+                            <div class="row form-group">
+     <form action="{{ url('/delete_profile', ['id' => $user_info[0]->user_id]) }}" method="post" name='delete_profile' style="margin-bottom: 0">
+                            
+                            @csrf
+                            @method('delete')
+                              I agree to delete my profile.
+                              <button style="margin-left: 5px" type="button" class="btn btn-danger delete_profile" name="delete_profile"><i class="fas fa-trash"></i></button>
+                          </form>
+                      </div>
+                  </div>
+                  </div>
+                </div>
+                @endif
     <script src="{{asset('public/js/select2.multi-checkboxes.js')}}"></script>
        <script src="{{asset('public/js/datepicker.min.js')}}"></script>
 
@@ -1552,6 +1571,24 @@
             $('#relocate_state').val(null).change();
         }
     });
+    $(".delete_profile").click(function(){
+  var temp =$(this);
+    swal({
+      title: "Are you sure?",
+      text: 'This will delete your profile permanently!!!',
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(function(isConfirm) {
+      if (isConfirm) {
+      $('form[name="delete_profile"]').submit();      
+    }
+      else{
+      return false;
+      } 
+    })
+
+});
 </script>
 @endsection
 

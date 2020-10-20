@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Mail;
 use Validator;
+use Session;
 class HomeController extends Controller
 {
     /**
@@ -38,5 +39,10 @@ class HomeController extends Controller
             $m->to('indradeep.mazumdar@gmail.com', 'Indy')->subject('Contact Us form submission');
         });
         // return 1;
+    }
+     public function contact()
+    {
+        Session::flash('success', 'contact');
+        return redirect()->route('home');
     }
 }

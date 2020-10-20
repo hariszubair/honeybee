@@ -52,11 +52,11 @@ class StripePaymentController extends Controller
                 "description" => $description 
         ]);
         SelectedCandidates::where('client_id',Auth::id())->where('confirmed','=', null)->update(['confirmed'=>date('Y-m-d h:i:s')]);
-         UserInfo::where('user_id',Auth::id())->update(['membership'=>'0']);
+         // UserInfo::where('user_id',Auth::id())->update(['membership'=>'0']);
   		
 
         Session::flash('success', 'Payment successful!');
           
-        return redirect('/candidate_search_view');
+        return redirect('/selected_candidates');
     }
 }
