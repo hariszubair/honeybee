@@ -398,7 +398,7 @@ class UserDashboardController extends Controller
               else{
                 $responsibility='<br>'.$row->recent_experience->ex_responsibilities;
               }
-              $data.='<div style="color:#272f66;background-color:#fffff00"><a  class="resume" id="'.$row->user_id.'" style="color:#272f66;background-color:#fffff00" onclick="resume($(this))"><b>'.$row->recent_experience->previous_company.'</b>';
+              $data.='<div style="color:#272f66;background-color:#ffffff00"><a  class="resume" id="'.$row->user_id.'" style="color:#272f66;background-color:#ffffff00" onclick="resume($(this))"><b>'.$row->recent_experience->previous_company.'</b>';
               $data.='<br>'.$row->recent_experience->job_title.' ('.$months.')'.$responsibility.'</a></div>';
 
               return $data;
