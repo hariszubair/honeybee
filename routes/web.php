@@ -24,7 +24,7 @@ Auth::routes();
 Route::get('/dashboard', 'UserDashboardController@index')->name('User Dahboard');
 // Route::get('/home', 'UserDashboardController@index')->name('User Dahboard');
 Route::get('/user-dashboard', 'UserDashboardController@index')->name('User Dahboard');
-Route::get('/profile', 'UserDashboardController@view_profile')->name('Profile');
+Route::get('/profile', 'UserDashboardController@view_profile')->name('profile');
 Route::get('/packages', 'UserDashboardController@packages')->name('packages');//package
 Route::post('/select','UserDashboardController@select');
 Route::get('/selected_candidates','UserDashboardController@selected_candidates')->name('selected_candidates')->middleware(['WithProfile']);;
