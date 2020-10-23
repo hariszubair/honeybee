@@ -288,7 +288,7 @@ class UserDashboardController extends Controller
           }
           else{
         Session::flash('success', 'Profile Update');
-            return redirect('profile');
+            return redirect()->route('profile');
           }     
          
     }
