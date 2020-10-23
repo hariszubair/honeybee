@@ -870,7 +870,7 @@
         autoHide:'true',
         format: 'dd-mm-yyyy'
        });
-         if('<?php echo Session::has('success'); ?>'){
+         if('<?php echo Session::get('success'); ?>'=='Profile Update'){
             swal({
       title: "Profile Updated",
       text: 'Do you want to logout?',
