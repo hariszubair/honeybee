@@ -16,6 +16,15 @@
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
 }
+.select2-search__field::placeholder{
+    color: #495057;
+}
+.select2-search__field:-ms-input-placeholder {
+    color: #495057;
+}
+.select2-search__field::-ms-input-placeholder {
+    color: #495057;
+}
 </style>
 <form id="main_form" method="post" action="./user-profile-update" >
     {!! csrf_field() !!}
@@ -23,7 +32,18 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
 
+@if (Auth::user()->email_verified_at== null)
+@php
+$date = Auth::user()->created_at;
+$date = strtotime($date);
+$date = strtotime("+7 day", $date);
+$new_date= date('M d, Y', $date);
 
+@endphp
+                        <div class="alert alert-success" role="alert">
+                           Please verify your email address before {{$new_date}}. After this time if you have not verified your email address your profile will get deactivated. 
+                        </div>
+                    @endif
 
         <div class="card">
                 <div class="card-header">Acknowledgement</div>
@@ -120,32 +140,32 @@
                                     
                                     <div class="col-12 col-md-9">
                                         <div class="checkbox">
-                                            <label><input class="cousine" type="checkbox" id="allCousine" name="cousine" value="Italian">Italian</label>
+                                            <label><input class="cousine" type="checkbox" id="allCousine" name="cousine" value="Italian"> Italian</label>
                                             <input style="display: none" type="test" name="previous_cousine_experience" class="form-control" value="<?php  echo isset($user_info[0]) ?  $user_info[0]->previous_cousine_experience: '' ;?>">
                                         </div> 
                                         <div class="checkbox">
-                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Mediterranean">Mediterranean</label>
+                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Mediterranean"> Mediterranean</label>
                                         </div>
                                         <div class="checkbox">
-                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Asian">Asian</label>
+                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Asian"> Asian</label>
                                         </div>
                                         <div class="checkbox">
-                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Greek">Greek</label>
+                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Greek"> Greek</label>
                                         </div>
                                         <div class="checkbox">
-                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Take away shop">Take away shop</label>
+                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Take away shop"> Take away shop</label>
                                         </div>
                                         <div class="checkbox">
-                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Cafe">Cafe</label>
+                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Cafe"> Cafe</label>
                                         </div>
                                         <div class="checkbox">
-                                        <label><input class="cousine" type="checkbox" name="cousine"  value="Mexican">Mexican</label>
+                                        <label><input class="cousine" type="checkbox" name="cousine"  value="Mexican"> Mexican</label>
                                         </div>
                                         <div class="checkbox">
-                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Tavern">Tavern</label>
+                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Tavern"> Tavern</label>
                                         </div>
                                         <div class="checkbox">
-                                            <label><input class="cousine" type="checkbox" name="cousine" id="cousineChecked"  value="Other">Other</label>
+                                            <label><input class="cousine" type="checkbox" name="cousine" id="cousineChecked"  value="Other"> Other</label>
                                         </div>
                                         <input style="margin-top: 15px;" id="otherCousine" type="text" placeholder="Enter other cousine experience" class="form-control" value="">  
                                     </div>
@@ -166,7 +186,7 @@
                                     <label for="text-input" class=" form-control-label">Phone Number :</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type='number' id="text-input" name="phone_number" placeholder="Phone Number" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->phone_number: '';?>">
+                                    <input type='number' id="text-input" name="phone_number" onkeypress='return event.charCode >= 48 && event.charCode <= 57' placeholder="Phone Number" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->phone_number: '';?>">
                                    
                                 </div>
                             </div>
@@ -187,12 +207,12 @@
                                 <div class="col-12 col-md-9">
                                     <!-- input type="date" id="date_birth" name="date_birth"  class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->date_birth: '';?>"> -->
 
-                                    <input data-toggle="datepicker"  name="date_birth" id='date_birth' class="form-control" placeholder="Date of birth" autocomplete="off"  readonly='true' value="<?php  echo isset($user_info[0]) ?  date_format(date_create($user_info[0]->date_birth),"d-m-Y")  : '';?>" required>
+                                    <input data-toggle="datepicker"  name="date_birth" id='date_birth' class="form-control" autocomplete="off" value="<?php  echo isset($user_info[0]) ?  date_format(date_create($user_info[0]->date_birth),"d-m-Y")  : '';?>" placeholder="dd-mm-yyyy" autocomplete="off" readonly='true'>
                                    
                                 </div>
                             </div>
                             
-
+<!-- 
                             <div class="row form-group">
                                <div class="col col-md-3">
                                     <label for="text-input" class=" form-control-label">Full Street Address:</label>
@@ -201,7 +221,7 @@
                                     <input type="text" id="text-input" name="street_address" placeholder="Street Address" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->street_address:'';?>">
                                    
                                 </div>
-                            </div>
+                            </div> -->
                                
 
                             <div class="row form-group">
@@ -402,9 +422,10 @@
                                             <h4  style="float: left;"> Most Recent Experience</h4>
                                         @endif
                                         @if($experience_counter >= 1)
-                                            <h4  style="float: left;"> Experience (more)</h4>
-                                            <button type="button" onclick="delete_experience(<?php echo $experience_counter ?>)" style="float: right;" class="btn btn-danger"><i class="fas fa-minus"></i></button>
+                                            <h4  style="float: left;"> Experience</h4>
+                                            
                                         @endif
+                                        <button type="button" onclick="delete_experience(<?php echo $experience_counter ?>)" style="float: right;" class="btn btn-danger"><i class="fas fa-minus"></i></button>
                                     </div>
                                 
                                 </div>
@@ -416,12 +437,12 @@
                                     </div>
                                     @if($experience_counter <= 1)
                                         <div class="col-12 col-md-9">
-                                            <input type="text" required id="text-input" name="experience[<?php echo $experience_counter ?>][job_title]" placeholder="Job Title " class="form-control"  value="<?php echo $user_experience->job_title; ?>">
+                                            <input type="text"  id="text-input" name="experience[<?php echo $experience_counter ?>][job_title]" placeholder="Job title is mandatory, without this your experience will not be saved." class="form-control"  value="<?php echo $user_experience->job_title; ?>">
                                         </div>
                                     @endif
                                     @if($experience_counter > 1)
                                         <div class="col-12 col-md-9">
-                                            <input type="text" required id="text-input" name="experience[<?php echo $experience_counter ?>][job_title]" placeholder="Job Title " class="form-control"  value="<?php echo $user_experience->job_title; ?>">
+                                            <input type="text"  id="text-input" name="experience[<?php echo $experience_counter ?>][job_title]" placeholder="Job title is mandatory, without this your experience will not be saved." class="form-control"  value="<?php echo $user_experience->job_title; ?>">
                                         </div>
                                     @endif
                                 </div>
@@ -430,17 +451,21 @@
                                 <div class="col col-md-3">
                                         <label for="text-input" class=" form-control-label"> Period of Employment : </label>
                                     </div>
-                                    <div class="col col-md-4">
-                                        <input data-toggle="datepicker"  name="experience[<?php echo $experience_counter ?>][job_from]" id='text-input' class="form-control" placeholder="From" autocomplete="off"  readonly='true' value="<?php  echo isset($user_info[0]) ?  date_format(date_create($user_experience->job_from),"d-m-Y")  : '';?>" required>
+                                    <div class="col col-md-3">
+                                        <input data-toggle="datepicker"  name="experience[<?php echo $experience_counter ?>][job_from]" id='text-input' class="form-control" placeholder="From" autocomplete="off"  readonly='true' value="<?php  echo isset($user_info[0]) ?  date_format(date_create($user_experience->job_from),"d-m-Y")  : '';?>" >
 
 
                                         <!-- <input type="date" required id="text-input" name="experience[<?php echo $experience_counter ?>][job_from]" placeholder="From" class="form-control"  value="<?php echo  date("Y-m-d", strtotime($user_experience->job_from)); ?>"> -->
                                     </div>
-                                    <div class="col col-md-4">
-                                         <input data-toggle="datepicker"  name="experience[<?php echo $experience_counter ?>][job_to]" id='text-input' class="form-control" placeholder="To" autocomplete="off"  readonly='true' value="<?php  echo isset($user_info[0]) ?  date_format(date_create($user_experience->job_to),"d-m-Y")  : '';?>" required>
+                                    <div class="col col-md-3">
+                                         <input data-toggle="datepicker"  name="experience[<?php echo $experience_counter ?>][job_to]" id='text-input' class="form-control" placeholder="To" autocomplete="off"  readonly='true' value="<?php  echo isset($user_info[0]) ?  date_format(date_create($user_experience->job_to),"d-m-Y")  : '';?>" >
 
                                         <!-- 
                                         <input type="date" id="text-input" name="experience[<?php echo $experience_counter ?>][job_to]" placeholder="To" class="form-control"  value="<?php echo date("Y-m-d", strtotime($user_experience->job_to)); ?>"> -->
+                                    </div>
+                                    <div class="col col-md-3">
+                                         <button type="button"  id="experience[<?php echo $experience_counter ?>]" class='reset_dates btn btn-danger' onclick='clear_date($(this))'>Reset</button>
+
                                     </div>
                                 
                                 </div>
@@ -450,7 +475,7 @@
                                         <label for="text-input" class=" form-control-label">Name of Company :</label>
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <input type="text" required id="text-input" name="experience[<?php echo $experience_counter ?>][previous_company]" placeholder="Name of Company" class="form-control"  value="<?php echo $user_experience->previous_company; ?>">
+                                        <input type="text"  id="text-input" name="experience[<?php echo $experience_counter ?>][previous_company]" placeholder="Name of Company" class="form-control"  value="<?php echo $user_experience->previous_company; ?>">
                                     </div>
                                 </div> 
 
@@ -459,7 +484,7 @@
                                         <label for="text-input" class=" form-control-label">No. of Employees in Company :</label>
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <select  class="form-control" required name="experience[<?php echo $experience_counter ?>][no_of_employees]">
+                                        <select  class="form-control"  name="experience[<?php echo $experience_counter ?>][no_of_employees]">
                                             <option value=""> Please Select</option>
                                             <option value="Less than 10" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == 'Less than 10' ? 'selected': '';?>>Less than 10</option>
                                             <option value="11-20" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == '11-20' ? 'selected': '';?>>11-20</option>
@@ -474,7 +499,7 @@
                                         <label for="text-input" class=" form-control-label"> Responsibilities :</label>
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <textarea type="text" rows=4 required id="text-input" name="experience[<?php echo $experience_counter ?>][ex_responsibilities]" placeholder="Enter upto 4 Major Responsibilities. Each Responsibility should be entered in a new line." class="form-control" ><?php echo $user_experience->ex_responsibilities; ?></textarea>
+                                        <textarea type="text" rows=4  id="text-input" name="experience[<?php echo $experience_counter ?>][ex_responsibilities]" placeholder="Enter upto 4 Major Responsibilities. Each Responsibility should be entered in a new line." class="form-control" ><?php echo $user_experience->ex_responsibilities; ?></textarea>
                                         
                                     </div>
                                 </div>
@@ -488,80 +513,8 @@
                     $experience_counter++;
                     }
                     $experience_counter--;
-                else: 
                 ?>
-                <div class="card-body">
-                      
-                    
-
-                        <div class="row form-group">
-                               <div class="col col-md-12">
-                                    <h4>  Most Recent Experience</h4>
-                                </div>
-                             
-                            </div>
-                        
-                            
-                            <div class="row form-group">
-                               <div class="col col-md-3">
-                                    <label for="text-input" class=" form-control-label">Job Title :</label>
-                                </div>
-                                <div class="col-12 col-md-9">
-                                    <input type="text" required id="text-input" name="experience[0][job_title]" placeholder="Job Title " class="form-control" >
-                                </div>
-                            </div>
-                            
-                            <div class="row form-group">
-                               <div class="col col-md-3">
-                                    <label for="text-input" class="form-control-label"> Period of Employment : </label>
-                                </div>
-                                <div class="col col-md-4">
-                                    <input data-toggle="datepicker"  name="experience[0][job_from]" id='text-input' class="form-control" placeholder="From" autocomplete="off"  readonly='true' value="" required>
-                                    <!-- <input type="date" required id="text-input" name="experience[0][job_from]" placeholder="From" class="form-control"  value=""> -->
-                                </div>
-                                <div class="col col-md-4">
-                                    <input data-toggle="datepicker"  name="experience[0][job_to]" id='text-input' class="form-control" placeholder="To" autocomplete="off"  readonly='true' value="" required>
-                                    <!-- <input type="date" id="text-input" name="experience[0][job_to]" placeholder="To" class="form-control"  value=""> -->
-                                </div>
-                               
-                            </div>
-                             
-                            <div class="row form-group">
-                               <div class="col col-md-3">
-                                    <label for="text-input" class=" form-control-label">Name of Company :</label>
-                                </div>
-                                <div class="col-12 col-md-9">
-                                    <input type="text" required id="text-input" name="experience[0][previous_company]" placeholder="Name of Company" class="form-control"  value="">
-                                </div>
-                            </div>  
-                             
-                            <div class="row form-group">
-                                <div class="col col-md-3">
-                                    <label for="text-input" class=" form-control-label">No. of Employees in Company :</label>
-                                </div>
-                                <div class="col-12 col-md-9">
-                                    <select  class="form-control" required name="experience[0][no_of_employees]">
-                                        <option value=""> Please Select</option>
-                                        <option value="Less than 10" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == 'Less than 10' ? 'selected': '';?>>Less than 10</option>
-                                        <option value="11-20" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == '11-20' ? 'selected': '';?>>11-20</option>
-                                        <option value="21-50" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == '21-50' ? 'selected': '';?>>21-50</option>
-                                        <option value="More than 50" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == 'More than 50' ? 'selected': '';?>>More than 50</option>
-                                    </select>   
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                               <div class="col col-md-3">
-                                    <label for="text-input" class=" form-control-label"> Responsibilities :</label>
-                                </div>
-                                <div class="col-12 col-md-9">
-                                     <textarea type="text" rows=4 required id="text-input" name="experience[0][ex_responsibilities]" placeholder="Enter upto 4 Major Responsibilities. Each Responsibility should be entered in a new line." class="form-control" ></textarea>
-                                </div>
-                            </div>
-                               
-
-                            
-
-                         </div>
+               
                         <?php
                         
                          endif;  
@@ -572,7 +525,7 @@
                 <div class="row form-group">
                     <div class="col col-md-1"></div>
                     <div class="col col-md-3">
-                     <button id="add_more" style="width: 45px; font-weight: bold; border-color: #238DB7 !important" class="btn btn-success"><i class="fas fa-plus"></i><button>
+                     <button id="add_more" style="width: 45px; font-weight: bold; border-color: #238DB7 !important" class="btn btn-success" type='button'><i class="fas fa-plus"></i><button>
                     </div>
                 </div>
 
@@ -603,9 +556,9 @@
                                         @endif    
                                         @if($certificate_counter > 1)
                                             <h4 style="float: left;"> Qualifications (more)</h4>
-                                            <button type="button" onclick="delete_qualification(<?php echo $certificate_counter ?>)" style="float: right;" class="btn btn-danger"><i class="fas fa-minus"></i></button>
+                                            
                                         @endif
-                                        
+                                        <button type="button" onclick="delete_qualification(<?php echo $certificate_counter ?>)" style="float: right;" class="btn btn-danger"><i class="fas fa-minus"></i></button>
                                     </div>
                                 
                                 </div>
@@ -651,11 +604,12 @@
 
                 else: ?>
 
-                <div class="card-body">
+                <div class="card-body" id="qualification0">
                       
                         <div class="row form-group">
                                <div class="col col-md-12">
                                     <h4 style="float: left;"> Qualifications</h4>
+                                    <button type="button" onclick="delete_qualification(0)" style="float: right;" class="btn btn-danger"><i class="fas fa-minus"></i></button>
                                 </div>
                              
                             </div>
@@ -691,10 +645,10 @@
 
                 <?php endif; ?>
                 </div>
-                <div class="row form-group">
+                <div class="row form-group" style="padding-top: 10px">
                     <div class="col col-md-1"></div>
                     <div class="col col-md-3">
-                     <button id="add_more_certificate" style="width: 45px; font-weight: bold;  border-color: #238DB7 !important" class="btn btn-success"><i class="fas fa-plus"></i></button>
+                     <button id="add_more_certificate" style="width: 45px; font-weight: bold;  border-color: #238DB7 !important" type='button' class="btn btn-success"><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
 
@@ -947,13 +901,14 @@
         }
        
     })
+   
 </script>
 
 <script type="text/javascript">
     jQuery(document).ready(function($){
     $('.js-example-basic-multiple').select2();
  $('#relocate_state').select2({
-          placeholder: "Select state",
+          placeholder: "    Select state",
     allowClear: true
   })
 
@@ -1147,6 +1102,14 @@
                     var test_responsibilities=0;
 
                     for (var i = 0 ; i <= counterr; i++) {
+
+                          if($("input[name='experience["+counterr+"][job_title]']").val() == '' || $("input[name='experience["+counterr+"][job_from]']").val() == '' || $("input[name='experience["+counterr+"][job_to]']").val() == ''  || $("input[name='experience["+counterr+"][previous_company]']").val() == ''  || $("input[name='experience["+counterr+"][no_of_employees]']").val() == ''  || $("textarea[name='experience["+counterr+"][ex_responsibilities]']").val() == '')
+                        {
+                            alert('Please complete job experience first');
+                            return false;
+                        }
+
+
                        
                          if($("input[name='experience["+i+"][job_to]']").val()){
                              var job_to=$("input[name='experience["+i+"][job_to]']").val().split("-");
@@ -1225,35 +1188,35 @@
                         }
                         break;
                     }
-                    if(exp_verification == 0){
-                        swal({
-                          title: "Experience Mismatch!!!",
-                          text: $('#yr_experience').val()+" year(s) of total experience dont match with the experience you enter in indiviual experience. Do you still want to continue?",
-                          icon: "warning",
-                          buttons: [
-                            'No, verify it!',
-                            'Yes, continue!'
-                          ],
-                          dangerMode: true,
-                        }).then(function(isConfirm) {
-                          if (!isConfirm) {
-                        return false
-                          }
-                          else{
-                            $('#main_form_submit').click();
+                    // if(exp_verification == 0){
+                    //     swal({
+                    //       title: "Experience Mismatch!!!",
+                    //       text: $('#yr_experience').val()+" year(s) of total experience dont match with the experience you enter in indiviual experience. Do you still want to continue?",
+                    //       icon: "warning",
+                    //       buttons: [
+                    //         'No, verify it!',
+                    //         'Yes, continue!'
+                    //       ],
+                    //       dangerMode: true,
+                    //     }).then(function(isConfirm) {
+                    //       if (!isConfirm) {
+                    //     return false
+                    //       }
+                    //       else{
+                    //         $('#main_form_submit').click();
 
-                          }
-                        })
+                    //       }
+                    //     })
 
-                    }
-                    else{
+                    // }
+                    // else{
                         if(temp_counter >0){
                         return false
                     }
                     $('#main_form_submit').click();
                     $('.notAllow').prop("disabled", false);
                     return true;
-                    }
+                    // }
                     
         });
         
@@ -1385,7 +1348,8 @@
         counterr = experience_counter;
         $('#add_more').click(function(e){
             e.preventDefault();
-                     if($("input[name='experience["+counterr+"][job_title]']").val() == '' || $("input[name='experience["+counterr+"][job_from]']").val() == '' || $("input[name='experience["+counterr+"][job_to]']").val() == ''  || $("input[name='experience["+counterr+"][previous_company]']").val() == ''  || $("input[name='experience["+counterr+"][no_of_employees]']").val() == ''  || $("input[name='experience["+counterr+"][ex_responsibilities]']").val() == '')
+            if($("input[name='experience["+counterr+"][job_title]']").val()){
+                     if($("input[name='experience["+counterr+"][job_title]']").val() == '' || $("input[name='experience["+counterr+"][job_from]']").val() == '' || $("input[name='experience["+counterr+"][job_to]']").val() == ''  || $("input[name='experience["+counterr+"][previous_company]']").val() == ''  || $("input[name='experience["+counterr+"][no_of_employees]']").val() == ''  || $("textarea[name='experience["+counterr+"][ex_responsibilities]']").val() == '')
                         {
                             alert('Please complete job experience first');
                             return false;
@@ -1400,7 +1364,7 @@
 
                         }
 
-
+                    }
                         // if($("input[name='experience["+counterr+"][job_to]']").val() <= $("input[name='experience["+counterr+"][job_from]']").val())
                         // {
                         //     alert('Job starting date '+ $("input[name='experience["+counterr+"][job_to]']").val()+ ' cant be less than '+ $("input[name='experience["+counterr+"][job_from]']").val())
@@ -1414,7 +1378,7 @@
                         <div id="${counterr}" class="card-body">
                             <div class="row form-group">
                                <div class="col col-md-12">
-                                    <h4 style="float: left;"> Experience (more)</h4>
+                                    <h4 style="float: left;"> Experience</h4>
                                     <button type="button" onclick="delete_experience(${experience_counter})" style="float: right;" class="btn btn-danger"><i class="fas fa-minus"></i></button>
                                 </div>
                              
@@ -1425,7 +1389,7 @@
                                     <label for="text-input" class=" form-control-label">Job Title :</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text" id="text-input" name="experience[${experience_counter}][job_title]" placeholder="Job Title " class="form-control" required value="">
+                                    <input type="text" id="text-input" name="experience[${experience_counter}][job_title]" placeholder="Job title is mandatory, without this your experience will not be saved. " class="form-control"  value="">
                                 </div>
                             </div>
                             
@@ -1433,14 +1397,18 @@
                                <div class="col col-md-3">
                                     <label for="text-input" class=" form-control-label"> Period of Employment : </label>
                                 </div>
-                                <div class="col col-md-4">
-                                <input data-toggle="datepicker"  name="experience[${experience_counter}][job_from]" id='text-input' class="form-control" placeholder="From" autocomplete="off"  readonly='true' value="" required>
+                                <div class="col col-md-3">
+                                <input data-toggle="datepicker"  name="experience[${experience_counter}][job_from]" id='text-input' class="form-control" placeholder="From" autocomplete="off"  readonly='true' value="" >
 
                                 </div>
-                                <div class="col col-md-4">
-                                <input data-toggle="datepicker"  name="experience[${experience_counter}][job_to]" id='text-input' class="form-control" placeholder="To" autocomplete="off"  readonly='true' value="" required>
+                                <div class="col col-md-3">
+                                <input data-toggle="datepicker"  name="experience[${experience_counter}][job_to]" id='text-input' class="form-control" placeholder="To" autocomplete="off"  readonly='true' value="" >
 
                                 </div>
+                                <div class="col col-md-3">
+                                         <button type="button"  id="experience[${experience_counter}]" class='reset_dates btn btn-danger' onclick='clear_date($(this))'>Reset</button>
+
+                                    </div>
                                
                             </div>
 
@@ -1449,7 +1417,7 @@
                                     <label for="text-input" class=" form-control-label">Name of Company :</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text" required id="text-input" name="experience[${experience_counter}][previous_company]" placeholder="Name of Company" class="form-control"  value="">
+                                    <input type="text"  id="text-input" name="experience[${experience_counter}][previous_company]" placeholder="Name of Company" class="form-control"  value="">
                                 </div>
                             </div> 
 
@@ -1458,7 +1426,7 @@
                                     <label for="text-input" class=" form-control-label">No. of Employees in Company:</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <select  required class="form-control" name="experience[${experience_counter}][no_of_employees]">
+                                    <select  class="form-control" name="experience[${experience_counter}][no_of_employees]">
                                         <option value=""> Please Select</option>
                                         <option value="Less than 10" >Less than 10</option>
                                         <option _value="11-20" >11-20</option>
@@ -1473,7 +1441,7 @@
                                     <label for="text-input" class=" form-control-label"> Responsibilities :</label>
                                 </div>
                                 <div class="col-12 col-md-9"> 
-                                    <textarea type="text" rows=4 required id="text-input" name="experience[${experience_counter}][ex_responsibilities]" placeholder="Enter upto 4 Major Responsibilities" class="form-control" ></textarea>
+                                    <textarea type="text" rows=4  id="text-input" name="experience[${experience_counter}][ex_responsibilities]" placeholder="Enter upto 4 Major Responsibilities" class="form-control" ></textarea>
                                 </div>
                             </div>
                                
@@ -1589,6 +1557,14 @@
     })
 
 });
+    function clear_date(clicked){
+        console.log(clicked)
+         $('input[name="'+clicked.attr('id')+'[job_to]"]').val(null);
+        $('input[name="'+clicked.attr('id')+'[job_from]"]').val(null);
+    }
+    //  $('.reset_dates').on('click',function(){
+       
+    // });
 </script>
 @endsection
 

@@ -29,7 +29,7 @@ class UserDashboardController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth','verified']);
+        $this->middleware(['auth']);
     }
     public function change_password() {
         return view('change_password');
@@ -191,15 +191,18 @@ class UserDashboardController extends Controller
       if (UserExperience::where('user_id', '=',  $user_Id)->count() > 0) {
            DB::delete('delete from user_experiences where user_id = ? ', [ $user_Id]);
       }
-
+      if($experiences){
       foreach ($experiences as $experience)
       {
-       $experience['job_from']=Carbon::parse($experience['job_from'])->format('Y-m-d');
-       $experience['job_to']=Carbon::parse($experience['job_to'])->format('Y-m-d');
         if($experience != null) {
+           $experience['job_from']=Carbon::parse($experience['job_from'])->format('Y-m-d');
+       $experience['job_to']=Carbon::parse($experience['job_to'])->format('Y-m-d');
+          if($experience['job_title'] != null && $experience['job_from'] != null && $experience['job_to'] != null && $experience['previous_company'] != null && $experience['ex_responsibilities'] != null && $experience['no_of_employees'] != null){
           DB::insert('insert into user_experiences (user_id, job_title,job_from,job_to,previous_company,ex_role,ex_responsibilities,no_of_employees	) values (?, ?,?, ?,?, ?,?,? )', [ $user_Id , $experience['job_title'],$experience['job_from'],$experience['job_to'],$experience['previous_company'],'',$experience['ex_responsibilities'],$experience['no_of_employees']]);
         }
+        }
       } 
+    }
       return true;
 
     }
@@ -210,12 +213,15 @@ class UserDashboardController extends Controller
          if (UserQualification::where('user_id', '=',  $user_Id)->count() > 0) {
             DB::delete('delete from user_qualifications where user_id = ? ', [ $user_Id]);
           }
-
+          if($qualifications){
       foreach ($qualifications as $qualification)
       {
+        if($qualification['qualification_date'] != null && $qualification['qualification_name'] != null ){
         $qualification['qualification_date']=Carbon::parse($qualification['qualification_date'])->format('Y-m-d');
          DB::insert('insert into user_qualifications (user_id, 	qualification_name,qualification_date	) values (?, ?,?)', [ $user_Id , $qualification['qualification_name'],$qualification['qualification_date']]);
+       }
       } 
+    }
       return true;
 
     }
@@ -234,6 +240,7 @@ class UserDashboardController extends Controller
          $experiences = $request->get('experience');
          if(Auth::user()->hasRole('Candidate')){
            $this->update_experience($experiences,  $user_id);
+          
 
          $this->update_availability($request,  $user_id);
 
@@ -567,6 +574,9 @@ class UserDashboardController extends Controller
               $data.='<br>'.$row->recent_experience->job_title.' ('.$months.')'.$responsibility.'</a>'; 
 
               return $data;
+            })->addColumn('cuisine',function($row) {
+            return str_replace(',', ', ', $row->previous_cousine_experience); 
+            
             })->escapeColumns([])->make(true);
          
     }

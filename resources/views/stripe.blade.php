@@ -61,7 +61,7 @@
                         <div class='form-row row'>
                             <div class='col-xs-12 form-group required'>
                                 <label class='control-label'>Name on Card</label> <input
-                                    class='form-control' size='4' type='text'>
+                                    class='form-control' size='4' type='text' required>
                             </div>
                         </div>
   
@@ -69,7 +69,7 @@
                             <div class='col-xs-12 form-group  required'>
                                 <label class='control-label'>Card Number</label> <input
                                     autocomplete='off' class='form-control card-number' size='20'
-                                    type='text'>
+                                    type='text' required>
                             </div>
                         </div>
   
@@ -77,11 +77,11 @@
                             <div class='col-xs-12 col-md-4 form-group cvc required'>
                                 <label class='control-label'>CVC</label> <input autocomplete='off'
                                     class='form-control card-cvc' placeholder='ex. 311' size='4'
-                                    type='text'>
+                                    type='text' required>
                             </div>
                             <div class='col-xs-12 col-md-4 form-group expiration required'>
                                 <label class='control-label'>Expiration Month</label>
-                                <select  class='form-control card-expiry-month'>
+                                <select  class='form-control card-expiry-month' required>
                                     <option value="">MM</option>
                                     @for($i=1;$i<13;$i++)
                                     <option>{{$i}}</option>
@@ -94,7 +94,7 @@
                             </div>
                             <div class='col-xs-12 col-md-4 form-group expiration required'>
                                 <label class='control-label'>Expiration Year</label>
-                                <select class='form-control card-expiry-year'>
+                                <select class='form-control card-expiry-year' required>
                                     <option value="">YYYY</option>
                                     @for($i=0;$i<40;$i++)
                                     <option> {{date("Y")+$i}}</option>

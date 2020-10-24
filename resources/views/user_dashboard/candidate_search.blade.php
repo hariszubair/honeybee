@@ -137,8 +137,9 @@ border-color: #272f66;
 }
 .dataTables_wrapper .dataTables_processing {
   background: #fffff00;
-  border: 0;
-  color:white;
+  border: 0px solid;
+  color:#fffff00;
+  opacity: 0;
 }
 .page-item.active .page-link:hover {
     /* z-index: 2; */
@@ -435,6 +436,8 @@ color:black !important;
     <div style="display: flex;width: 100%">
     <button class="custom_button" style="margin-bottom: 10px;margin-right: 5px;white-space: nowrap;" id='reset_selection'>Reset Selected Candidates</button>
     <button class="custom_button" style="margin-bottom: 10px;margin-right: 5px;white-space: nowrap;" id='reset_filter'>Reset Filters</button>
+
+     
     <input type="text" id="count" name="count" style="display: none" value='{{$user->unconfirmed_selected_candidates->count()}}'>  
     @if($user->userinfo->membership != 0 )
     <!-- <form action="./proceed" method="Post" id='selected_candidates_form'> 
@@ -445,7 +448,7 @@ color:black !important;
 </form> -->
 @endif
 
-</div>
+</div><div style="clear: both">Please click the most recent work experience to view each candidate resume.</div>
   	<!-- <div style="margin: 10px;width:150px">
   	<button onclick="myFunction()" class="dropbtn btn dropdown-toggle" id='btn_type_worker' style="padding-top: 0px !important;padding-bottom: 0px !important">Type of Worker</button>
   <div id="myDropdown" class="dropdown-content">
@@ -502,16 +505,16 @@ color:black !important;
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" style="min-width: 550px;">
     <li class="nav-item">
-      <a class="nav-link active" data-toggle="tab" href="#home" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>Personal Detail</p></a>
+      <a class="nav-link active" data-toggle="tab" href="#home" style='font-size: 16px;font-weight: bold; color: #d3d3d3'><p>Personal Detail</p></a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#menu1" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>All Experience</p></a>
+      <a class="nav-link" data-toggle="tab" href="#menu1" style='font-size: 16px;font-weight: bold; color: #d3d3d3'><p>All Experience</p></a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#menu2" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>Qualifications</p></a>
+      <a class="nav-link" data-toggle="tab" href="#menu2" style='font-size: 16px;font-weight: bold; color: #d3d3d3'><p>Qualifications</p></a>
     </li>
     <!-- <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#menu2" style='font-size: 16px;font-weight: bold; color: #bda6b0'><p>Availability</p></a>
+      <a class="nav-link" data-toggle="tab" href="#menu2" style='font-size: 16px;font-weight: bold; color: #d3d3d3'><p>Availability</p></a>
     </li> -->
     
   </ul>
@@ -553,11 +556,11 @@ color:black !important;
 	
 	$(document).ready(function() {
     if('<?php echo Session::get('success'); ?>'=='Payment successful!'){
-      swal("Payment Successful", "Thanks for the payment.   Click on Short Listed Menu tab to view Short listed candidates. Your selected candidates are available for only 7 days. After 7 days you cannot view their personal details", "success");
+      swal("Payment Successful", "Thanks for the payment.   Click on Short Listed Menu tab to view Short listed candidates. Your selected candidates are available for only 7 days. After this time, you cannot view their personal details", "success");
     }
     if('<?php echo Session::get('success'); ?>' == 'View Candidate'){
 
-             swal("Welcome!!!", "To view candidates please select a role.", "success");
+             swal("Welcome!!!", "To view candidates please select a role. Please click the most recent work experience to view each candidate resume.", "success");
 
         }
     // table= $('#candidate_search').DataTable();
@@ -916,11 +919,12 @@ function resume(clicked){
                 if(data.qualifications){
                   $.each(data.qualifications, function( index, qualification ) {
                     
-                  
+                  if(qualification.qualification_name != null){
                   $('#all_qualifications').html(
                     $('#all_qualifications').html()+
                     qualification.qualification_name+'<br>'+qualification.qualification_date+'<hr>'
                       )
+                }
                   });
                 }
                 //  if(data.availabilities){
@@ -1095,13 +1099,13 @@ $( "#pay_now" ).click(function( event ) {
     else if(parseInt($('#count').val()) < 5){
       $diff=5-$('#count').val();
       var package='basic';
-      message="You can select "+$diff+" more candidates. If you don't select them now then you will not be able to select more candidates as part of this subscription later. Do you want to continue with "+$diff+" candidates."
+      message="You can select "+$diff+" more candidates. If you don't select them now then you will not be able to select more candidates as part of this subscription later. Do you want to continue with "+$diff+" candidates?"
     }
    else if(parseInt($('#count').val()) > 5 &&  parseInt($('#count').val()) < 10 ){
         event.preventDefault();
      $diff=10-$('#count').val();
       var package='premium';
-      message="You can select "+$diff+" more candidates. If you don't select them now then you will not be able to select more candidates as part of this subscription later. Do you want to continue with "+$diff+" candidates."
+      message="You can select "+$diff+" more candidates. If you don't select them now then you will not be able to select more candidates as part of this subscription later. Do you want to continue with "+$diff+" candidates?"
     }
     else if(parseInt($('#count').val()) == 5 || parseInt($('#count').val()) == 10 ){
           swal({

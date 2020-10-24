@@ -38,7 +38,7 @@
                                     <label for="text-input"  class=" form-control-label">Phone Number</label>
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input type='number' class="form-control" value="" name='phone_number' >
+                                    <input type='number' class="form-control" value="" name='phone_number' onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -78,7 +78,7 @@
                                     <label for="text-input" class=" form-control-label">State/Territory</label>
                                 </div>
                                 <div class="col-12 col-md-8">
-                                   <select id='state' name='state' class="form-control" required>
+                                   <select id='state' name='state' class="form-control js-example-basic-single" required>
                                     <option  value="">Select State</option>
                                     @foreach($states as $state)
                                     <option  value="{{$state->name}}">{{$state->name}}</option>
@@ -91,7 +91,7 @@
                                     <label for="text-input" class=" form-control-label">Post Code</label>
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input type="text" maxlength="4" minlength="4" onkeypress='return event.charCode >= 48 && event.charCode <= 57' oninvalid="this.setCustomValidity('Please enter numbers only and has to be 4 digits')"  oninput="this.setCustomValidity('')"  class="form-control"  name="postcode" required>
+                                    <input type="text" maxlength="4" minlength="4" onkeypress='return event.charCode >= 48 && event.charCode <= 57' oninvalid="this.setCustomValidity('Please enter numbers only and has to be 4 digits')"  oninput="this.setCustomValidity('')"  class="form-control"  name="postcode" required >
                                 </div>
                             </div>
                             

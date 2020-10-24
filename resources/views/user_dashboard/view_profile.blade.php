@@ -43,7 +43,7 @@
                                     <label for="text-input" class=" form-control-label">Phone Number</label>
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input type='number' class="form-control" value="{{$user->userinfo->phone_number}}" name='phone_number' required >
+                                    <input type='number' class="form-control" value="{{$user->userinfo->phone_number}}" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name='phone_number' required >
                                 </div>
                             </div>
                             <div class="row form-group">

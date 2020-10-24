@@ -265,7 +265,7 @@ Please click on recent work experience to view candidate’s personal details (e
       { "data": 'recent_experience_column','name':'id', "searchable": true},
        { "data": 'name','name':'name'},
        { "data": 'experience_yr','name':'experience', "searchable": true},
-       { "data": 'previous_cousine_experience','name':'previous_cousine_experience', "searchable": true},
+       { "data": 'cuisine','name':'previous_cousine_experience', "searchable": true},
         { "data": 'suburb','name':'suburb'},
         { "data": 'updated','name':'updated_at', "searchable": true},
         { "data": 'confirmed','name':'confirmed', "searchable": true},
