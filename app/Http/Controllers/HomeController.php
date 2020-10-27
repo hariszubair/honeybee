@@ -34,9 +34,9 @@ class HomeController extends Controller
       $message=$request->form_message;
 
         Mail::send('emails.form_submit', ['name' => $name,'messages'=>$message, 'email'=>$email], function ($m) {
-            // $m->replyTo('admin@honeybeerecruiting.com.au');
+            $m->replyTo('admin@honeybeerecruiting.com.au');
             $m->from('mail@honeybeetech.com.au', 'Honey Bee');
-            $m->to('admin@honeybeerecruiting.com.au', 'Honey Bee')->subject('Contact Us form submission');
+            $m->to('admin@honeybeetech.com.au', 'Honey Bee')->subject('Contact Us form submission');
         });
         // return 1;
     }
