@@ -186,7 +186,7 @@ $new_date= date('M d, Y', $date);
                                     <label for="text-input" class=" form-control-label">Phone Number :</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type='number' id="text-input" name="phone_number" onkeypress='return event.charCode >= 48 && event.charCode <= 57' placeholder="Phone Number" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->phone_number: '';?>">
+                                    <input type='number' id="text-input" name="phone_number" onkeypress='return event.charCode >= 48 && event.charCode <= 57' placeholder="Phone Number" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->phone_number: Auth::user()->phone_number;?>">
                                    
                                 </div>
                             </div>

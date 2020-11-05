@@ -56,6 +56,7 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users', 'confirmed'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role_id' => ['required'],
+            'phone_number' => ['required'],
             'g-recaptcha-response'=>new Captcha(),
 
         ]);
@@ -74,6 +75,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'phone_number'=>$data['phone_number'],
         ]);
         if($data['role_id']=='3'){
             $role='Client';
