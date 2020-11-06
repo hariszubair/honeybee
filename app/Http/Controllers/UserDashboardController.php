@@ -438,7 +438,19 @@ class UserDashboardController extends Controller
 
       if(Auth::user()->hasRole('Super Admin'))
       {
-         return view('admin_dashboard/index');
+        // $candidate_state= UserInfo::where('role_id',4) ->select('state',DB::raw("round(COUNT(*)/(select count(*) from user_infos where role_id = 4)*100 ,2) as count_row"))
+                // ->groupBy(DB::raw('state'))
+                // ->get();
+        $candidate_state= UserInfo::where('role_id',4) ->select('state',DB::raw("COUNT(*) as count_row"))
+                ->groupBy(DB::raw('state'))
+                ->get();
+         $total_candidate=User::whereHas("roles", function($q){ $q->where("name", "Candidate"); })->count();
+
+        $registered_candidate=User::whereHas("roles", function($q){ $q->where("name", "Candidate"); })->has('userinfo')->count();
+        $unregistered_candidate=$total_candidate-$registered_candidate;
+
+         
+         return view('admin_dashboard/index',compact('candidate_state','total_candidate','registered_candidate','unregistered_candidate'));
         
       }
       else if( $user->hasRole('Candidate')) {
@@ -452,7 +464,7 @@ class UserDashboardController extends Controller
       }
       else if( $user->hasRole('Client')) {
 
-        return view('user_dashboard/view_profile',compact('user','states','restaurants'));
+        return view('user_dashboard/view_profile',compact('user','states','restaurants',' unregistered_candidate'));
 
         }
     }

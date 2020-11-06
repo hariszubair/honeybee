@@ -68,23 +68,19 @@ div[data-role="editor-toolbar"] {
                                 </div>
                                 <div class="col-12 col-md-8">
                                      <select id='test' multiple="multiple"   required name='email[]' style="width: 100%">
-                                         <optgroup label="Candidates">
-                                    @foreach($candidates_email as $user)
-                                     <option {{$user->email == $email ? 'selected' : ''}} value="{{$user->email}}">{{$user->email}}</option>
-                                    @endforeach
-                                </optgroup>
+                                       
                                 <optgroup label="Clients">
                                     @foreach($clients_email as $user)
                                      <option {{$user->email == $email ? 'selected' : ''}} value="{{$user->email}}">{{$user->email}}</option>
                                     @endforeach
                                 </optgroup>
-                                <optgroup label="Un Confirmed Candidates">
+                                <optgroup label="Incomplete profile candidate">
                                     @foreach($partial_candidates_email as $user)
                                      <option {{$user->email == $email ? 'selected' : ''}} value="{{$user->email}}">{{$user->email}}</option>
                                     @endforeach
                                 </optgroup>
-                                   <optgroup label="Un Confirmed Clients">
-                                    @foreach($partial_client_email as $user)
+                                   <optgroup label="Complete profile candidate">
+                                    @foreach($complete_candidates_email as $user)
                                      <option {{$user->email == $email ? 'selected' : ''}} value="{{$user->email}}">{{$user->email}}</option>
                                     @endforeach
                                 </optgroup>

@@ -24,6 +24,7 @@
                         <tr>
                             <th class="th-sm">Name</th>
                             <th class="th-sm">Email</th>
+                            <th class="th-sm">Phone #</th>
                             <th class="th-sm">Updated At</th>
                             <th class="th-sm notexport">Action</th>
                         </tr>
@@ -39,6 +40,7 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Updated At</th>
+                            <th>Phone #</th>
                             <th class="notexport">Action</th>
                         </tr>
                     </tfoot>
@@ -143,14 +145,16 @@ $(win.document.body).find( 'table' ).find('td:last-child, th:last-child').remove
           
        { "data": 'name','name':'name'},
        { "data": 'email','name':'email', "searchable": true},
+       { "data": 'phone_number','name':'phone_number', "searchable": true},
         { "data": 'update','name':'updated_at', "searchable": true},
         { "data": 'action','name':'action', "searchable": true},
         ],
         "columnDefs": [
-    { "width": "30%", "targets": 0 },
-    { "width": "30%", "targets": 1 },
-    { "width": "20%", "targets": 2 },
-    { "width": "20%", "targets": 3 },
+     { "width": "25%", "targets": 0 },
+    { "width": "25%", "targets": 1 },
+    { "width": "15%", "targets": 2 },
+    { "width": "15%", "targets": 3 },
+    { "width": "20%", "targets": 4 },
   ],
   "rowCallback": function( row, data, index ) {
         $('tr th', row).css('border-bottom', '0')

@@ -285,7 +285,6 @@ class AdminDashboardController extends Controller
      */
     public function mail($id=null)
     {
-
         $user=User::find($id);
         if($user){
             $email=$user->email;
@@ -296,17 +295,23 @@ class AdminDashboardController extends Controller
 
          $clients_email=User::whereHas('roles', function ($query) {
      $query->where('name', 'Client');
-        })->has('userinfo')->get(['email']);
+        })->get(['email']);
          $partial_client_email=User::whereHas('roles', function ($query) {
     $query->where('name', 'Cient');
         })->doesntHave('userinfo')->get(['email']);
+         $complete_client_email=User::whereHas('roles', function ($query) {
+    $query->where('name', 'Cient');
+        })->has('userinfo')->get(['email']);
           $candidates_email=User::whereHas('roles', function ($query) {
              $query->where('name', 'Candidate');
-        })->has('userinfo')->get(['email']);
+        })->has('userinfo')->count();
           $partial_candidates_email=User::whereHas('roles', function ($query) {
              $query->where('name', 'Candidate');
         })->doesntHave('userinfo')->get(['email']);
-        return view('admin_dashboard/mail',compact('email','clients_email','candidates_email','partial_candidates_email','partial_client_email'));
+           $complete_candidates_email=User::whereHas('roles', function ($query) {
+             $query->where('name', 'Candidate');
+        })->has('userinfo')->get(['email']);
+        return view('admin_dashboard/mail',compact('email','complete_client_email','complete_candidates_email','partial_candidates_email','partial_client_email','clients_email'));
     }
     public function send_mail(Request $request)
     {

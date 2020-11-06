@@ -812,7 +812,21 @@ $new_date= date('M d, Y', $date);
                 @endif
     <script src="{{asset('public/js/select2.multi-checkboxes.js')}}"></script>
        <script src="{{asset('public/js/datepicker.min.js')}}"></script>
+<script type="text/javascript">
+  window.onbeforeunload = function (e) {
+    e.preventDefault();
+       return 'Dialog text here.';
+    confirm("Press a button!");
+    e = e || window.event;
+    // // For IE and Firefox prior to version 4
+    // if (e) {
+    //     e.returnValue = 'Sure?';
+    // }
 
+    // // For Safari
+    // return 'Sure?';
+};
+    </script>
 <script type="text/javascript">
     var all_user_info = <?php echo $user_info ?>;
     // console.log("all_user_info");
