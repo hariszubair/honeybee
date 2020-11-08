@@ -64,7 +64,19 @@ class UserDashboardController extends Controller
         $states=State::all();
        $user=User::with('userinfo')->find(Auth::id());
         if( $user->hasAnyRole('Admin','Super Admin')){
-        return view('admin_dashboard/index');
+          $candidate_role= UserInfo::where('role_id',4) ->select('role_apply',DB::raw("COUNT(*) as count_row"))
+                ->groupBy(DB::raw('role_apply'))
+                ->get();
+                  $candidate_state= UserInfo::where('role_id',4) ->select('state',DB::raw("COUNT(*) as count_row"))
+                ->groupBy(DB::raw('state'))
+                ->get();
+         $total_candidate=User::whereHas("roles", function($q){ $q->where("name", "Candidate"); })->count();
+
+        $registered_candidate=User::whereHas("roles", function($q){ $q->where("name", "Candidate"); })->has('userinfo')->count();
+        $unregistered_candidate=$total_candidate-$registered_candidate;
+
+         
+         return view('admin_dashboard/index',compact('candidate_state','total_candidate','registered_candidate','unregistered_candidate','candidate_role'));
 
         }
       if(!$user->userinfo){
@@ -636,5 +648,20 @@ class UserDashboardController extends Controller
         $user->delete();
       }
       return redirect()->back();
+    }
+     public function close_browser(Request $request)
+    {
+      $user=Auth::user();
+      if($user->close_browser==null){
+         $user->close_browser=Carbon::now();
+         $user->save();
+      }
+
+    }
+     public function login_time(Request $request)
+    {
+      $user=Auth::user();
+         $user->login_time=$user->login_time + 120;
+         $user->save();
     }
 }

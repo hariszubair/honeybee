@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Rules\Captcha;
 use Mail;
+use Jenssegers\Agent\Agent;
 class RegisterController extends Controller
 {
     /*
@@ -51,6 +52,7 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+       
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users', 'confirmed'],
@@ -70,12 +72,22 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-       
+        $agent = new Agent();
+            if($agent->isMobile()){
+                $device='Mobile';
+            }
+            elseif($agent->isTablet()){
+                $device='Tablet';
+            }
+            else{
+                $device='Desktop';
+            }
         $user=User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'phone_number'=>$data['phone_number'],
+            'device'=>$device,
         ]);
         if($data['role_id']=='3'){
             $role='Client';

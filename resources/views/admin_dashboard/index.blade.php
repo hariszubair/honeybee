@@ -10,16 +10,9 @@
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         
-                    <div class="row">
-                            <div class="col-md-12">
-                                <div class="overview-wrap">
-                                    <h2 class="title-1">overview</h2>
-                                    
-                                </div>
-                            </div>
-                        </div>
+                   
                           <!-- STATISTIC-->
-            <section class="statistic statistic2">
+           <!--  <section class="statistic statistic2">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-6 col-lg-4">
@@ -52,12 +45,12 @@
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> -->
             <!-- END STATISTIC-->
                         
                        
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <div class="au-card chart-percent-card">
                                     <div class="au-card-inner">
                                         <h3 class="title-2 tm-b-5" style="font-size: 20px">Candidates by state</h3>
@@ -68,7 +61,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
+                                <div class="au-card chart-percent-card">
+                                    <div class="au-card-inner">
+                                        <h3 class="title-2 tm-b-5" style="font-size: 20px">Candidates by role</h3>
+                                        <div class="row no-gutters">
+                                            <canvas id="candidate_role-chart" ></canvas> 
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
                                 <div class="au-card chart-percent-card">
                                     <div class="au-card-inner">
                                         <h3 class="title-2 tm-b-5" style="font-size: 20px">Registered / Unregistered Candidates</h3>
@@ -79,7 +83,18 @@
                                     </div>
                                 </div>
                             </div>
-
+                            
+                            <div class="col-lg-6">
+                                <div class="au-card chart-percent-card">
+                                    <div class="au-card-inner">
+                                        <h3 class="title-2 tm-b-5" style="font-size: 20px">Candidates by role</h3>
+                                        <div class="row no-gutters">
+                                            <canvas id="candidate_role-chart" ></canvas> 
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
 
                         </div>
@@ -92,6 +107,7 @@
     </div>
 
     <input type="" name="candidate_state" id='candidate_state' value="{{$candidate_state}}" style="display: none">
+    <input type="" name="candidate_role" id='candidate_role' value="{{$candidate_role}}" style="display: none">
 
 @endsection
 
@@ -104,6 +120,7 @@
     var data=[];
 $( document ).ready(function() {
     var candidate_state=JSON.parse($('#candidate_state').val());
+    var candidate_role=JSON.parse($('#candidate_role').val());
     let label = candidate_state.map(a => a.state);
     let data=candidate_state.map(a => a.count_row  );
     // arr.map(i => '#' + i);
@@ -146,7 +163,35 @@ var myChart2 = new Chart(candidates, {
   },
 
 });
-    // console.log(Object.values(candidate_state))   
+    // console.log(Object.values(candidate_state))  
+
+    var candidate_role=JSON.parse($('#candidate_role').val());
+    let label2 = candidate_role.map(a => a.role_apply);
+    let data2=candidate_role.map(a => a.count_row  );
+    // arr.map(i => '#' + i);
+     var ctx2 = document.getElementById("candidate_role-chart").getContext('2d');
+var myChart2 = new Chart(ctx2, {
+  type: 'doughnut',
+  data: {
+    labels: label2,
+    datasets: [{
+      backgroundColor: [
+        "#2ecc71",
+        "#3498db",
+        "#95a5a6",
+        "#ecdba6",
+        "#f1c40f",
+        "#e74c3c",
+        "#34495e",
+        "#5d490f"
+      ],
+      data: data2
+    }]
+  },
+
+});
+
+
 });
 
 

@@ -48,7 +48,8 @@ Route::post('/user-profile-update','UserDashboardController@profile_update');
 
 Route::delete('/delete_profile/{id}', 'UserDashboardController@delete_profile')->name('delete_profile');
 Route::get('/candidate_search_view', 'UserDashboardController@candidate_search_view')->name('candidate_search_view')->middleware(['WithProfile']);
-
+Route::post('close_browser', 'UserDashboardController@close_browser')->name('close_browser');
+Route::post('login_time', 'UserDashboardController@login_time')->name('login_time');
 
 
 
