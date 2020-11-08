@@ -59,7 +59,7 @@ class UserDashboardController extends Controller
      */
     public function index()
     {
-
+ 
       $restaurants=Restaurant::all();
         $states=State::all();
        $user=User::with('userinfo')->find(Auth::id());

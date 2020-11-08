@@ -107,7 +107,7 @@
     </div>
 
     <input type="" name="candidate_state" id='candidate_state' value="{{$candidate_state}}" style="display: none">
-    <input type="" name="candidate_role" id='candidate_role' value="{{$candidate_role}}" style="display: none">
+    <input type="" name="candidate_role" id='candidate_role' value="{{$candidate_role}}" style="display: none"> 
 
 @endsection
 
