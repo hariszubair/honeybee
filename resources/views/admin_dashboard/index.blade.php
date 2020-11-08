@@ -84,17 +84,6 @@
                                 </div>
                             </div>
                             
-                            <div class="col-lg-6">
-                                <div class="au-card chart-percent-card">
-                                    <div class="au-card-inner">
-                                        <h3 class="title-2 tm-b-5" style="font-size: 20px">Candidates by role</h3>
-                                        <div class="row no-gutters">
-                                            <canvas id="candidate_role-chart" ></canvas> 
-                                           
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
 
                         </div>
