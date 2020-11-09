@@ -480,7 +480,7 @@ class UserDashboardController extends Controller
       }
       else if( $user->hasRole('Client')) {
 
-        return view('user_dashboard/view_profile',compact('user','states','restaurants',' unregistered_candidate'));
+        return view('user_dashboard/view_profile',compact('user','states','restaurants'));
 
         }
     }
@@ -570,7 +570,8 @@ class UserDashboardController extends Controller
               }
             })
             ->addColumn('recent_experience_column',function($row) {
-              $diff = abs(strtotime($row->recent_experience->job_from) - strtotime($row->recent_experience->job_to));
+              if($row->recent_experience){
+          $diff = abs(strtotime($row->recent_experience->job_from) - strtotime($row->recent_experience->job_to));
 
               // $years = floor($diff / (365*60*60*24));
               $months = floor(($diff) / (30*60*60*24));
@@ -602,6 +603,11 @@ class UserDashboardController extends Controller
               $data.='<br>'.$row->recent_experience->job_title.' ('.$months.')'.$responsibility.'</a>'; 
 
               return $data;
+              }
+               return '<a href="javascript:void(0)" class="resume" id="'.$row->user_id.'" style="color:#272f66;background-color:#ffffff00" onclick="resume($(this))">N/A</a>';
+
+
+              
             })->addColumn('cuisine',function($row) {
             return str_replace(',', ', ', $row->previous_cousine_experience); 
             
