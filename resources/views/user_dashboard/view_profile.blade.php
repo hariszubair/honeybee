@@ -11,7 +11,18 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
+@if (Auth::user()->email_verified_at== null)
+@php
+$date = Auth::user()->created_at;
+$date = strtotime($date);
+$date = strtotime("+7 day", $date);
+$new_date= date('M d, Y', $date);
 
+@endphp
+                        <div class="alert alert-success" role="alert">
+                           Please verify your email address before {{$new_date}}. After this time if you have not verified your email address your profile will get deactivated. 
+                        </div>
+                    @endif
 
 
         <div class="card">
