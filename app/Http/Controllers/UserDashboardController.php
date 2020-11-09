@@ -389,7 +389,8 @@ class UserDashboardController extends Controller
               }
             })
             ->addColumn('recent_experience_column',function($row) {
-              $diff = abs(strtotime($row->recent_experience->job_from) - strtotime($row->recent_experience->job_to));
+              if($row->recent_experience){
+                $diff = abs(strtotime($row->recent_experience->job_from) - strtotime($row->recent_experience->job_to));
 
               // $years = floor($diff / (365*60*60*24));
               $months = floor(($diff) / (30*60*60*24));
@@ -421,6 +422,9 @@ class UserDashboardController extends Controller
               $data.='<br>'.$row->recent_experience->job_title.' ('.$months.')'.$responsibility.'</a>';
 
               return $data;
+              }
+              return '';
+              
             })->addColumn('cuisine',function($row) {
             return str_replace(',', ', ', $row->previous_cousine_experience); 
             
