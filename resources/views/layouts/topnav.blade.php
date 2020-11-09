@@ -29,7 +29,7 @@
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"  style="position: absolute;z-index: 2">
     <a class="dropdown-item" href="{{ URL('/change_password') }}">Change Password</a>
-    <a  class="dropdown-item" href="{{ URL('/logout') }}" onclick="event.preventDefault();  document.getElementById('logout-form').submit();">
+    <a  class="dropdown-item" href="{{ URL('/logout') }}">
                                                      <i class="zmdi zmdi-power"></i> {{ __('Logout') }}
                              </a>
     
