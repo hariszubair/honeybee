@@ -661,7 +661,7 @@ class UserDashboardController extends Controller
      public function login_time(Request $request)
     {
       $user=Auth::user();
-         $user->login_time=$user->login_time + 120;
+         $user->login_time=$user->login_time + 2;
          $user->save();
     }
 }
