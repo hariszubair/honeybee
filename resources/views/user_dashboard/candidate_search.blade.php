@@ -709,6 +709,9 @@ candidate_search()
   
 	function candidate_search() {
     var role_apply = $('#role_apply').val();
+    if($('#role_apply').val()==1){
+      return false;
+    }
     var previous_cousine_experience = $('#previous_cousine_experience').val();
     var state = $('#state').val();
     var available_from = $('#available_from').val();

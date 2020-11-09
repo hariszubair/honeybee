@@ -423,7 +423,7 @@ class UserDashboardController extends Controller
 
               return $data;
               }
-              return '';
+              return 'N/A';
               
             })->addColumn('cuisine',function($row) {
             return str_replace(',', ', ', $row->previous_cousine_experience); 
