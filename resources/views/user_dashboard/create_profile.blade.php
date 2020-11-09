@@ -141,6 +141,39 @@
 
 @section('footer')
 <script type="text/javascript">
+    setInterval(function() {
+         $.ajax({
+          headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+            url:'./login_time',
+            type:'POST',
+           
+         });
+
+}, 120 * 1000); 
+  window.onbeforeunload = function (e) {
+    
+    $.ajax({
+          headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+            url:'./close_browser',
+            type:'POST',
+           
+         });
+   
+    e = e || window.event;
+    // // For IE and Firefox prior to version 4
+    if (e) {
+        e.returnValue = 'Sure?';
+    }
+
+    // For Safari
+    return 'Sure?';
+};
+    </script>
+<script type="text/javascript">
     
     $(document).ready(function() {
     $('.js-example-basic-single').select2({});
