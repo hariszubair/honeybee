@@ -26,6 +26,7 @@
                             <th class="th-sm">Email</th>
                             <th class="th-sm">Phone #</th>
                             <th class="th-sm">Updated At</th>
+                            <th class="th-sm">Details</th>
                             <th class="th-sm notexport">Action</th>
                         </tr>
                     </thead>
@@ -41,6 +42,7 @@
                             <th>Email</th>
                             <th>Phone #</th>
                             <th>Updated At</th>
+                            <th>Details</th>
                             <th class="notexport">Action</th>
                         </tr>
                     </tfoot>
@@ -147,6 +149,7 @@ $(win.document.body).find( 'table' ).find('td:last-child, th:last-child').remove
        { "data": 'email','name':'email', "searchable": true},
        { "data": 'phone_number','name':'phone_number', "searchable": true},
         { "data": 'update','name':'updated_at', "searchable": true},
+        { "data": 'detail','name':'detail', "searchable": false, "orderable":false},
         { "data": 'action','name':'action', "searchable": true},
         ],
         "columnDefs": [

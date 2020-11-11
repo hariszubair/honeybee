@@ -68,6 +68,10 @@ class AdminDashboardController extends Controller
             }
             }
 
+        })->addColumn('detail',function($row) {
+             $temp='<b>Device:</b>'.$row->device.'</br> <b>Closed on:</b>'.$row->close_browser.'</br> <b>Active Time:</b>'.$row->login_time;
+             return $temp;
+
         })
         ->addColumn('update',function($row) {
            return explode(' ', $row->updated_at)[0];
