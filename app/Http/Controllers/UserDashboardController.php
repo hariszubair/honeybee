@@ -423,7 +423,7 @@ class UserDashboardController extends Controller
 
               return $data;
               }
-              return '<a href="javascript:void(0)" class="resume" id="'.$row->user_id.'" style="color:#272f66;background-color:#ffffff00" onclick="resume($(this))">N/A</a>';
+              return '<a href="javascript:void(0)" class="resume" id="'.$row->user_id.'" style="color:#272f66;background-color:#ffffff00" onclick="resume($(this))">No experience</a>';
               
             })->addColumn('cuisine',function($row) {
             return str_replace(',', ', ', $row->previous_cousine_experience); 
@@ -604,7 +604,7 @@ class UserDashboardController extends Controller
 
               return $data;
               }
-               return '<a href="javascript:void(0)" class="resume" id="'.$row->user_id.'" style="color:#272f66;background-color:#ffffff00" onclick="resume($(this))">N/A</a>';
+               return '<a href="javascript:void(0)" class="resume" id="'.$row->user_id.'" style="color:#272f66;background-color:#ffffff00" onclick="resume($(this))">No experience</a>';
 
 
               
