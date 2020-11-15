@@ -13,10 +13,9 @@
   
  }
 </style>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
+
+        <div class="col-md-12" >
+            <div class="card" style="margin-left:-10%;margin-right: -10%;width: 120%;">
                 <div class="card-header">Candidates</div>
                 <div class="card-body">
                 <table id="candidate_search" class="table" width="100%">
@@ -50,9 +49,7 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>                
-        
+
 
    
 
@@ -127,6 +124,7 @@ $(win.document.body).find( 'table' ).find('td:last-child, th:last-child').remove
         serverSide: true,
          // searching: false,
          pageLength: 10,
+          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
          // paging:true,
          // info: false,
 
@@ -153,11 +151,13 @@ $(win.document.body).find( 'table' ).find('td:last-child, th:last-child').remove
         { "data": 'action','name':'action', "searchable": true},
         ],
         "columnDefs": [
-    { "width": "25%", "targets": 0 },
-    { "width": "25%", "targets": 1 },
+    { "width": "15%", "targets": 0 },
+    { "width": "15%", "targets": 1 },
     { "width": "15%", "targets": 2 },
     { "width": "15%", "targets": 3 },
     { "width": "20%", "targets": 4 },
+    { "width": "20%", "targets": 5 },
+
   ],
   "rowCallback": function( row, data, index ) {
         $('tr th', row).css('border-bottom', '0')

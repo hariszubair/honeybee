@@ -70,9 +70,11 @@ Route::get('/mail/{id?}', 'AdminDashboardController@mail')->middleware(['role:Ad
 
 
 // Route::get('/admin-dashboard', 'AdminDashboardController@index');
-Route::get('/all_candidates', 'AdminDashboardController@candidates')->middleware(['role:Admin|Super Admin']);
+Route::get('/all_candidates', 'AdminDashboardController@candidates')->middleware(['role:Admin|Super Admin'])->name('all_candidates');
 Route::get('/admin-candidate-edit/{id}', 'AdminDashboardController@candidate_edit')->middleware(['role:Super Admin']);
 Route::get('/admin-candidate-view/{id}', 'AdminDashboardController@candidate_view')->middleware(['role:Super Admin|Admin']);
+Route::get('/admin-candidate-delete/{id}', 'AdminDashboardController@candidate_delete')->middleware(['role:Super Admin|Admin']);
+Route::get('/admin-client-delete/{id}', 'AdminDashboardController@client_delete')->middleware(['role:Super Admin|Admin']);
 Route::post('/admin_candidate_update','AdminDashboardController@candidate_update')->middleware(['role:Super Admin']);
 Route::post('/view_candidates', 'AdminDashboardController@view_candidates');
 

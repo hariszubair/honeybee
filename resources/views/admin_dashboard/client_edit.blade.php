@@ -1,6 +1,8 @@
 @extends('layouts.master')
 
 @section('content')
+    <link rel="stylesheet" href="{{asset('public/css/datepicker.min.css')}}">
+
 @if (\Session::has('success'))
           <div class="alert alert-success" >
           {!! \Session::get('success') !!}
@@ -150,9 +152,15 @@
 @endsection()
 
 @section('footer')
+       <script src="{{asset('public/js/datepicker.min.js')}}"></script>
+
 <script type="text/javascript">
     
     $(document).ready(function() {
+         $('[data-toggle="datepicker"]').datepicker({
+        autoHide:'true',
+        format: 'dd-mm-yyyy'
+       });
     $('.js-example-basic-single').select2({});
     if('<?php echo $user->userinfo->restaurant_type; ?>' == 'Other')
     {

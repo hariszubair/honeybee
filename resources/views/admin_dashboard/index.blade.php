@@ -6,10 +6,10 @@
 </style>
 
             <!-- MAIN CONTENT-->
-            <div class="main-content">
+          <!--   <div class="main-content">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
-                        
+                         -->
                    
                           <!-- STATISTIC-->
            <!--  <section class="statistic statistic2">
@@ -50,37 +50,54 @@
                         
                        
                         <div class="row">
-                            <div class="col-lg-12">
-                                <div class="au-card chart-percent-card">
+                            <div class="col-lg-4">
+                                <div class="au-card chart-percent-card"  style="height: 450px">
                                     <div class="au-card-inner">
-                                        <h3 class="title-2 tm-b-5" style="font-size: 20px">Candidates by state</h3>
+                                        <h3 class="title-2 tm-b-5" style="font-size: 16px">Candidates by state</h3>
                                         <div class="row no-gutters">
                                             <canvas id="myChart" ></canvas> 
                                            
                                         </div>
                                     </div>
+                                     <ul>
+                                               @foreach($candidate_state as $record)
+                                               <li>{{$record->state}}: {{$record->count_row}}</li>
+                                               @endforeach
+                                           </ul>
                                 </div>
                             </div>
-                            <div class="col-lg-12">
-                                <div class="au-card chart-percent-card">
+                            <div class="col-lg-4"   >
+                                <div class="au-card chart-percent-card"  style="height: 450px">
                                     <div class="au-card-inner">
-                                        <h3 class="title-2 tm-b-5" style="font-size: 20px">Candidates by role</h3>
+                                        <h3 class="title-2 tm-b-5" style="font-size: 16px">Candidates by role</h3>
                                         <div class="row no-gutters">
                                             <canvas id="candidate_role-chart" ></canvas> 
                                            
                                         </div>
+
                                     </div>
+                                    <ul>
+                                               @foreach($candidate_role as $record)
+                                               <li>{{$record->role_apply}}: {{$record->count_row}}</li>
+                                               @endforeach
+                                           </ul>
                                 </div>
                             </div>
-                            <div class="col-lg-12">
-                                <div class="au-card chart-percent-card">
+                            <div class="col-lg-4" >
+                                <div class="au-card chart-percent-card" style="height: 450px">
                                     <div class="au-card-inner">
-                                        <h3 class="title-2 tm-b-5" style="font-size: 20px">Registered / Unregistered Candidates</h3>
+                                        <h3 class="title-2 tm-b-4" style="font-size: 14px">Registered / Unregistered Candidates</h3>
                                         <div class="row no-gutters">
-                                            <canvas id="candidates" ></canvas> 
-                                           
+                                            <canvas id="candidates" >
+                                                
+                                            </canvas> 
                                         </div>
                                     </div>
+                                    <ul>
+                                              
+                                               <li>Registered Candidates: {{$registered_candidate}}</li>
+                                                <li>Un-registered Candidates: {{$unregistered_candidate}}</li>
+                                           </ul>
                                 </div>
                             </div>
                             
@@ -88,12 +105,12 @@
 
                         </div>
                     </div>
-                </div>
+          <!--       </div>
 
             </div>
       
 
-    </div>
+    </div> -->
 
     <input type="" name="candidate_state" id='candidate_state' value="{{$candidate_state}}" style="display: none">
     <input type="" name="candidate_role" id='candidate_role' value="{{$candidate_role}}" style="display: none"> 
@@ -175,7 +192,7 @@ var myChart2 = new Chart(ctx2, {
         "#5d490f"
       ],
       data: data2
-    }]
+    }],
   },
 
 });

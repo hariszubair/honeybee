@@ -1,6 +1,8 @@
 @extends('layouts.master')
 
 @section('content')
+    <link rel="stylesheet" href="{{asset('public/css/datepicker.min.css')}}">
+
 <style type="text/css">
     .select2-selection__rendered{
         padding-bottom: 5px !important; 
@@ -14,6 +16,7 @@
 
 
 
+      
         <div class="card">
                 <div class="card-header">Acknowledgement</div>
 
@@ -26,7 +29,7 @@
                                     <label for="text-input" class=" form-control-label">Are your basic details correct?</label>
                                 </div>
                                 <div class="col-12 col-md-8">
-                                     <input class="form-control" value="{{$user_info[0]->user_id}}" name='id' required readonly style="display: none">
+                                    <input class="form-control" value="{{$user_info[0]->user_id}}" name='id' required readonly style="display: none">
                                     <input type="radio" id="basic_correct_yes" name="basic_correct" value="1" checked>
                                     <label for="male">Yes</label>
                                     <input type="radio" id="basic_correct_no" name="basic_correct" value="0" <?php  echo isset($user_info[0]) &&  $user_info[0]->basic_correct ? '': 'checked';?> >
@@ -110,31 +113,32 @@
                                     
                                     <div class="col-12 col-md-9">
                                         <div class="checkbox">
-                                            <label><input class="cousine" type="checkbox" id="allCousine" name="cousine" value="Italian">Italian</label>
+                                            <label><input class="cousine" type="checkbox" id="allCousine" name="cousine" value="Italian"> Italian</label>
+                                            <input style="display: none" type="test" name="previous_cousine_experience" class="form-control" value="<?php  echo isset($user_info[0]) ?  $user_info[0]->previous_cousine_experience: '' ;?>">
+                                        </div> 
+                                        <div class="checkbox">
+                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Mediterranean"> Mediterranean</label>
                                         </div>
                                         <div class="checkbox">
-                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Mediterranean">Mediterranean</label>
+                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Asian"> Asian</label>
                                         </div>
                                         <div class="checkbox">
-                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Asian">Asian</label>
+                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Greek"> Greek</label>
                                         </div>
                                         <div class="checkbox">
-                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Greek">Greek</label>
+                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Take away shop"> Take away shop</label>
                                         </div>
                                         <div class="checkbox">
-                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Take away shop">Take away shop</label>
+                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Cafe"> Cafe</label>
                                         </div>
                                         <div class="checkbox">
-                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Cafe">Cafe</label>
+                                        <label><input class="cousine" type="checkbox" name="cousine"  value="Mexican"> Mexican</label>
                                         </div>
                                         <div class="checkbox">
-                                        <label><input class="cousine" type="checkbox" name="cousine"  value="Mexican">Mexican</label>
+                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Tavern"> Tavern</label>
                                         </div>
                                         <div class="checkbox">
-                                            <label><input class="cousine" type="checkbox" name="cousine"  value="Tavern">Tavern</label>
-                                        </div>
-                                        <div class="checkbox">
-                                            <label><input class="cousine" type="checkbox" name="cousine" id="cousineChecked"  value="Other">Other</label>
+                                            <label><input class="cousine" type="checkbox" name="cousine" id="cousineChecked"  value="Other"> Other</label>
                                         </div>
                                         <input style="margin-top: 15px;" id="otherCousine" type="text" placeholder="Enter other cousine experience" class="form-control" value="">  
                                     </div>
@@ -155,7 +159,7 @@
                                     <label for="text-input" class=" form-control-label">Phone Number :</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type='number' id="text-input" name="phone_number" placeholder="Phone Number" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->phone_number: '';?>">
+                                    <input type='number' id="text-input" name="phone_number" onkeypress='return event.charCode >= 48 && event.charCode <= 57' placeholder="Phone Number" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->phone_number: Auth::user()->phone_number;?>">
                                    
                                 </div>
                             </div>
@@ -174,12 +178,14 @@
                                     <label for="text-input" class=" form-control-label">Date of birth</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="date" id="date_birth" name="date_birth" placeholder="Date of birth" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->date_birth: '';?>">
+                                    <!-- input type="date" id="date_birth" name="date_birth"  class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->date_birth: '';?>"> -->
+
+                                    <input data-toggle="datepicker"  name="date_birth" id='date_birth' class="form-control" autocomplete="off" value="<?php  echo isset($user_info[0]) ?  date_format(date_create($user_info[0]->date_birth),"d-m-Y")  : '';?>" placeholder="dd-mm-yyyy" autocomplete="off" readonly='true'>
                                    
                                 </div>
                             </div>
                             
-
+<!-- 
                             <div class="row form-group">
                                <div class="col col-md-3">
                                     <label for="text-input" class=" form-control-label">Full Street Address:</label>
@@ -188,7 +194,7 @@
                                     <input type="text" id="text-input" name="street_address" placeholder="Street Address" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->street_address:'';?>">
                                    
                                 </div>
-                            </div>
+                            </div> -->
                                
 
                             <div class="row form-group">
@@ -196,7 +202,7 @@
                                     <label for="text-input" class=" form-control-label">City:</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text" id="text-input" name="city" placeholder="City" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->city:'';?>">
+                                    <input type="text" id="text-input" name="city" placeholder="City" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->city:'';?>" onkeyup="this.value=this.value.replace(/[^a-zA-Z]/g,'');">
                                    
                                 </div>
                             </div>
@@ -220,7 +226,7 @@
                                     <label for="text-input" class=" form-control-label">Suburb:</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text" id="text-input" name="suburb" placeholder="Suburb" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->suburb: '';?>">
+                                    <input type="text" id="text-input" name="suburb" placeholder="Suburb" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->suburb: '';?>" onkeyup="this.value=this.value.replace(/[^a-zA-Z]/g,'');">
                                    
                                 </div>
                             </div>     
@@ -299,8 +305,8 @@
                                     <label for="Yes">Yes</label>
                                     <input type="radio" id="relocate_no" name="relocate" value="0" <?php  echo isset($user_info[0]) &&  $user_info[0]->relocate ? '': 'checked';?>>
                                     <label for="No">No</label>
-                                   <div style="width: 70%; display: inline-block;vertical-align: middle;">
-                                   <select class="js-example-basic-multiple js-example-responsive" id="relocate_state" name="relocate_state[]" multiple="multiple"  style="width: 90%">
+                                   <div style="width: 70%; display: inline-block;vertical-align: middle; padding-left: 20px">
+                                   <select class="js-example-basic-multiple js-example-responsive" id="relocate_state" name="relocate_state[]" multiple="multiple"  style="width: 90%;display: none" autocomplete="off">
                                         @foreach($states as $state)
                                           <option value="{{$state->name}}" >{{$state->name}}</option>
                                         @endforeach
@@ -318,14 +324,14 @@
                                     <label for="Yes">Yes</label>
                                     <input type="radio" id="travel_no" name="travel" value="0" <?php  echo isset($user_info[0]) &&  $user_info[0]->travel ? '': 'checked';?>>
                                     <label for="No">No</label>
-                                   <div style="width: 70%; display: inline-block;vertical-align: middle;">
+                                   <div style="width: 70%; display: inline-block;vertical-align: middle;padding-left: 20px">
 
-                                    <select style="display: none" name="travel_distance" id='travel_distance' class="form-control"  >
-                                        <option  val="">Select distance</option>
-                                        <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='5' ?  'selected': ''}} value="5">5km</option>
-                                        <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='10' ?  'selected': ''}} value="10">10km</option>
-                                        <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='15' ?  'selected': ''}} value="15">15km</option>
-                                        <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='20' ?  'selected': ''}} value="20">20km</option>
+                                    <select style="display: none;" name="travel_distance" id='travel_distance' class="form-control"  >
+                                        <option  value="">Select distance</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='10' ?  'selected': ''}} value="10">10 km</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='20' ?  'selected': ''}} value="20">20 km</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='50' ?  'selected': ''}} value="50">50 km</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->travel_distance=='100' ?  'selected': ''}} value="100">100 km</option>
                                     </select>
                                    
                                 </div>
@@ -351,11 +357,19 @@
                 <div id="experience_form_wrapper">
                      <div class="card-body" >
                  <div class="row form-group">
-                               <div class="col col-md-3">
-                                    <label for="text-input" class=" form-control-label">Years of Experience:</label>
+                               <div class="col col-md-5">
+                                    <label for="text-input" class=" form-control-label">Total years of experience in the industry:</label>
                                 </div>
-                                <div class="col-12 col-md-9">
-                                    <input type="number" id="yr_experience" name="yr_experience"  class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->yr_experience: '';?>">
+                                <div class="col-12 col-md-7">
+
+                                    <select type="number" id="yr_experience" name="yr_experience"  class="form-control" required value="">
+                                        <option value="">Please select the following</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='Less than 1 year' ?  'selected': ''}} value="Less than 1 year">Less than 1 year</option>
+                                        <option  {{isset($user_info[0]) && $user_info[0]->yr_experience=='1 - 3 years' ?  'selected': ''}} value="1 - 3 years">1 - 3 years</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='3 - 5 years' ?  'selected': ''}} value="3 - 5 years">3 - 5 years</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='5 - 10 years' ?  'selected': ''}}  value="5 - 10 years">5 - 10 years</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='More than 10 years' ?  'selected': ''}}  value="More than 10 years">More than 10 years</option>
+                                    </select>
                                    
                                 </div>
                             </div>  
@@ -381,9 +395,10 @@
                                             <h4  style="float: left;"> Most Recent Experience</h4>
                                         @endif
                                         @if($experience_counter >= 1)
-                                            <h4  style="float: left;"> Experience (more)</h4>
-                                            <button type="button" onclick="delete_experience(<?php echo $experience_counter ?>)" style="float: right;" class="btn btn-danger"><i class="fas fa-minus"></i></button>
+                                            <h4  style="float: left;"> Experience</h4>
+                                            
                                         @endif
+                                        <button type="button" onclick="delete_experience(<?php echo $experience_counter ?>)" style="float: right;" class="btn btn-danger"><i class="fas fa-minus"></i></button>
                                     </div>
                                 
                                 </div>
@@ -395,12 +410,12 @@
                                     </div>
                                     @if($experience_counter <= 1)
                                         <div class="col-12 col-md-9">
-                                            <input type="text" required id="text-input" name="experience[<?php echo $experience_counter ?>][job_title]" placeholder="Job Title " class="form-control"  value="<?php echo $user_experience->job_title; ?>">
+                                            <input type="text"  id="text-input" name="experience[<?php echo $experience_counter ?>][job_title]" placeholder="Job title is mandatory, without this your experience will not be saved." class="form-control"  value="<?php echo $user_experience->job_title; ?>">
                                         </div>
                                     @endif
                                     @if($experience_counter > 1)
                                         <div class="col-12 col-md-9">
-                                            <input type="text" required id="text-input" name="experience[<?php echo $experience_counter ?>][job_title]" placeholder="Job Title " class="form-control"  value="<?php echo $user_experience->job_title; ?>">
+                                            <input type="text"  id="text-input" name="experience[<?php echo $experience_counter ?>][job_title]" placeholder="Job title is mandatory, without this your experience will not be saved." class="form-control"  value="<?php echo $user_experience->job_title; ?>">
                                         </div>
                                     @endif
                                 </div>
@@ -409,11 +424,21 @@
                                 <div class="col col-md-3">
                                         <label for="text-input" class=" form-control-label"> Period of Employment : </label>
                                     </div>
-                                    <div class="col col-md-4">
-                                        <input type="date" required id="text-input" name="experience[<?php echo $experience_counter ?>][job_from]" placeholder="From" class="form-control"  value="<?php echo  date("Y-m-d", strtotime($user_experience->job_from)); ?>">
+                                    <div class="col col-md-3">
+                                        <input data-toggle="datepicker"  name="experience[<?php echo $experience_counter ?>][job_from]" id='text-input' class="form-control" placeholder="From" autocomplete="off"  readonly='true' value="<?php  echo isset($user_info[0]) ?  date_format(date_create($user_experience->job_from),"d-m-Y")  : '';?>" >
+
+
+                                        <!-- <input type="date" required id="text-input" name="experience[<?php echo $experience_counter ?>][job_from]" placeholder="From" class="form-control"  value="<?php echo  date("Y-m-d", strtotime($user_experience->job_from)); ?>"> -->
                                     </div>
-                                    <div class="col col-md-4">
-                                        <input type="date" id="text-input" name="experience[<?php echo $experience_counter ?>][job_to]" placeholder="To" class="form-control"  value="<?php echo date("Y-m-d", strtotime($user_experience->job_to)); ?>">
+                                    <div class="col col-md-3">
+                                         <input data-toggle="datepicker"  name="experience[<?php echo $experience_counter ?>][job_to]" id='text-input' class="form-control" placeholder="To" autocomplete="off"  readonly='true' value="<?php  echo isset($user_info[0]) ?  date_format(date_create($user_experience->job_to),"d-m-Y")  : '';?>" >
+
+                                        <!-- 
+                                        <input type="date" id="text-input" name="experience[<?php echo $experience_counter ?>][job_to]" placeholder="To" class="form-control"  value="<?php echo date("Y-m-d", strtotime($user_experience->job_to)); ?>"> -->
+                                    </div>
+                                    <div class="col col-md-3">
+                                         <button type="button"  id="experience[<?php echo $experience_counter ?>]" class='reset_dates btn btn-danger' onclick='clear_date($(this))'>Reset</button>
+
                                     </div>
                                 
                                 </div>
@@ -423,7 +448,7 @@
                                         <label for="text-input" class=" form-control-label">Name of Company :</label>
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <input type="text" required id="text-input" name="experience[<?php echo $experience_counter ?>][previous_company]" placeholder="Name of Company" class="form-control"  value="<?php echo $user_experience->previous_company; ?>">
+                                        <input type="text"  id="text-input" name="experience[<?php echo $experience_counter ?>][previous_company]" placeholder="Name of Company" class="form-control"  value="<?php echo $user_experience->previous_company; ?>">
                                     </div>
                                 </div> 
 
@@ -432,7 +457,7 @@
                                         <label for="text-input" class=" form-control-label">No. of Employees in Company :</label>
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <select  class="form-control" required name="experience[<?php echo $experience_counter ?>][no_of_employees]">
+                                        <select  class="form-control"  name="experience[<?php echo $experience_counter ?>][no_of_employees]">
                                             <option value=""> Please Select</option>
                                             <option value="Less than 10" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == 'Less than 10' ? 'selected': '';?>>Less than 10</option>
                                             <option value="11-20" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == '11-20' ? 'selected': '';?>>11-20</option>
@@ -447,7 +472,7 @@
                                         <label for="text-input" class=" form-control-label"> Responsibilities :</label>
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <textarea type="text" rows=4 required id="text-input" name="experience[<?php echo $experience_counter ?>][ex_responsibilities]" placeholder="Enter upto 4 Major Responsibilities. Each Responsibility should be entered in a new line." class="form-control" ><?php echo $user_experience->ex_responsibilities; ?></textarea>
+                                        <textarea type="text" rows=4  id="text-input" name="experience[<?php echo $experience_counter ?>][ex_responsibilities]" placeholder="Enter upto 4 Major Responsibilities. Each Responsibility should be entered in a new line." class="form-control" ><?php echo $user_experience->ex_responsibilities; ?></textarea>
                                         
                                     </div>
                                 </div>
@@ -461,78 +486,8 @@
                     $experience_counter++;
                     }
                     $experience_counter--;
-                else: 
                 ?>
-                <div class="card-body">
-                      
-                    
-
-                        <div class="row form-group">
-                               <div class="col col-md-12">
-                                    <h4>  Most Recent Experience</h4>
-                                </div>
-                             
-                            </div>
-                        
-                            
-                            <div class="row form-group">
-                               <div class="col col-md-3">
-                                    <label for="text-input" class=" form-control-label">Job Title :</label>
-                                </div>
-                                <div class="col-12 col-md-9">
-                                    <input type="text" required id="text-input" name="experience[0][job_title]" placeholder="Job Title " class="form-control" >
-                                </div>
-                            </div>
-                            
-                            <div class="row form-group">
-                               <div class="col col-md-3">
-                                    <label for="text-input" class="form-control-label"> Period of Employment : </label>
-                                </div>
-                                <div class="col col-md-4">
-                                    <input type="date" required id="text-input" name="experience[0][job_from]" placeholder="From" class="form-control"  value="">
-                                </div>
-                                <div class="col col-md-4">
-                                    <input type="date" id="text-input" name="experience[0][job_to]" placeholder="To" class="form-control"  value="">
-                                </div>
-                               
-                            </div>
-                             
-                            <div class="row form-group">
-                               <div class="col col-md-3">
-                                    <label for="text-input" class=" form-control-label">Name of Company :</label>
-                                </div>
-                                <div class="col-12 col-md-9">
-                                    <input type="text" required id="text-input" name="experience[0][previous_company]" placeholder="Name of Company" class="form-control"  value="">
-                                </div>
-                            </div>  
-                             
-                            <div class="row form-group">
-                                <div class="col col-md-3">
-                                    <label for="text-input" class=" form-control-label">No. of Employees in Company :</label>
-                                </div>
-                                <div class="col-12 col-md-9">
-                                    <select  class="form-control" required name="experience[0][no_of_employees]">
-                                        <option value=""> Please Select</option>
-                                        <option value="Less than 10" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == 'Less than 10' ? 'selected': '';?>>Less than 10</option>
-                                        <option value="11-20" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == '11-20' ? 'selected': '';?>>11-20</option>
-                                        <option value="21-50" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == '21-50' ? 'selected': '';?>>21-50</option>
-                                        <option value="More than 50" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == 'More than 50' ? 'selected': '';?>>More than 50</option>
-                                    </select>   
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                               <div class="col col-md-3">
-                                    <label for="text-input" class=" form-control-label"> Responsibilities :</label>
-                                </div>
-                                <div class="col-12 col-md-9">
-                                     <textarea type="text" rows=4 required id="text-input" name="experience[0][ex_responsibilities]" placeholder="Enter upto 4 Major Responsibilities. Each Responsibility should be entered in a new line." class="form-control" ></textarea>
-                                </div>
-                            </div>
-                               
-
-                            
-
-                         </div>
+               
                         <?php
                         
                          endif;  
@@ -543,7 +498,7 @@
                 <div class="row form-group">
                     <div class="col col-md-1"></div>
                     <div class="col col-md-3">
-                     <button id="add_more" style="width: 45px; font-weight: bold; border-color: #238DB7 !important" class="btn btn-success"><i class="fas fa-plus"></i><button>
+                     <button id="add_more" style="width: 45px; font-weight: bold; border-color: #238DB7 !important" class="btn btn-success" type='button'><i class="fas fa-plus"></i><button>
                     </div>
                 </div>
 
@@ -574,9 +529,9 @@
                                         @endif    
                                         @if($certificate_counter > 1)
                                             <h4 style="float: left;"> Qualifications (more)</h4>
-                                            <button type="button" onclick="delete_qualification(<?php echo $certificate_counter ?>)" style="float: right;" class="btn btn-danger"><i class="fas fa-minus"></i></button>
+                                            
                                         @endif
-                                        
+                                        <button type="button" onclick="delete_qualification(<?php echo $certificate_counter ?>)" style="float: right;" class="btn btn-danger"><i class="fas fa-minus"></i></button>
                                     </div>
                                 
                                 </div>
@@ -603,7 +558,9 @@
                                         <label for="text-input" class=" form-control-label"> Date of certificate : </label>
                                     </div>
                                     <div class="col col-md-9">
-                                        <input type="date" id="text-input" name="qualifications[<?php echo $certificate_counter ?>][qualification_date]" placeholder="Date of Qualification" class="form-control"  value="<?php echo  date("Y-m-d", strtotime($user_qualification->qualification_date)); ?>" required>
+                                         <input data-toggle="datepicker"  name="qualifications[<?php echo $certificate_counter ?>][qualification_date]" id='text-input' class="form-control" placeholder="Date of Qualification" autocomplete="off"  readonly='true'  value="<?php echo  date_format(date_create($user_qualification->qualification_date),"d-m-Y"); ?>" required>
+                                       
+                                    
                                     </div>
                                     
                                     
@@ -620,11 +577,12 @@
 
                 else: ?>
 
-                <div class="card-body">
+                <div class="card-body" id="qualification0">
                       
                         <div class="row form-group">
                                <div class="col col-md-12">
                                     <h4 style="float: left;"> Qualifications</h4>
+                                    <button type="button" onclick="delete_qualification(0)" style="float: right;" class="btn btn-danger"><i class="fas fa-minus"></i></button>
                                 </div>
                              
                             </div>
@@ -644,7 +602,10 @@
                                     <label for="text-input" class=" form-control-label"> Date of certificate : </label>
                                 </div>
                                 <div class="col col-md-9">
-                                    <input type="date" id="text-input" name="qualifications[0][qualification_date]" placeholder="Date of Qualification" class="form-control"  value="" required>
+                                     <input data-toggle="datepicker"  name="qualifications[0][qualification_date]" id='text-input' class="form-control" placeholder="Date of Qualification" autocomplete="off"  readonly='true'  value="" required>
+<!-- 
+
+                                    <input type="date" id="text-input" name="qualifications[0][qualification_date]" placeholder="Date of Qualification" class="form-control"  value="" required> -->
                                 </div>
                                
                                
@@ -657,10 +618,10 @@
 
                 <?php endif; ?>
                 </div>
-                <div class="row form-group">
+                <div class="row form-group" style="padding-top: 10px">
                     <div class="col col-md-1"></div>
                     <div class="col col-md-3">
-                     <button id="add_more_certificate" style="width: 45px; font-weight: bold;  border-color: #238DB7 !important" class="btn btn-success"><i class="fas fa-plus"></i></button>
+                     <button id="add_more_certificate" style="width: 45px; font-weight: bold;  border-color: #238DB7 !important" type='button' class="btn btn-success"><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
 
@@ -803,6 +764,9 @@
         
     </div>
     </form>
+     
+       <script src="{{asset('public/js/datepicker.min.js')}}"></script>
+
     <script src="{{asset('public/js/select2.multi-checkboxes.js')}}"></script>
 
 <script type="text/javascript">
@@ -812,6 +776,10 @@
     $("#otherVisaType").css("display","none");
     $("#otherCousine").css("display","none");
     jQuery(document).ready(function($){
+        $('[data-toggle="datepicker"]').datepicker({
+        autoHide:'true',
+        format: 'dd-mm-yyyy'
+       });
         if(all_user_info.length > 0) {
             if(all_user_info[0].visa_type) {
                 if($("#visaType").val() == 'Working Visa' || $("#visaType").val() == 'Student Visa' || $("#visaType").val() == 'Permanent Residence' || $("#visaType").val() == 'Citizen') {
@@ -905,7 +873,7 @@
 </script>
 
 
-</script> -->
+</script> 
 
 <script type="text/javascript">
 
@@ -1351,6 +1319,29 @@
             $('#relocate_state').val(null).change();
         }
     });
+     $(".delete_profile").click(function(){
+  var temp =$(this);
+    swal({
+      title: "Are you sure?",
+      text: 'This will delete your profile permanently!!!',
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(function(isConfirm) {
+      if (isConfirm) {
+      $('form[name="delete_profile"]').submit();      
+    }
+      else{
+      return false;
+      } 
+    })
+
+});
+    function clear_date(clicked){
+        console.log(clicked)
+         $('input[name="'+clicked.attr('id')+'[job_to]"]').val(null);
+        $('input[name="'+clicked.attr('id')+'[job_from]"]').val(null);
+    }
 </script>
 @endsection
 

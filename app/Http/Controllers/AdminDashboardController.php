@@ -13,6 +13,7 @@ use App\UserExperience;
 use App\UserQualification;
 use App\User;
 use Mail;
+use \Carbon\Carbon;
 class AdminDashboardController extends Controller
 {
    
@@ -57,9 +58,9 @@ class AdminDashboardController extends Controller
             $temp='';
             if($user->hasRole('Super Admin')){
                if($row->userinfo){
-              $temp='<a style="margin-right:5px" class="btn btn-primary" title="edit" href="./admin-candidate-edit/'.$row->id.'"><i class="fas fa-edit"></i></a><a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-candidate-view/'.$row->id.'"><i class="fas fa-eye"></i></a>';
+              $temp='<a style="margin-right:5px" class="btn btn-primary" title="edit" href="./admin-candidate-edit/'.$row->id.'"><i class="fas fa-edit"></i></a><a  style="margin-right:5px" class="btn btn-success" title="View" href="./admin-candidate-view/'.$row->id.'"><i class="fas fa-eye"></i></a>';
                     }
-                     $temp.= '<a style="margin-right:5px" class="btn btn-info" title="Mail" href="./mail/'.$row->id.'"><i class="fas fa-paper-plane"></i></a>';
+                     $temp.= '<a style="margin-right:5px" class="btn btn-info" title="Mail" href="./mail/'.$row->id.'"><i class="fas fa-paper-plane"></i></a><a  style="margin-right:5px" class="btn btn-danger" title="delete" href="./admin-candidate-delete/'.$row->id.'"><i class="fas fa-trash"></i></a>';
                 return $temp;
             }
             if($user->hasRole('Admin')){
@@ -69,7 +70,13 @@ class AdminDashboardController extends Controller
             }
 
         })->addColumn('detail',function($row) {
-             $temp='<b>Device:</b>'.$row->device.'</br> <b>Closed on:</b>'.$row->close_browser.'</br> <b>Active Time:</b>'.$row->login_time;
+            if ($row->login_time == 0){
+                $login_time=' < 2 minutes';
+            }
+            else{
+                $login_time=$row->login_time.' minutes';
+            }
+             $temp='<b>Device:</b>'.$row->device.'</br> <b>Closed on:</b>'.$row->close_browser.'</br> <b>Active Time:</b>'.$login_time;
              return $temp;
 
         })
@@ -94,10 +101,15 @@ class AdminDashboardController extends Controller
     }
     public function candidate_edit($user_id)
     {
-        $role=UserInfo::where('user_id',$user_id)->first()->role_id;
+        $role=UserInfo::where('user_id',$user_id)->first();
+        if(!$role)
+        {
+            return redirect()->route('all_candidates');
+        }
+
          $restaurants=Restaurant::all();
         $states=State::all();
-        if($role == 4){
+        if($role->role_id == 4){
         return view('admin_dashboard/candidate_edit',  [
                                                 'user_info' => UserInfo::where([ 'user_id' => $user_id])->get(), 
                                                 'user_experiences' => UserExperience::where([ 'user_id' => $user_id])->get(), 
@@ -144,14 +156,28 @@ class AdminDashboardController extends Controller
              $request->merge(['relocate_state' => null]);
             
           }
-
+$request->merge(['date_birth' => Carbon::parse($request->date_birth)->format('Y-m-d')]);
           $user = UserInfo::updateOrCreate( [ 'user_id'   =>   $request->id ], $request->all());
           
           
            return redirect()->back();
          
     }
-
+    public function candidate_delete($user_id)
+    {
+            $user=User::with('userinfo','experiences','qualifications')->find($user_id);
+        if($user->userinfo){
+            if(count($user->experiences)> 0){
+                UserExperience::where('user_id',$user_id)->delete();
+            }
+            if(count($user->qualifications) > 0){
+                UserQualification::where('user_id',$user_id)->delete();
+            }
+            $user->userinfo->delete();
+        }
+        $user->delete();
+        return redirect()->back();
+    }
     public function clients()
     {
 
@@ -167,9 +193,9 @@ class AdminDashboardController extends Controller
             $temp='';
             if($user->hasRole('Super Admin')){
                if($row->userinfo){
-                $temp.='<a style="margin-right:5px" class="btn btn-primary" title="edit" href="./admin-client-edit/'.$row->id.'"><i class="fas fa-edit"></i></a><a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-client-view/'.$row->id.'"><i class="fas fa-eye"></i></a>';
+                $temp.='<a style="margin-right:5px" class="btn btn-primary" title="edit" href="./admin-client-edit/'.$row->id.'"><i class="fas fa-edit"></i></a><a  style="margin-right:5px" class="btn btn-success" title="View" href="./admin-client-view/'.$row->id.'"><i class="fas fa-eye"></i></a>';
                }     
-                $temp.= '<a style="margin-right:5px" class="btn btn-info" title="Mail" href="./mail/'.$row->id.'"><i class="fas fa-paper-plane"></i></a>';
+                $temp.= '<a style="margin-right:5px" class="btn btn-info" title="Mail" href="./mail/'.$row->id.'"><i class="fas fa-paper-plane"></i></a><a  style="margin-right:5px" class="btn btn-danger" title="delete" href="./admin-client-delete/'.$row->id.'"><i class="fas fa-trash"></i></a>';
                 return $temp;
             }
 
@@ -232,6 +258,15 @@ class AdminDashboardController extends Controller
            return redirect()->back();
          
     }
+    public function client_delete($user_id)
+    {
+            $user=User::with('userinfo')->find($user_id);
+        if($user->userinfo){
+            $user->userinfo->delete();
+        }
+        $user->delete();
+        return redirect()->back();
+    }
 
 
 
@@ -249,36 +284,44 @@ class AdminDashboardController extends Controller
 
 
 
-    public function update_experience($experiences, $user_Id){
+  public function update_experience($experiences, $user_Id){
       
       
       
       if (UserExperience::where('user_id', '=',  $user_Id)->count() > 0) {
            DB::delete('delete from user_experiences where user_id = ? ', [ $user_Id]);
       }
-
+      if($experiences){
       foreach ($experiences as $experience)
       {
         if($experience != null) {
+           $experience['job_from']=Carbon::parse($experience['job_from'])->format('Y-m-d');
+       $experience['job_to']=Carbon::parse($experience['job_to'])->format('Y-m-d');
+          if($experience['job_title'] != null && $experience['job_from'] != null && $experience['job_to'] != null && $experience['previous_company'] != null && $experience['ex_responsibilities'] != null && $experience['no_of_employees'] != null){
           DB::insert('insert into user_experiences (user_id, job_title,job_from,job_to,previous_company,ex_role,ex_responsibilities,no_of_employees ) values (?, ?,?, ?,?, ?,?,? )', [ $user_Id , $experience['job_title'],$experience['job_from'],$experience['job_to'],$experience['previous_company'],'',$experience['ex_responsibilities'],$experience['no_of_employees']]);
         }
+        }
       } 
+    }
       return true;
 
     }
 
-    public function update_qualifications($qualifications, $user_Id){
+   public function update_qualifications($qualifications, $user_Id){
       
       
          if (UserQualification::where('user_id', '=',  $user_Id)->count() > 0) {
             DB::delete('delete from user_qualifications where user_id = ? ', [ $user_Id]);
           }
-
+          if($qualifications){
       foreach ($qualifications as $qualification)
       {
-        
+        if($qualification['qualification_date'] != null && $qualification['qualification_name'] != null ){
+        $qualification['qualification_date']=Carbon::parse($qualification['qualification_date'])->format('Y-m-d');
          DB::insert('insert into user_qualifications (user_id,  qualification_name,qualification_date   ) values (?, ?,?)', [ $user_Id , $qualification['qualification_name'],$qualification['qualification_date']]);
+       }
       } 
+    }
       return true;
 
     }
