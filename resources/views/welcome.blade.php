@@ -13,6 +13,84 @@
     height: 74px;
     width: 80%;
 }
+/* Style the Image Used to Trigger the Modal */
+#myImg {
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#myImg:hover {opacity: 0.7;}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (Image) */
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+}
+
+/* Caption of Modal Image (Image Text) - Same Width as the Image */
+#caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+/* Add Animation - Zoom in the Modal */
+.modal-content, #caption {
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+  from {transform:scale(0)}
+  to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+  .modal-content {
+    width: 100%;
+  }
+}
      </style>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -118,10 +196,14 @@
 <div class="card-header" style="text-align: center;">
 <strong class="card-title">Register as client</strong>
 </div>
-<div class="card-body" style="text-align: center;    color: #238DB7 !important">
+<div class="card-body" style="text-align: center;    color: #444e4f !important">
 <p style="text-align: justify;">
 No more posting ads, writing job descriptions and then reviewing and shortlisting hundreds of candidates. All of these are things of the past. With HoneybeeTech’s online solution, you can login and select using simple drop-downs what you are looking for in your ideal candidate. The platform allows you the flexibility to compare all relevant candidates in one screen, you can view standardised resumes for all candidates in one consistent form. View candidate details and only pay to view candidate’s personal details (email and phone number) if you are satisfied with the calibre of candidates. Payment is simple and at a fraction of a cost with a Seek ad.</p>
+
 </div>
+<img  class="">
+<!-- Trigger the Modal -->
+<img id="myImg"  src="{{ asset('public/images/register_client.jpeg') }}" >
 </div>
 
 </div>
@@ -130,7 +212,7 @@ No more posting ads, writing job descriptions and then reviewing and shortlistin
 <div class="card-header" style="text-align: center;">
 <strong class="card-title" >Register as Candidate</strong>
 </div>
-<div class="card-body" style="text-align: center;   color: #238DB7 !important">
+<div class="card-body" style="text-align: center;   color: #444e4f !important">
 <p  style="text-align: justify;">
 As a candidate, looking for work has never been so easy. You don’t need to look for work on Seek or indeed. You don’t need to upload your resume. As long as your profile is updated on our system, let the clients find you. Your profile on our platform is what clients will look at – so the more detailed and articulate your profile is, the better chance there is, for you to stand out and for clients to select you. It takes less than 10 minutes to complete your profile and less than 30 seconds to notify the platform that you are still looking for work. Whether you are looking to relocate or work full time or part time, just let the platform know. Get in before the rest of the candidates do.
 </p>
@@ -226,8 +308,21 @@ As a candidate, looking for work has never been so easy. You don’t need to loo
                 </div>
             </div>
     </div>
-  </div>   
+  </div>  
+  <!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- The Close Button -->
+  <span class="close">&times;</span>
+
+  <!-- Modal Content (The Image) -->
+  <img class="modal-content" id="img01">
+
+  <!-- Modal Caption (Image Text) -->
+  <div id="caption"></div>
+</div> 
     </body>
+
 </html>
             <script src="{{ asset('public/vendor/jquery-3.2.1.min.js') }}"></script>
              <script src="{{asset('public/js/sweetalert.min.js')}}"></script>
@@ -266,6 +361,26 @@ $('#contact_form').on('submit',function(evt) {
             }
          });
 });
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the image and insert it inside the modal - use its "alt" text as a caption
+var img = document.getElementById("myImg");
+var modalImg = document.getElementById("img01");
+var captionText = document.getElementById("caption");
+img.onclick = function(){
+  modal.style.display = "block";
+  modalImg.src = this.src;
+  captionText.innerHTML = this.alt;
+}
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
 </script>
 <style type="text/css">
  .rc-anchor-container {

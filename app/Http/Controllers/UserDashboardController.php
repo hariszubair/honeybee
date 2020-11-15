@@ -383,9 +383,9 @@ class UserDashboardController extends Controller
               return Carbon::parse($row->updated_at)->format('d-M-Y');
             })->addColumn('experience',function($row) {
               if($row->yr_experience <=1)
-                return $row->yr_experience.' year';
+                return $row->yr_experience;
               else{
-                return $row->yr_experience.' years';
+                return $row->yr_experience;
               }
             })
             ->addColumn('recent_experience_column',function($row) {
@@ -564,9 +564,9 @@ class UserDashboardController extends Controller
               return Carbon::parse($row->updated_at)->format('d-M-Y');
             })->addColumn('experience_yr',function($row) {
               if($row->yr_experience <=1)
-                return $row->yr_experience.' year';
+                return $row->yr_experience;
               else{
-                return $row->yr_experience.' years';
+                return $row->yr_experience;
               }
             })
             ->addColumn('recent_experience_column',function($row) {
