@@ -150,8 +150,13 @@
                         our platform by a press of a button
                         
                             <div class="button_wrapper"><a href="{{ route('register') }}" style="width: 245px;" class="blue_button">Register as Client/Candidate </a></div>
-
+                             <video width="400" controls style="margin-top: 10px">
+  <source src="{{ asset('public/videos/honeybee_hd.mp4') }}" type="video/mp4">
+  <source src="mov_bbb.ogg" type="video/ogg">
+  Your browser does not support HTML video.
+</video>
                     </div>
+
                 </div>
             </div>
 

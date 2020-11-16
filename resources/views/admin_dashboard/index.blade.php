@@ -59,11 +59,11 @@
                                            
                                         </div>
                                     </div>
-                                     <ul>
+                                     <ol>
                                                @foreach($candidate_state as $record)
                                                <li>{{$record->state}}: {{$record->count_row}}</li>
                                                @endforeach
-                                           </ul>
+                                           </ol>
                                 </div>
                             </div>
                             <div class="col-lg-4"   >
@@ -76,11 +76,11 @@
                                         </div>
 
                                     </div>
-                                    <ul>
+                                    <ol>
                                                @foreach($candidate_role as $record)
                                                <li>{{$record->role_apply}}: {{$record->count_row}}</li>
                                                @endforeach
-                                           </ul>
+                                           </ol>
                                 </div>
                             </div>
                             <div class="col-lg-4" >
@@ -93,11 +93,11 @@
                                             </canvas> 
                                         </div>
                                     </div>
-                                    <ul>
+                                    <ol>
                                               
                                                <li>Registered Candidates: {{$registered_candidate}}</li>
                                                 <li>Un-registered Candidates: {{$unregistered_candidate}}</li>
-                                           </ul>
+                                           </ol>
                                 </div>
                             </div>
                             

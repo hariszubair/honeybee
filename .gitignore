@@ -13,3 +13,4 @@ yarn-error.log
 /resources/views/auth/register.blade.php
 .gitignore	
 env
+/public/videos
