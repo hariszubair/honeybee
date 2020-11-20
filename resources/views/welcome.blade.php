@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<link href="{{ asset('public/vendor/bootstrap-4.1/bootstrap.min.css') }}" rel="stylesheet" media="all">
  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script>
        function onSubmit(token) {
@@ -14,13 +15,19 @@
     width: 80%;
 }
 /* Style the Image Used to Trigger the Modal */
-#myImg {
+#myImg  {
   border-radius: 5px;
   cursor: pointer;
   transition: 0.3s;
 }
+#candidate_flow {
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+#myImg :hover {opacity: 0.7;}
+#candidate_flow :hover {opacity: 0.7;}
 
-#myImg:hover {opacity: 0.7;}
 
 /* The Modal (background) */
 .modal {
@@ -30,6 +37,7 @@
   padding-top: 100px; /* Location of the box */
   left: 0;
   top: 0;
+  overflow: scroll;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   background-color: rgb(0,0,0); /* Fallback color */
@@ -103,7 +111,7 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
          <!-- Bootstrap CSS-->
-    <link href="{{ asset('public/vendor/bootstrap-4.1/bootstrap.min.css') }}" rel="stylesheet" media="all">
+    
     <link href="{{ asset('public/css/frontend.css') }}" rel="stylesheet" media="all">
 
   </head>
@@ -150,11 +158,7 @@
                         our platform by a press of a button
                         
                             <div class="button_wrapper"><a href="{{ route('register') }}" style="width: 245px;" class="blue_button">Register as Client/Candidate </a></div>
-                             <video width="400" controls style="margin-top: 10px">
-  <source src="{{ asset('public/videos/honeybee_hd.mp4') }}" type="video/mp4">
-  <source src="mov_bbb.ogg" type="video/ogg">
-  Your browser does not support HTML video.
-</video>
+                            
                     </div>
 
                 </div>
@@ -169,7 +173,49 @@
 
     
         </div>
+<div class="container-fluid white_bg">
+    <div class="container " >
+    
+    <div class="row" id="home_contact_text">
+                 <div class="col-md-12  col-12" >
+                    <h2 style="text-align: center">How we work</h2>
+                    <div style="text-align:center;">
+                       <video width="600" controls >
+  <source src="{{ asset('public/videos/honeybee_hd.mp4') }}" type="video/mp4">
+  <source src="mov_bbb.ogg" type="video/ogg">
+  Your browser does not support HTML video.
+</video>
+                    </div>
+                    
+                    <div class="row" style="padding-top: 0px;padding-bottom: 10px">
 
+                    <div class="col-md-6">
+<div class="card">
+
+<div class="card-body" style="text-align: center;    color: #444e4f !important">
+</div>
+<img  class="">
+<!-- Trigger the Modal -->
+<img id="myImg"  src="{{ asset('public/images/register_client.png') }}" style="height:400px">
+</div>
+
+</div>
+<div class="col-md-6">
+<div class="card">
+
+<div class="card-body" style="text-align: center;   color: #444e4f !important">
+</div>
+<img  class="">
+<img id="candidate_flow"  src="{{ asset('public/images/register_candidate.png') }}" style="height: 400px">
+</div>
+</div>
+</div>
+                </div>
+            </div>
+
+       
+    </div>
+  </div>
 
         <div class="container-fluid gray_bg">
             <div class="container " id="about_us_wrapper" >
@@ -206,9 +252,7 @@
 No more posting ads, writing job descriptions and then reviewing and shortlisting hundreds of candidates. All of these are things of the past. With HoneybeeTech’s online solution, you can login and select using simple drop-downs what you are looking for in your ideal candidate. The platform allows you the flexibility to compare all relevant candidates in one screen, you can view standardised resumes for all candidates in one consistent form. View candidate details and only pay to view candidate’s personal details (email and phone number) if you are satisfied with the calibre of candidates. Payment is simple and at a fraction of a cost with a Seek ad.</p>
 
 </div>
-<img  class="">
-<!-- Trigger the Modal -->
-<img id="myImg"  src="{{ asset('public/images/register_client.jpeg') }}" >
+
 </div>
 
 </div>
@@ -371,6 +415,8 @@ var modal = document.getElementById("myModal");
 
 // Get the image and insert it inside the modal - use its "alt" text as a caption
 var img = document.getElementById("myImg");
+var img2 = document.getElementById("candidate_flow");
+
 var modalImg = document.getElementById("img01");
 var captionText = document.getElementById("caption");
 img.onclick = function(){
@@ -378,7 +424,11 @@ img.onclick = function(){
   modalImg.src = this.src;
   captionText.innerHTML = this.alt;
 }
-
+img2.onclick = function(){
+  modal.style.display = "block";
+  modalImg.src = this.src;
+  captionText.innerHTML = this.alt;
+}
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 

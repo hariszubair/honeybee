@@ -100,7 +100,15 @@
                                         </select>   
                                     </div>
                             </div>
-
+<div class="row form-group">
+                               <div class="col col-md-3">
+                                    <label for="text-input" class=" form-control-label">Total years of experience in the industry:</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input  id="yr_experience" name="yr_experience"  class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->yr_experience: '';?>">
+                                   
+                                </div>
+                            </div>
                             <div class="row form-group">
                                 <div class="col col-md-3">
                                         <label for="text-input" class=" form-control-label">Previous Cuisine Experience :</label>
@@ -333,15 +341,7 @@
 
                 <div id="experience_form_wrapper">
                      <div class="card-body" >
-                 <div class="row form-group">
-                               <div class="col col-md-3">
-                                    <label for="text-input" class=" form-control-label">Years of Experience:</label>
-                                </div>
-                                <div class="col-12 col-md-9">
-                                    <input type="number" id="yr_experience" name="yr_experience"  class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->yr_experience: '';?>">
-                                   
-                                </div>
-                            </div>  
+                   
                         </div>
                 <?php 
                 $experience_counter = 0 ;
@@ -391,13 +391,10 @@
                                 <div class="col col-md-3">
                                         <label for="text-input" class=" form-control-label"> Period of Employment : </label>
                                     </div>
-                                    <div class="col col-md-4">
-                                        <input type="date" required id="text-input" name="experience[<?php echo $experience_counter ?>][job_from]" placeholder="From" class="form-control"  value="<?php echo  date("Y-m-d", strtotime($user_experience->job_from)); ?>">
+                                    <div class="col col-md-9">
+                                        <input  required id="text-input" name="" placeholder="From" class="form-control"  value="{{$user_experience->yr_experience}}">
                                     </div>
-                                    <div class="col col-md-4">
-                                        <input type="date" id="text-input" name="experience[<?php echo $experience_counter ?>][job_to]" placeholder="To" class="form-control"  value="<?php echo date("Y-m-d", strtotime($user_experience->job_to)); ?>">
-                                    </div>
-                                
+                                   
                                 </div>
                                 
                                 <div class="row form-group">
@@ -409,21 +406,7 @@
                                     </div>
                                 </div> 
 
-                                <div class="row form-group">
-                                    <div class="col col-md-3">
-                                        <label for="text-input" class=" form-control-label">No. of Employees in Company :</label>
-                                    </div>
-                                    <div class="col-12 col-md-9">
-                                        <select  class="form-control" required name="experience[<?php echo $experience_counter ?>][no_of_employees]">
-                                            <option value=""> Please Select</option>
-                                            <option value="Less than 10" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == 'Less than 10' ? 'selected': '';?>>Less than 10</option>
-                                            <option value="11-20" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == '11-20' ? 'selected': '';?>>11-20</option>
-                                            <option value="21-50" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == '21-50' ? 'selected': '';?>>21-50</option>
-                                            <option value="More than 50" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == 'More than 50' ? 'selected': '';?>>More than 50</option>
-                                        </select>   
-                                    </div>
-                                </div> 
-
+                               
                                 <div class="row form-group">
                                 <div class="col col-md-3">
                                         <label for="text-input" class=" form-control-label"> Responsibilities :</label>

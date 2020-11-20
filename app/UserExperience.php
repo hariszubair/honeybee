@@ -12,7 +12,7 @@ class UserExperience extends Model
      * @var array
      */
     protected $fillable = [ 
- 	    'job_title','job_from','job_to','previous_company','ex_role','ex_responsibilities'
+ 	    'job_title','job_from','job_to','previous_company','ex_role','ex_responsibilities','yr_experience'
     ];
 
     public function user()

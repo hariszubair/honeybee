@@ -156,7 +156,7 @@ Please click on recent work experience to view candidate’s personal details (e
                           <th >Selected On</th>
                         </tr>
                       </thead>
-                      <tbody style="border:0" title="Click on the most recent work experience to view candidate detail">
+                      <tbody style="border:0" >
                      
                       </tbody>
                     </table>

@@ -481,7 +481,7 @@ color:black !important;
                           <th >Last Updated</th>
                         </tr>
                       </thead>
-                      <tbody style="border:0" title="Click on the most recent work experience to view candidate detail">
+                      <tbody style="border:0" >
                      
                       </tbody>
                     </table>

@@ -81,6 +81,7 @@ class UserDashboardController extends Controller
         }
       if(!$user->userinfo){
         if( $user->hasRole('Candidate')){
+        Session::flash('success', 'Fil Form');
           return view('user_dashboard/profile',  [
                                                 'user_info' => UserInfo::where([ 'user_id' => Auth::user()->id])->get(), 
                                                 'user_experiences' => UserExperience::where([ 'user_id' => Auth::user()->id])->get(), 
@@ -119,6 +120,7 @@ class UserDashboardController extends Controller
 
      }
      else  if($user->hasRole('Candidate')){
+        Session::flash('success', 'Fil Form');
       return view('user_dashboard/profile',  [
                                                 'user_info' => UserInfo::where([ 'user_id' => Auth::user()->id])->get(), 
                                                 'user_experiences' => UserExperience::where([ 'user_id' => Auth::user()->id])->get(), 
@@ -207,10 +209,9 @@ class UserDashboardController extends Controller
       foreach ($experiences as $experience)
       {
         if($experience != null) {
-           $experience['job_from']=Carbon::parse($experience['job_from'])->format('Y-m-d');
-       $experience['job_to']=Carbon::parse($experience['job_to'])->format('Y-m-d');
-          if($experience['job_title'] != null && $experience['job_from'] != null && $experience['job_to'] != null && $experience['previous_company'] != null && $experience['ex_responsibilities'] != null && $experience['no_of_employees'] != null){
-          DB::insert('insert into user_experiences (user_id, job_title,job_from,job_to,previous_company,ex_role,ex_responsibilities,no_of_employees	) values (?, ?,?, ?,?, ?,?,? )', [ $user_Id , $experience['job_title'],$experience['job_from'],$experience['job_to'],$experience['previous_company'],'',$experience['ex_responsibilities'],$experience['no_of_employees']]);
+          
+          if($experience['job_title'] != null && $experience['yr_experience'] != null && $experience['previous_company'] != null && $experience['ex_responsibilities'] != null){
+          DB::insert('insert into user_experiences (user_id, job_title,yr_experience,previous_company,ex_role,ex_responsibilities	) values (?, ?,?, ?, ?,?)', [ $user_Id , $experience['job_title'],$experience['yr_experience'],$experience['previous_company'],'',$experience['ex_responsibilities']]);
         }
         }
       } 
@@ -382,34 +383,18 @@ class UserDashboardController extends Controller
             ->addColumn('updated',function($row) {
               return Carbon::parse($row->updated_at)->format('d-M-Y');
             })->addColumn('experience',function($row) {
-              if($row->yr_experience <=1)
-                return $row->yr_experience;
-              else{
-                return $row->yr_experience;
-              }
+             
+                return $row->yr_experience.'<a href="javascript:void(0)" class="resume custom_button" id="'.$row->user_id.'" style="margin-bottom: 10px;margin-right: 5px;white-space: nowrap;" onclick="resume($(this))">View Resume</a>';
+              
             })
             ->addColumn('recent_experience_column',function($row) {
               if($row->recent_experience){
-                $diff = abs(strtotime($row->recent_experience->job_from) - strtotime($row->recent_experience->job_to));
-
-              // $years = floor($diff / (365*60*60*24));
-              $months = floor(($diff) / (30*60*60*24));
-              // $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
-              // if($months >=7){
-              //   $years++;
-              // }
-              // // ($years <= 1 ? $years.= ' year ' : $years.= ' years ');
-              if ($months == 0) {
-               $months= 'Less than 1 month';
-              }
-              elseif($months <= 1){
-                $months.= ' month'; 
-              }
-              else{
-                $months.= ' months';  
-              }
-              // ($months <= 1 ? $months.= ' month' : $months.= ' months');
-              // ($days <= 1 ? $days.= ' day' : $days.= ' days');
+                if($row->recent_experience->yr_experience){
+               $yr_experience='('.$row->recent_experience->yr_experience.')';                  
+                }
+                else{
+                 $yr_experience=''; 
+                }
               $data='';
               $responsibility='';
               if (strlen($row->recent_experience->ex_responsibilities) > 50){
@@ -418,12 +403,12 @@ class UserDashboardController extends Controller
               else{
                 $responsibility='<br>'.$row->recent_experience->ex_responsibilities;
               }
-              $data.='<a href="javascript:void(0)" class="resume" id="'.$row->user_id.'" style="color:#272f66;background-color:#ffffff00" onclick="resume($(this))"><b>'.$row->recent_experience->previous_company.'</b>';
-              $data.='<br>'.$row->recent_experience->job_title.' ('.$months.')'.$responsibility.'</a>';
+              $data.='<b>'.$row->recent_experience->previous_company.'</b>';
+              $data.='<br>'.$row->recent_experience->job_title.$yr_experience.$responsibility;
 
               return $data;
               }
-              return '<a href="javascript:void(0)" class="resume" id="'.$row->user_id.'" style="color:#272f66;background-color:#ffffff00" onclick="resume($(this))">No experience</a>';
+              return 'No experience';
               
             })->addColumn('cuisine',function($row) {
             return str_replace(',', ', ', $row->previous_cousine_experience); 
@@ -437,6 +422,7 @@ class UserDashboardController extends Controller
        $user=User::with('userinfo')->find(Auth::id());
        if(!$user->userinfo){
         if( $user->hasRole('Candidate')){
+        Session::flash('success', 'Fil Form');
           return view('user_dashboard/profile',  [
                                                 'user_info' => UserInfo::where([ 'user_id' => Auth::user()->id])->get(), 
                                                 'user_experiences' => UserExperience::where([ 'user_id' => Auth::user()->id])->get(), 
@@ -563,34 +549,18 @@ class UserDashboardController extends Controller
             ->addColumn('updated',function($row) {
               return Carbon::parse($row->updated_at)->format('d-M-Y');
             })->addColumn('experience_yr',function($row) {
-              if($row->yr_experience <=1)
-                return $row->yr_experience;
-              else{
-                return $row->yr_experience;
-              }
+             
+                return $row->yr_experience.'<a href="javascript:void(0)" class="resume custom_button" id="'.$row->user_id.'" style="margin-bottom: 10px;margin-right: 5px;white-space: nowrap;" onclick="resume($(this))">View Resume</a>';
+              
             })
             ->addColumn('recent_experience_column',function($row) {
               if($row->recent_experience){
-          $diff = abs(strtotime($row->recent_experience->job_from) - strtotime($row->recent_experience->job_to));
-
-              // $years = floor($diff / (365*60*60*24));
-              $months = floor(($diff) / (30*60*60*24));
-              // $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
-              // if($months >=7){
-              //   $years++;
-              // }
-              if ($months == 0) {
-               $months= 'Less than 1 month';
-              }
-              elseif($months <= 1){
-                $months.= ' month'; 
-              }
-              else{
-                $months.= ' months';  
-              }
-              // ($years <= 1 ? $years.= ' year ' : $years.= ' years ');
-              // ($months <= 1 ? $months.= ' month' : $months.= ' months');
-              // ($days <= 1 ? $days.= ' day' : $days.= ' days');
+         if($row->recent_experience->yr_experience){
+               $yr_experience='('.$row->recent_experience->yr_experience.')';                  
+                }
+                else{
+                 $yr_experience=''; 
+                }
               $data='';
               $responsibility='';
               if (strlen($row->recent_experience->ex_responsibilities) > 50){
@@ -599,12 +569,12 @@ class UserDashboardController extends Controller
               else{
                 $responsibility='<br>'.$row->recent_experience->ex_responsibilities;
               }
-              $data.='<a href="javascript:void(0)" class="resume" id="'.$row->user_id.'" style="color:#272f66;background-color:#fffff00" onclick="resume($(this))"><b>'.$row->recent_experience->previous_company.'</b>';
-              $data.='<br>'.$row->recent_experience->job_title.' ('.$months.')'.$responsibility.'</a>'; 
+              $data.='<b>'.$row->recent_experience->previous_company.'</b>';
+              $data.='<br>'.$row->recent_experience->job_title.$yr_experience.$responsibility; 
 
               return $data;
               }
-               return '<a href="javascript:void(0)" class="resume" id="'.$row->user_id.'" style="color:#272f66;background-color:#ffffff00" onclick="resume($(this))">No experience</a>';
+               return 'No experience';
 
 
               

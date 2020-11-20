@@ -58,14 +58,14 @@ class AdminDashboardController extends Controller
             $temp='';
             if($user->hasRole('Super Admin')){
                if($row->userinfo){
-              $temp='<a style="margin-right:5px" class="btn btn-primary" title="edit" href="./admin-candidate-edit/'.$row->id.'"><i class="fas fa-edit"></i></a><a  style="margin-right:5px" class="btn btn-success" title="View" href="./admin-candidate-view/'.$row->id.'"><i class="fas fa-eye"></i></a>';
+              $temp='<a target="_blank" style="margin-right:5px" class="btn btn-primary" title="edit" href="./admin-candidate-edit/'.$row->id.'"><i class="fas fa-edit"></i></a><a  target="_blank" style="margin-right:5px" class="btn btn-success" title="View" href="./admin-candidate-view/'.$row->id.'"><i class="fas fa-eye"></i></a>';
                     }
-                     $temp.= '<a style="margin-right:5px" class="btn btn-info" title="Mail" href="./mail/'.$row->id.'"><i class="fas fa-paper-plane"></i></a><a  style="margin-right:5px" class="btn btn-danger" title="delete" href="./admin-candidate-delete/'.$row->id.'"><i class="fas fa-trash"></i></a>';
+                     $temp.= '<a target="_blank" style="margin-right:5px" class="btn btn-info" title="Mail" href="./mail/'.$row->id.'"><i class="fas fa-paper-plane"></i></a><a  target="_blank" style="margin-right:5px" class="btn btn-danger" onclick="return confirm(\'Are you sure?\')" title="delete" href="./admin-candidate-delete/'.$row->id.'"><i class="fas fa-trash"></i></a>';
                 return $temp;
             }
             if($user->hasRole('Admin')){
                if($row->userinfo){
-           return '<a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-candidate-view/'.$row->id.'"><i class="fas fa-eye"></i></a>';
+           return '<a  target="_blank" style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-candidate-view/'.$row->id.'"><i class="fas fa-eye"></i></a>';
             }
             }
 
@@ -76,7 +76,7 @@ class AdminDashboardController extends Controller
             else{
                 $login_time=$row->login_time.' minutes';
             }
-             $temp='<b>Device:</b>'.$row->device.'</br> <b>Closed on:</b>'.$row->close_browser.'</br> <b>Active Time:</b>'.$login_time;
+             $temp='<b>Device:</b>'.$row->device.'</br> <b>Active Time:</b>'.$login_time;
              return $temp;
 
         })
@@ -193,15 +193,15 @@ $request->merge(['date_birth' => Carbon::parse($request->date_birth)->format('Y-
             $temp='';
             if($user->hasRole('Super Admin')){
                if($row->userinfo){
-                $temp.='<a style="margin-right:5px" class="btn btn-primary" title="edit" href="./admin-client-edit/'.$row->id.'"><i class="fas fa-edit"></i></a><a  style="margin-right:5px" class="btn btn-success" title="View" href="./admin-client-view/'.$row->id.'"><i class="fas fa-eye"></i></a>';
+                $temp.='<a target="_blank" style="margin-right:5px" class="btn btn-primary" title="edit" href="./admin-client-edit/'.$row->id.'"><i class="fas fa-edit"></i></a><a  target="_blank" style="margin-right:5px" class="btn btn-success" title="View" href="./admin-client-view/'.$row->id.'"><i class="fas fa-eye"></i></a>';
                }     
-                $temp.= '<a style="margin-right:5px" class="btn btn-info" title="Mail" href="./mail/'.$row->id.'"><i class="fas fa-paper-plane"></i></a><a  style="margin-right:5px" class="btn btn-danger" title="delete" href="./admin-client-delete/'.$row->id.'"><i class="fas fa-trash"></i></a>';
+                $temp.= '<a target="_blank" style="margin-right:5px" class="btn btn-info" title="Mail" href="./mail/'.$row->id.'"><i class="fas fa-paper-plane"></i></a><a  target="_blank" style="margin-right:5px" class="btn btn-danger" title="delete" onclick="return confirm(\'Are you sure?\')" href="./admin-client-delete/'.$row->id.'"><i class="fas fa-trash"></i></a>';
                 return $temp;
             }
 
 
             if($user->hasRole('Admin')){
-           return '<a  style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-client-view/'.$row->id.'"><i class="fas fa-eye"></i></a>';
+           return '<a  target="_blank" style="margin-right:5px" class="btn btn-success" title="edit" href="./admin-client-view/'.$row->id.'"><i class="fas fa-eye"></i></a>';
             }
 
         })
@@ -295,10 +295,9 @@ $request->merge(['date_birth' => Carbon::parse($request->date_birth)->format('Y-
       foreach ($experiences as $experience)
       {
         if($experience != null) {
-           $experience['job_from']=Carbon::parse($experience['job_from'])->format('Y-m-d');
-       $experience['job_to']=Carbon::parse($experience['job_to'])->format('Y-m-d');
-          if($experience['job_title'] != null && $experience['job_from'] != null && $experience['job_to'] != null && $experience['previous_company'] != null && $experience['ex_responsibilities'] != null && $experience['no_of_employees'] != null){
-          DB::insert('insert into user_experiences (user_id, job_title,job_from,job_to,previous_company,ex_role,ex_responsibilities,no_of_employees ) values (?, ?,?, ?,?, ?,?,? )', [ $user_Id , $experience['job_title'],$experience['job_from'],$experience['job_to'],$experience['previous_company'],'',$experience['ex_responsibilities'],$experience['no_of_employees']]);
+          
+          if($experience['job_title'] != null && $experience['yr_experience'] != null && $experience['previous_company'] != null && $experience['ex_responsibilities'] != null){
+          DB::insert('insert into user_experiences (user_id, job_title,yr_experience,previous_company,ex_role,ex_responsibilities   ) values (?, ?,?, ?, ?,?)', [ $user_Id , $experience['job_title'],$experience['yr_experience'],$experience['previous_company'],'',$experience['ex_responsibilities']]);
         }
         }
       } 
@@ -306,6 +305,7 @@ $request->merge(['date_birth' => Carbon::parse($request->date_birth)->format('Y-
       return true;
 
     }
+
 
    public function update_qualifications($qualifications, $user_Id){
       

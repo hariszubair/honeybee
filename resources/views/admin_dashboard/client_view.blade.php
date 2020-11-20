@@ -60,14 +60,14 @@
                                     <input class="form-control" value="{{$user_info->position}}" name="position" required>
                                 </div>
                             </div>
-                            <div class="row form-group">
+                           <!--  <div class="row form-group">
                                <div class="col col-md-4">
                                     <label for="text-input" class=" form-control-label">Full Street Address</label>
                                 </div>
                                 <div class="col-12 col-md-8">
                                     <input class="form-control" value="{{$user_info->street_address}}" name="street_address" required>
                                 </div>
-                            </div>
+                            </div> -->
                              <div class="row form-group">
                                <div class="col col-md-4">
                                     <label for="text-input" class=" form-control-label">City</label>

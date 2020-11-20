@@ -132,7 +132,23 @@ $new_date= date('M d, Y', $date);
                                         </select>   
                                     </div>
                             </div>
+<div class="row form-group">
+                               <div class="col col-md-3">
+                                    <label for="text-input" class=" form-control-label">Total years of experience in the industry:</label>
+                                </div>
+                                <div class="col-12 col-md-9">
 
+                                    <select type="number" id="yr_experience" name="yr_experience"  class="form-control" required value="">
+                                        <option value="">Please select the following</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='Less than 1 year' ?  'selected': ''}} value="Less than 1 year">Less than 1 year</option>
+                                        <option  {{isset($user_info[0]) && $user_info[0]->yr_experience=='1 - 3 years' ?  'selected': ''}} value="1 - 3 years">1 - 3 years</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='3 - 5 years' ?  'selected': ''}} value="3 - 5 years">3 - 5 years</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='5 - 10 years' ?  'selected': ''}}  value="5 - 10 years">5 - 10 years</option>
+                                        <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='More than 10 years' ?  'selected': ''}}  value="More than 10 years">More than 10 years</option>
+                                    </select>
+                                   
+                                </div>
+                            </div>  
                             <div class="row form-group">
                                 <div class="col col-md-3">
                                         <label for="text-input" class=" form-control-label">Previous Cuisine Experience :</label>
@@ -181,12 +197,12 @@ $new_date= date('M d, Y', $date);
                             </div>
 
 
-                            <div class="row form-group">
+                            <div class="row form-group" style="display: none">
                                <div class="col col-md-3">
                                     <label for="text-input" class=" form-control-label">Phone Number :</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type='number' id="text-input" name="phone_number" onkeypress='return event.charCode >= 48 && event.charCode <= 57' placeholder="Phone Number" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->phone_number: Auth::user()->phone_number;?>">
+                                    <input type='number' id="text-input" name='phone_number' onkeypress='return event.charCode >= 48 && event.charCode <= 57' placeholder="Phone Number" class="form-control" required value="<?php  echo isset($user_info[0]) ?  $user_info[0]->phone_number: Auth::user()->phone_number;?>" readonly>
                                    
                                 </div>
                             </div>
@@ -383,23 +399,7 @@ $new_date= date('M d, Y', $date);
 
                 <div id="experience_form_wrapper">
                      <div class="card-body" >
-                 <div class="row form-group">
-                               <div class="col col-md-5">
-                                    <label for="text-input" class=" form-control-label">Total years of experience in the industry:</label>
-                                </div>
-                                <div class="col-12 col-md-7">
-
-                                    <select type="number" id="yr_experience" name="yr_experience"  class="form-control" required value="">
-                                        <option value="">Please select the following</option>
-                                        <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='Less than 1 year' ?  'selected': ''}} value="Less than 1 year">Less than 1 year</option>
-                                        <option  {{isset($user_info[0]) && $user_info[0]->yr_experience=='1 - 3 years' ?  'selected': ''}} value="1 - 3 years">1 - 3 years</option>
-                                        <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='3 - 5 years' ?  'selected': ''}} value="3 - 5 years">3 - 5 years</option>
-                                        <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='5 - 10 years' ?  'selected': ''}}  value="5 - 10 years">5 - 10 years</option>
-                                        <option {{isset($user_info[0]) && $user_info[0]->yr_experience=='More than 10 years' ?  'selected': ''}}  value="More than 10 years">More than 10 years</option>
-                                    </select>
-                                   
-                                </div>
-                            </div>  
+                 
                         </div>
                 <?php 
                 $experience_counter = 0 ;
@@ -451,22 +451,22 @@ $new_date= date('M d, Y', $date);
                                 <div class="col col-md-3">
                                         <label for="text-input" class=" form-control-label"> Period of Employment : </label>
                                     </div>
-                                    <div class="col col-md-3">
-                                        <input data-toggle="datepicker"  name="experience[<?php echo $experience_counter ?>][job_from]" id='text-input' class="form-control" placeholder="From" autocomplete="off"  readonly='true' value="<?php  echo isset($user_info[0]) ?  date_format(date_create($user_experience->job_from),"d-m-Y")  : '';?>" >
+                                    <div class="col col-md-9">
+
+                                        <select  name="experience[<?php echo $experience_counter ?>][yr_experience]" name="yr_experience"  class="form-control" required value="">
+                                        <option value="">Please select the following</option>
+                                        <option {{$user_experience->yr_experience=='Less than 1 year' ?  'selected': ''}} value="Less than 1 year">Less than 1 year</option>
+                                        <option  {{$user_experience->yr_experience=='1 - 3 years' ?  'selected': ''}} value="1 - 3 years">1 - 3 years</option>
+                                        <option {{$user_experience->yr_experience=='3 - 5 years' ?  'selected': ''}} value="3 - 5 years">3 - 5 years</option>
+                                        <option {{$user_experience->yr_experience=='5 - 10 years' ?  'selected': ''}}  value="5 - 10 years">5 - 10 years</option>
+                                        <option {{$user_experience->yr_experience=='More than 10 years' ?  'selected': ''}}  value="More than 10 years">More than 10 years</option>
+                                    </select>
 
 
-                                        <!-- <input type="date" required id="text-input" name="experience[<?php echo $experience_counter ?>][job_from]" placeholder="From" class="form-control"  value="<?php echo  date("Y-m-d", strtotime($user_experience->job_from)); ?>"> -->
+                                      
+
                                     </div>
-                                    <div class="col col-md-3">
-                                         <input data-toggle="datepicker"  name="experience[<?php echo $experience_counter ?>][job_to]" id='text-input' class="form-control" placeholder="To" autocomplete="off"  readonly='true' value="<?php  echo isset($user_info[0]) ?  date_format(date_create($user_experience->job_to),"d-m-Y")  : '';?>" >
-
-                                        <!-- 
-                                        <input type="date" id="text-input" name="experience[<?php echo $experience_counter ?>][job_to]" placeholder="To" class="form-control"  value="<?php echo date("Y-m-d", strtotime($user_experience->job_to)); ?>"> -->
-                                    </div>
-                                    <div class="col col-md-3">
-                                         <button type="button"  id="experience[<?php echo $experience_counter ?>]" class='reset_dates btn btn-danger' onclick='clear_date($(this))'>Reset</button>
-
-                                    </div>
+                                   
                                 
                                 </div>
                                 
@@ -479,20 +479,7 @@ $new_date= date('M d, Y', $date);
                                     </div>
                                 </div> 
 
-                                <div class="row form-group">
-                                    <div class="col col-md-3">
-                                        <label for="text-input" class=" form-control-label">No. of Employees in Company :</label>
-                                    </div>
-                                    <div class="col-12 col-md-9">
-                                        <select  class="form-control"  name="experience[<?php echo $experience_counter ?>][no_of_employees]">
-                                            <option value=""> Please Select</option>
-                                            <option value="Less than 10" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == 'Less than 10' ? 'selected': '';?>>Less than 10</option>
-                                            <option value="11-20" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == '11-20' ? 'selected': '';?>>11-20</option>
-                                            <option value="21-50" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == '21-50' ? 'selected': '';?>>21-50</option>
-                                            <option value="More than 50" <?php  echo isset($user_experience) &&  $user_experience->no_of_employees == 'More than 50' ? 'selected': '';?>>More than 50</option>
-                                        </select>   
-                                    </div>
-                                </div> 
+                            
 
                                 <div class="row form-group">
                                 <div class="col col-md-3">
@@ -875,6 +862,9 @@ $new_date= date('M d, Y', $date);
       
     })
 
+    }
+    else if('<?php echo Session::get('success'); ?>'=='Fil Form'){
+         swal("Please fill this form", "Please enter all relevant details so that your profile is complete. All sections of this page is important for you to fill in otherwise your profile will not be displayed to the company.", "info"); 
     }
         if(all_user_info.length > 0) {
             if(all_user_info[0].visa_type) {
@@ -1381,20 +1371,20 @@ $new_date= date('M d, Y', $date);
         $('#add_more').click(function(e){
             e.preventDefault();
             if($("input[name='experience["+counterr+"][job_title]']").val()){
-                     if($("input[name='experience["+counterr+"][job_title]']").val() == '' || $("input[name='experience["+counterr+"][job_from]']").val() == '' || $("input[name='experience["+counterr+"][job_to]']").val() == ''  || $("input[name='experience["+counterr+"][previous_company]']").val() == ''  || $("input[name='experience["+counterr+"][no_of_employees]']").val() == ''  || $("textarea[name='experience["+counterr+"][ex_responsibilities]']").val() == '')
+                     if($("input[name='experience["+counterr+"][job_title]']").val() == '' || $("input[name='experience["+counterr+"][yr_experience]']").val() == ''  || $("input[name='experience["+counterr+"][previous_company]']").val() == ''  || $("textarea[name='experience["+counterr+"][ex_responsibilities]']").val() == '')
                         {
                             alert('Please complete job experience first');
                             return false;
                         }
 
-                         var job_to=$("input[name='experience["+counterr+"][job_to]']").val().split("-");
-                        var job_from=$("input[name='experience["+counterr+"][job_from]']").val().split("-");
-                        if( new Date(job_to[2], job_to[1] - 1, job_to[0]) <= new Date(job_from[2], job_from[1] - 1, job_from[0]))
-                        {
-                                 alert('Job starting date '+ $("input[name='experience["+counterr+"][job_to]']").val()+ ' cant be less than '+ $("input[name='experience["+counterr+"][job_from]']").val())
-                            return false;
+                        //  var job_to=$("input[name='experience["+counterr+"][job_to]']").val().split("-");
+                        // var job_from=$("input[name='experience["+counterr+"][job_from]']").val().split("-");
+                        // if( new Date(job_to[2], job_to[1] - 1, job_to[0]) <= new Date(job_from[2], job_from[1] - 1, job_from[0]))
+                        // {
+                        //          alert('Job starting date '+ $("input[name='experience["+counterr+"][job_to]']").val()+ ' cant be less than '+ $("input[name='experience["+counterr+"][job_from]']").val())
+                        //     return false;
 
-                        }
+                        // }
 
                     }
                         // if($("input[name='experience["+counterr+"][job_to]']").val() <= $("input[name='experience["+counterr+"][job_from]']").val())
@@ -1429,17 +1419,16 @@ $new_date= date('M d, Y', $date);
                                <div class="col col-md-3">
                                     <label for="text-input" class=" form-control-label"> Period of Employment : </label>
                                 </div>
-                                <div class="col col-md-3">
-                                <input data-toggle="datepicker"  name="experience[${experience_counter}][job_from]" id='text-input' class="form-control" placeholder="From" autocomplete="off"  readonly='true' value="" >
-
-                                </div>
-                                <div class="col col-md-3">
-                                <input data-toggle="datepicker"  name="experience[${experience_counter}][job_to]" id='text-input' class="form-control" placeholder="To" autocomplete="off"  readonly='true' value="" >
-
-                                </div>
-                                <div class="col col-md-3">
-                                         <button type="button"  id="experience[${experience_counter}]" class='reset_dates btn btn-danger' onclick='clear_date($(this))'>Reset</button>
-
+                                <div class="col col-md-9">
+                                <select  name="experience[${experience_counter}][yr_experience]" class="form-control" required >
+                                        <option value="">Please select the following</option>
+                                        <option value="Less than 1 year">Less than 1 year</option>
+                                        <option  value="1 - 3 years">1 - 3 years</option>
+                                        <option value="3 - 5 years">3 - 5 years</option>
+                                        <option value="5 - 10 years">5 - 10 years</option>
+                                        <option value="More than 10 years">More than 10 years</option>
+                                    </select>
+                                
                                     </div>
                                
                             </div>
@@ -1450,21 +1439,6 @@ $new_date= date('M d, Y', $date);
                                 </div>
                                 <div class="col-12 col-md-9">
                                     <input type="text"  id="text-input" name="experience[${experience_counter}][previous_company]" placeholder="Name of Company" class="form-control"  value="">
-                                </div>
-                            </div> 
-
-                            <div class="row form-group">
-                            <div class="col col-md-3">
-                                    <label for="text-input" class=" form-control-label">No. of Employees in Company:</label>
-                                </div>
-                                <div class="col-12 col-md-9">
-                                    <select  class="form-control" name="experience[${experience_counter}][no_of_employees]">
-                                        <option value=""> Please Select</option>
-                                        <option value="Less than 10" >Less than 10</option>
-                                        <option _value="11-20" >11-20</option>
-                                        <option value="21-50" >21-50</option>
-                                        <option value="More than 50" >More than 50</option>
-                                    </select>   
                                 </div>
                             </div> 
 

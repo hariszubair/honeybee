@@ -78,7 +78,7 @@
                                     </div>
                                     <ol>
                                                @foreach($candidate_role as $record)
-                                               <li>{{$record->role_apply}}: {{$record->count_row}}</li>
+                                               <li>{{ucfirst($record->role_apply)}}: {{$record->count_row}}</li>
                                                @endforeach
                                            </ol>
                                 </div>
@@ -125,6 +125,9 @@
     var label=[];
     var data=[];
 $( document ).ready(function() {
+  $('.confirm').on('click', function () {
+    return confirm('Are you sure want to continue?');
+});
     var candidate_state=JSON.parse($('#candidate_state').val());
     var candidate_role=JSON.parse($('#candidate_role').val());
     let label = candidate_state.map(a => a.state);
