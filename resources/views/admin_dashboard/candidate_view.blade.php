@@ -782,6 +782,8 @@
             
         }
         $(":input").prop("disabled", true);
+        $("#dropdownMenuButton").prop("disabled", false);
+
        
   </script>
 @endsection

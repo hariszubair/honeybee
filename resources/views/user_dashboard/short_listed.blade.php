@@ -136,7 +136,8 @@ color:black !important;
 .custom_button{
   border-radius: 22px;padding-left: 10px;padding-right: 10px;color:#fff;background: #238db7;
 }
-.custom_button:hover {background-color: #4b4f50}
+.custom_button:hover {background-color: #4b4f50;
+color:white}
 </style>
 <div id='page'>
 <form action="./request_interview" method="Post" id='request_interview_form'> 
@@ -147,6 +148,7 @@ Please click on recent work experience to view candidate’s personal details (e
      <table  id="candidate_search" class="display table  " style="font-size: 11px;padding-left: 0%;color: #272f66;border:0" style="font-size: 11px;padding-left: 0%;color: #272f66;border:0;width=100%" cellspacing="0" >
                       <thead style="background-color: #f8f9fa !important;word-break:keep-all">
                         <tr style="white-space: nowrap;">
+                          <th >Resume</th>
                           <th >Most recent work experience </th>
                           <th >Name</th>
                           <th >Total Experience</th>
@@ -261,7 +263,7 @@ Please click on recent work experience to view candidate’s personal details (e
         //   },
         columns: [
       
-          
+       { "data": 'resume','name':'name'},
       { "data": 'recent_experience_column','name':'id', "searchable": true},
        { "data": 'name','name':'name'},
        { "data": 'experience_yr','name':'experience', "searchable": true},

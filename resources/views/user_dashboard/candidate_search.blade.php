@@ -322,7 +322,9 @@ color:black !important;
 .custom_button{
   border-radius: 22px;padding-left: 10px;padding-right: 10px;color:#fff;background: #238db7;
 }
-.custom_button:hover {background-color: #4b4f50}
+.custom_button:hover {background-color: #4b4f50;
+color:white
+}
 </style>
 @if(Session::has('success'))
 <input type="" name="success" id='success' value="{{ Session::get('message') }}">
@@ -472,6 +474,7 @@ color:black !important;
                       <thead style="background-color: #f8f9fa !important;word-break:keep-all">
                         <tr style="white-space: nowrap;">
                           <th >Select</th>
+                          <th >Resume</th>
                           <th >Most recent work experience </th>
                           <th >Name</th>
                           <th >State</th>
@@ -710,6 +713,7 @@ candidate_search()
 	function candidate_search() {
     var role_apply = $('#role_apply').val();
     if($('#role_apply').val()==1){
+      $('#candidate_search').DataTable().clear().draw();
       return false;
     }
     var previous_cousine_experience = $('#previous_cousine_experience').val();
@@ -749,7 +753,7 @@ candidate_search()
       
         { "data": 'action','name':'name', "searchable": false,"orderable":false},
        
-     
+       { "data": 'resume','name':'name'},
           
       { "data": 'recent_experience_column','name':'recent_experience.previous_company', "searchable": false,"orderable":false},
        { "data": 'name','name':'name'},
@@ -1032,10 +1036,11 @@ $('#reset_selection').click(function(evt) {
                   $('#selected_candidates').html('<b>0</b> candidate is selected.')
                   $('#basic_membership').css("font-weight", "bold");
                   $('#premium_membership').css("font-weight", "normal");
-                   if($.fn.DataTable.isDataTable('#candidate_search')){
-                    $('#candidate_search').DataTable().destroy();
-                }
-                candidate_search();
+                  $('#candidate_search').DataTable().clear().draw();
+                //    if($.fn.DataTable.isDataTable('#candidate_search')){
+                //     $('#candidate_search').DataTable().destroy();
+                // }
+                // candidate_search();
               }
              
             }
@@ -1164,6 +1169,7 @@ $('#reset_filter').click(function(evt) {
   $('#available_from').val(null).trigger('change');
   $('#visa_type').val(null).trigger('change');
   $('#suburb_range').val(null).trigger('change');
+  $('#candidate_search').DataTable().clear().draw();
   });
 </script>
 

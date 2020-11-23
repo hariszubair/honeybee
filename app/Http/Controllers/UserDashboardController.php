@@ -384,7 +384,11 @@ class UserDashboardController extends Controller
               return Carbon::parse($row->updated_at)->format('d-M-Y');
             })->addColumn('experience',function($row) {
              
-                return $row->yr_experience.'<a href="javascript:void(0)" class="resume custom_button" id="'.$row->user_id.'" style="margin-bottom: 10px;margin-right: 5px;white-space: nowrap;" onclick="resume($(this))">View Resume</a>';
+                return $row->yr_experience;
+              
+            })->addColumn('resume',function($row) {
+             
+                return '<a href="javascript:void(0)" class="resume custom_button" id="'.$row->user_id.'" style="margin-bottom: 10px;margin-right: 5px;white-space: nowrap;" onclick="resume($(this))">View Resume</a>';
               
             })
             ->addColumn('recent_experience_column',function($row) {
@@ -550,7 +554,11 @@ class UserDashboardController extends Controller
               return Carbon::parse($row->updated_at)->format('d-M-Y');
             })->addColumn('experience_yr',function($row) {
              
-                return $row->yr_experience.'<a href="javascript:void(0)" class="resume custom_button" id="'.$row->user_id.'" style="margin-bottom: 10px;margin-right: 5px;white-space: nowrap;" onclick="resume($(this))">View Resume</a>';
+                return $row->yr_experience;
+              
+            })->addColumn('resume',function($row) {
+             
+                return '<a href="javascript:void(0)" class="resume custom_button" id="'.$row->user_id.'" style="margin-bottom: 10px;margin-right: 5px;white-space: nowrap;" onclick="resume($(this))">View Resume</a>';
               
             })
             ->addColumn('recent_experience_column',function($row) {

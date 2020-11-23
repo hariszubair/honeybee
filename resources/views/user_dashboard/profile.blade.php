@@ -303,7 +303,7 @@ $new_date= date('M d, Y', $date);
                                     <label for="text-input" class=" form-control-label"> Personal Summary:</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                             <textarea type="text" rows=4 required id="personal_summary" name="personal_summary" placeholder="Briefly describe yourself outside work, e.g. your hobbies" class="form-control" required><?php  echo isset($user_info[0]) ?  $user_info[0]->personal_summary:'';?></textarea>
+                             <textarea type="text" rows=4 id="personal_summary" name="personal_summary" placeholder="Briefly describe yourself outside work, e.g. your hobbies" class="form-control"><?php  echo isset($user_info[0]) ?  $user_info[0]->personal_summary:'';?></textarea>
                          </div>
                      </div>
                      <div class="row form-group">
@@ -311,7 +311,7 @@ $new_date= date('M d, Y', $date);
                                     <label for="text-input" class=" form-control-label"> Work Experience Summary:</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                             <textarea type="text" rows=4 required id="work_experience" name="work_experience" placeholder="Briefly describe your career in one to two lines" class="form-control" required><?php  echo isset($user_info[0]) ?  $user_info[0]->work_experience:'';?></textarea>
+                             <textarea type="text" rows=4  id="work_experience" name="work_experience" placeholder="Briefly describe your career in one to two lines" class="form-control" ><?php  echo isset($user_info[0]) ?  $user_info[0]->work_experience:'';?></textarea>
                          </div>
                      </div>
                      <div class="row form-group">
@@ -395,7 +395,7 @@ $new_date= date('M d, Y', $date);
 
 
             <div class="card">
-                <div class="card-header">Your Experience</div>
+                <div class="card-header">Your Experience (Please click on plus button to add experience)</div>
 
                 <div id="experience_form_wrapper">
                      <div class="card-body" >
@@ -811,26 +811,26 @@ $new_date= date('M d, Y', $date);
          });
 
 }, 120 * 1000); 
-  window.onbeforeunload = function (e) {
+//   window.onbeforeunload = function (e) {
     
-    $.ajax({
-          headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          },
-            url:'./close_browser',
-            type:'POST',
+//     $.ajax({
+//           headers: {
+//           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//           },
+//             url:'./close_browser',
+//             type:'POST',
            
-         });
+//          });
    
-    e = e || window.event;
-    // // For IE and Firefox prior to version 4
-    if (e) {
-        e.returnValue = 'Sure?';
-    }
+//     e = e || window.event;
+//     // // For IE and Firefox prior to version 4
+//     if (e) {
+//         e.returnValue = 'Sure?';
+//     }
 
-    // For Safari
-    return 'Sure?';
-};
+//     // For Safari
+//     return 'Sure?';
+// };
     </script>
 <script type="text/javascript">
     var all_user_info = <?php echo $user_info ?>;
@@ -846,7 +846,7 @@ $new_date= date('M d, Y', $date);
          if('<?php echo Session::get('success'); ?>'=='Profile Update'){
             swal({
       title: "Profile Updated",
-      text: 'Do you want to logout?',
+      text: 'Please keep updating your profile notifying you are looking for a job. F&B owners (cafes, restaurants, hotels) will contact you if their requirement matches your profile. Do you want to logout?',
       icon: "success",
       showConfirmButton: true,
       confirmButtonColor: '#8CD4F5',
@@ -1122,7 +1122,7 @@ $new_date= date('M d, Y', $date);
                     var expected_exp=0; 
                     var temp_counter=0;
                     var test_responsibilities=0;
-
+                    var min_exp=0;
                     for (var i = 0 ; i <= counterr; i++) {
 
                           if($("input[name='experience["+counterr+"][job_title]']").val() == '' || $("input[name='experience["+counterr+"][job_from]']").val() == '' || $("input[name='experience["+counterr+"][job_to]']").val() == ''  || $("input[name='experience["+counterr+"][previous_company]']").val() == ''  || $("input[name='experience["+counterr+"][no_of_employees]']").val() == ''  || $("textarea[name='experience["+counterr+"][ex_responsibilities]']").val() == '')
@@ -1151,7 +1151,13 @@ $new_date= date('M d, Y', $date);
                             }
                     });
                    }
+                   if($("input[name='experience["+i+"][job_title]']").val() && $("input[name='experience["+i+"][job_title]']").val() != ''){
+                    min_exp ++;
+                   }
                     }
+
+
+
                     if(test_responsibilities >0){
                         swal({
                           title: "Responsibilities are in incorrect format!!!",
@@ -1178,7 +1184,7 @@ $new_date= date('M d, Y', $date);
                      var dob= new Date(temp_dob[2], temp_dob[1]-1, temp_dob[0]);
                     var ageDifMs = Date.now() - dob.getTime();
                     var ageDate = new Date(ageDifMs); // miliseconds from epoch
-                     if(Math.abs(ageDate.getUTCFullYear() - 1970) <16){
+                     if(Math.abs(ageDate.getUTCFullYear() - 1970) < 16){
                          swal("Under Age!!!", "You must be at least 16 years old.", "error"); 
                                 return false;
                      }
@@ -1210,6 +1216,38 @@ $new_date= date('M d, Y', $date);
                         }
                         break;
                     }
+                    if($('#date_birth').val() == ""){
+                        alert ('Please add age.');
+                        return false;
+                    }
+
+                     if(min_exp == 0){
+                        swal({
+                          title: "Please enter experience",
+                          text: "Please enter your work experience details so that your profile is complete. All sections of this page is important for you to fill in. Do you still want to continue?",
+                          icon: "warning",
+                          buttons: [
+                            'No, verify it!',
+                            'Yes, continue!'
+                          ],
+                          dangerMode: true,
+                        }).then(function(isConfirm) {
+                          if (!isConfirm) {
+                        return false
+                          }
+                          else{
+                            $('#main_form_submit').click();
+
+                          }
+                        }) 
+                    }
+                    else{
+                          $('#main_form_submit').click();
+                    $('.notAllow').prop("disabled", false);
+                    }
+
+
+
                     // if(exp_verification == 0){
                     //     swal({
                     //       title: "Experience Mismatch!!!",
@@ -1232,12 +1270,13 @@ $new_date= date('M d, Y', $date);
 
                     // }
                     // else{
-                        if(temp_counter >0){
-                        return false
-                    }
-                    $('#main_form_submit').click();
-                    $('.notAllow').prop("disabled", false);
-                    return true;
+                    //     if(temp_counter >0){
+                    //     return false
+                    // }
+                    // else{
+                    //       $('#main_form_submit').click();
+                    // $('.notAllow').prop("disabled", false);
+                    // }
                     // }
                     
         });
