@@ -190,23 +190,23 @@
                     <div class="row" style="padding-top: 0px;padding-bottom: 10px">
 
                     <div class="col-md-6">
-<div class="card">
+<div class="card" style="border:0px solid">
 
 <div class="card-body" style="text-align: center;    color: #444e4f !important">
 </div>
 <img  class="">
 <!-- Trigger the Modal -->
-<img id="myImg"  src="{{ asset('public/images/register_client.png') }}" style="height:700px">
+<img id="myImg"  src="{{ asset('public/images/register_client.png') }}" style="height:500px">
 </div>
 
 </div>
 <div class="col-md-6">
-<div class="card">
+<div class="card" style="border:0px solid">
 
 <div class="card-body" style="text-align: center;   color: #444e4f !important">
 </div>
 <img  class="">
-<img id="candidate_flow"  src="{{ asset('public/images/register_candidate.png') }}" style="height: 700px">
+<img id="candidate_flow"  src="{{ asset('public/images/register_candidate.png') }}" style="height: 500px">
 </div>
 </div>
 </div>

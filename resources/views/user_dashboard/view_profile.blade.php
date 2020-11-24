@@ -191,26 +191,26 @@ $new_date= date('M d, Y', $date);
          });
 
 }, 120 * 1000); 
-  window.onbeforeunload = function (e) {
+//   window.onbeforeunload = function (e) {
     
-    $.ajax({
-          headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          },
-            url:'./close_browser',
-            type:'POST',
+//     $.ajax({
+//           headers: {
+//           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//           },
+//             url:'./close_browser',
+//             type:'POST',
            
-         });
+//          });
    
-    e = e || window.event;
-    // // For IE and Firefox prior to version 4
-    if (e) {
-        e.returnValue = 'Sure?';
-    }
+//     e = e || window.event;
+//     // // For IE and Firefox prior to version 4
+//     if (e) {
+//         e.returnValue = 'Sure?';
+//     }
 
-    // For Safari
-    return 'Sure?';
-};
+//     // For Safari
+//     return 'Sure?';
+// };
     </script>
 <script type="text/javascript">
     

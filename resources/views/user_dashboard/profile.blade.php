@@ -811,6 +811,9 @@ $new_date= date('M d, Y', $date);
          });
 
 }, 120 * 1000); 
+
+
+    
 //   window.onbeforeunload = function (e) {
     
 //     $.ajax({
