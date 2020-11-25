@@ -196,7 +196,7 @@
 </div>
 <img  class="">
 <!-- Trigger the Modal -->
-<img id="myImg"  src="{{ asset('public/images/register_client.png') }}" style="height:500px">
+<img id="myImg"  src="{{ asset('public/images/register_client.png') }}">
 </div>
 
 </div>
@@ -206,7 +206,7 @@
 <div class="card-body" style="text-align: center;   color: #444e4f !important">
 </div>
 <img  class="">
-<img id="candidate_flow"  src="{{ asset('public/images/register_candidate.png') }}" style="height: 500px">
+<img id="candidate_flow"  src="{{ asset('public/images/register_candidate.png') }}" >
 </div>
 </div>
 </div>
