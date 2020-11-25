@@ -180,7 +180,7 @@
                  <div class="col-md-12  col-12" >
                     <h2 style="text-align: center">How we work</h2>
                     <div style="text-align:center;">
-                       <video width="600" controls >
+                       <video width="60%" controls >
   <source src="{{ asset('public/videos/honeybee_hd.mp4') }}" type="video/mp4">
   <source src="mov_bbb.ogg" type="video/ogg">
   Your browser does not support HTML video.
