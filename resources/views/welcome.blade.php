@@ -305,12 +305,12 @@ As a candidate, looking for work has never been so easy. You don’t need to loo
                         www.honeybeetech.com.au</p>
                     
                 </div>
-                <div class="col-md-4  col-12 " id="form_name_text_wrapper" style="padding-left: 0px;padding-right: 0px">
+                <div class="col-md-4  col-12 " id="form_name_text_wrapper" style="padding-right: 0px">
                     <form method="Post" id="contact_form">
                         @csrf
 
                     <div class="form-group row">
-                            <label for="form_name" class="col-md-4 col-form-label text-md-right" style="padding-left: 0px;">Name</label>
+                            <label for="form_name" class="col-md-4 col-form-label text-md-right" >Name</label>
 
                             <div class="col-md-8">
                                 <input id="form_name" type="text" class="form-control" name="form_name" value="{{ old('form_name') }}" required autocomplete="form_name"  required>

@@ -8,6 +8,7 @@ use Stripe;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\UserInfo;
+use App\config\app;
 use App\SelectedCandidates;
 class StripePaymentController extends Controller
 {
@@ -33,6 +34,7 @@ class StripePaymentController extends Controller
      */
     public function stripePost(Request $request)
     {
+       return $strip_sk=config('stripe.sk');
     		$user=User::where('id',Auth::id())->with('unconfirmed_selected_candidates')->first();
     	if ($user->unconfirmed_selected_candidates->count() <= 5){
     		$membership=1;

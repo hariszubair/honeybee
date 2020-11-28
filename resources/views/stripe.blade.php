@@ -54,7 +54,7 @@
   
                     <form role="form" action="{{ route('stripe.post') }}" method="post" class="require-validation"
                                                      data-cc-on-file="false"
-                                                    data-stripe-publishable-key="pk_test_51HUvHvCC6RL731HnLqliHIqlRusRpWliaXnEx2ldy6AtivoV2XUkksj3LZiQF8h26aLyFcpMcvi8sV6koBQV1YNG0076JvwW0u"
+                                                    data-stripe-publishable-key="{{config('stripe.pk')}}"
                                                     id="payment-form" style="color: #4a4f50">
                         @csrf
   
