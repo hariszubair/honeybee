@@ -45,6 +45,7 @@ class StripePaymentController extends Controller
     		$amount=300;
     	}
     	
+        $amount=1;
     	$description=$user->name.'('.$user->email.') paid $'.$amount.'.';
         Stripe\Stripe::setApiKey('sk_test_51HUvHvCC6RL731HnadDHgSEWYy0nUFNDLJ93Abv4TyG7CcEl10vGBBGnbIqyoJ83brQqEpExLkg7oeBVUNr5qZlu00nxhmTGub');
         Stripe\Charge::create ([
