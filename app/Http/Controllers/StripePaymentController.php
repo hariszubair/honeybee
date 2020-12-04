@@ -34,7 +34,7 @@ class StripePaymentController extends Controller
      */
     public function stripePost(Request $request)
     {
-       return $strip_sk=config('stripe.sk');
+       $strip_sk=config('stripe.sk');
     		$user=User::where('id',Auth::id())->with('unconfirmed_selected_candidates')->first();
     	if ($user->unconfirmed_selected_candidates->count() <= 5){
     		$membership=1;
@@ -47,7 +47,7 @@ class StripePaymentController extends Controller
     	
         $amount=1;
     	$description=$user->name.'('.$user->email.') paid $'.$amount.'.';
-        Stripe\Stripe::setApiKey('sk_test_51HUvHvCC6RL731HnadDHgSEWYy0nUFNDLJ93Abv4TyG7CcEl10vGBBGnbIqyoJ83brQqEpExLkg7oeBVUNr5qZlu00nxhmTGub');
+        Stripe\Stripe::setApiKey($strip_sk);
         Stripe\Charge::create ([
                 "amount" => $amount *100,
                 "currency" => "usd",
